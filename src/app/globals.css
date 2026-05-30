@@ -1,25 +1,90 @@
 @import "tailwindcss";
 
-:root {
-  --bg-primary: #080b14;
-  --bg-secondary: #0f1629;
-  --bg-card: #111827;
-  --accent-green: #00d4a0;
-  --text-primary: #f1f5f9;
-  --text-secondary: #94a3b8;
-  --text-muted: #475569;
-  --border: #1e293b;
+@theme inline {
+  --color-bg: #0a0a0f;
+  --color-surface: #0f0f1a;
+  --color-elevated: #161626;
+  --color-border: #1e1e3a;
+  --color-border-bright: #2d2d5e;
+  --color-indigo: #6366f1;
+  --color-indigo-hover: #4f51d8;
+  --color-emerald: #10b981;
+  --color-text: #f1f5f9;
+  --color-secondary: #94a3b8;
+  --color-muted: #475569;
+  --color-dimmed: #334155;
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-space-mono);
+  --font-display: var(--font-syne);
 }
 
-@theme inline {
-  --color-background: var(--bg-primary);
-  --color-foreground: var(--text-primary);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  color-scheme: dark;
 }
 
 body {
-  background: var(--bg-primary);
-  color: var(--text-primary);
+  background-color: #0a0a0f;
+  background-image: radial-gradient(
+    ellipse 100% 60% at 50% -5%,
+    rgba(99, 102, 241, 0.07) 0%,
+    transparent 70%
+  );
+  background-attachment: fixed;
+  color: #f1f5f9;
   font-family: var(--font-geist-sans), system-ui, sans-serif;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: #0a0a0f; }
+::-webkit-scrollbar-thumb { background: #1e1e3a; border-radius: 2px; }
+::-webkit-scrollbar-thumb:hover { background: #2d2d5e; }
+
+/* Toast slide-in */
+@keyframes slideIn {
+  from { transform: translateX(12px); opacity: 0; }
+  to   { transform: translateX(0);    opacity: 1; }
+}
+
+/* Landing page entrance */
+@keyframes fadeUp {
+  from { transform: translateY(20px); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
+}
+
+@keyframes glowPulse {
+  0%, 100% { opacity: 0.4; }
+  50%       { opacity: 0.7; }
+}
+
+/* Wallet adapter button overrides */
+.wallet-adapter-button {
+  background: linear-gradient(to right, #6366f1, #818cf8) !important;
+  border-radius: 8px !important;
+  font-family: var(--font-geist-sans), system-ui, sans-serif !important;
+  font-size: 13px !important;
+  height: 40px !important;
+  padding: 0 16px !important;
+  transition: all 0.2s ease !important;
+}
+.wallet-adapter-button:not([disabled]):hover {
+  background: linear-gradient(to right, #4f51d8, #6366f1) !important;
+  box-shadow: 0 0 20px rgba(99, 102, 241, 0.35) !important;
+}
+.wallet-adapter-modal-wrapper {
+  background: #0f0f1a !important;
+  border: 1px solid #1e1e3a !important;
+  border-radius: 16px !important;
+}
+.wallet-adapter-modal-title {
+  color: #f1f5f9 !important;
 }

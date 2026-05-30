@@ -18,22 +18,23 @@ export default function Button({
   ...props
 }: ButtonProps) {
   const base =
-    "inline-flex items-center justify-center font-medium rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-[#080b14] disabled:opacity-40 disabled:cursor-not-allowed";
+    "inline-flex items-center justify-center font-semibold rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-[#0a0a0f] disabled:opacity-40 disabled:cursor-not-allowed select-none";
 
-  const variants = {
+  const variants: Record<string, string> = {
     primary:
-      "bg-[#00d4a0] text-[#080b14] hover:bg-[#00b88a] focus:ring-[#00d4a0] shadow-[0_0_20px_rgba(0,212,160,0.3)]",
+      "bg-gradient-to-r from-[#6366f1] to-[#818cf8] text-white hover:from-[#4f51d8] hover:to-[#6366f1] focus:ring-[#6366f1] shadow-[0_0_20px_rgba(99,102,241,0.2)] hover:shadow-[0_0_28px_rgba(99,102,241,0.4)]",
     secondary:
-      "bg-[#1e293b] text-[#f1f5f9] hover:bg-[#334155] border border-[#334155] focus:ring-[#475569]",
+      "bg-[#161626] border border-[#2d2d5e] text-[#94a3b8] hover:border-[#6366f1]/50 hover:text-[#f1f5f9] focus:ring-[#2d2d5e]",
     ghost:
-      "text-[#94a3b8] hover:text-[#f1f5f9] hover:bg-[#1e293b] focus:ring-[#475569]",
-    danger: "bg-red-600 text-white hover:bg-red-700 focus:ring-red-500",
+      "text-[#475569] hover:text-[#94a3b8] hover:bg-[#161626] focus:ring-[#2d2d5e]",
+    danger:
+      "bg-red-950/40 border border-red-700/50 text-red-400 hover:bg-red-950/60 focus:ring-red-700",
   };
 
-  const sizes = {
-    sm: "px-3 py-1.5 text-sm",
+  const sizes: Record<string, string> = {
+    sm: "px-3 py-1.5 text-xs",
     md: "px-4 py-2.5 text-sm",
-    lg: "px-6 py-3 text-base",
+    lg: "px-6 py-3.5 text-base",
   };
 
   return (
@@ -44,23 +45,12 @@ export default function Button({
     >
       {loading && (
         <svg
-          className="animate-spin -ml-1 mr-2 h-4 w-4"
+          className="animate-spin -ml-0.5 mr-2 h-4 w-4 flex-shrink-0"
           fill="none"
           viewBox="0 0 24 24"
         >
-          <circle
-            className="opacity-25"
-            cx="12"
-            cy="12"
-            r="10"
-            stroke="currentColor"
-            strokeWidth="4"
-          />
-          <path
-            className="opacity-75"
-            fill="currentColor"
-            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
-          />
+          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
         </svg>
       )}
       {children}

@@ -1,8 +1,8 @@
 export default function DevnetBanner() {
   return (
-    <div className="bg-yellow-900/20 border-b border-yellow-800/30 text-yellow-400 text-xs text-center py-2 px-4">
-      ⚠ Devnet demo — do not use real funds. All transactions are on Solana
-      devnet.
+    <div className="w-full bg-amber-950/40 border-b border-amber-800/30 text-amber-400/90 text-xs text-center py-2 px-4">
+      <span className="opacity-60">⚠</span>{" "}
+      Devnet only — all funds are testnet SOL, no real value
     </div>
   );
 }
