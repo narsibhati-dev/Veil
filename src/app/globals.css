@@ -30,6 +30,10 @@
   --font-display: var(--font-raleway);
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 *,
 *::before,
 *::after {

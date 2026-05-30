@@ -21,7 +21,22 @@ const jetbrainsMono = JetBrains_Mono({
 
 export const metadata: Metadata = {
   title: "Obscura: Private Payments on Solana",
-  description: "Zero-knowledge private SOL transfers on devnet",
+  description: "Zero-knowledge private SOL transfers on Solana devnet. Groth16 proofs generated entirely in your browser.",
+  icons: {
+    icon: "/favicon.svg",
+    shortcut: "/favicon.svg",
+  },
+  openGraph: {
+    title: "Obscura: Private Payments on Solana",
+    description: "Zero-knowledge private SOL transfers. Shield funds, generate ZK proofs in-browser, withdraw to any address with zero on-chain link.",
+    siteName: "Obscura",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Obscura: Private Payments on Solana",
+    description: "ZK private SOL transfers on Solana devnet. 100% in-browser proof generation.",
+  },
 };
 
 export default function RootLayout({

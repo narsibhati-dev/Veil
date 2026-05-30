@@ -5,8 +5,12 @@ import {
   Lock, History, Cpu, Wallet,
   Coins, ArrowRight, ShieldCheck, Check, Info
 } from "lucide-react";
+import LogoIcon from "@/components/ui/LogoIcon";
 
 type MockTab = "shield" | "withdraw" | "history" | "proofs";
+
+const PRIMARY =
+  "border border-[#3d7a68] bg-[#599F8A] hover:bg-[#4d8f7a] text-white shadow-[inset_0_1px_0_0_rgba(255,255,255,0.6),inset_1px_0_0_0_rgba(255,255,255,0.3),inset_-1px_0_0_0_rgba(255,255,255,0.3),inset_4px_4px_0_0_rgba(255,255,255,0.06),inset_-4px_-4px_0_0_rgba(255,255,255,0.06),inset_6px_6px_0_0_rgba(255,255,255,0.04),inset_-6px_-6px_0_0_rgba(255,255,255,0.04),inset_8px_8px_0_0_rgba(255,255,255,0.02),inset_-8px_-8px_0_0_rgba(255,255,255,0.02),0_1px_2px_0_rgba(0,0,0,0.12),0_2px_4px_0_rgba(0,0,0,0.08),0_4px_6px_0_rgba(0,0,0,0.06),0_6px_8px_0_rgba(0,0,0,0.04),0_2px_1px_0_rgba(0,0,0,0.06)]";
 
 export default function SimulatedDashboard() {
   const [activeTab, setActiveTab] = useState<MockTab>("shield");
@@ -37,12 +41,9 @@ export default function SimulatedDashboard() {
     <div className="w-full rounded-[28px] glass-card overflow-hidden transition-all duration-300">
 
       {/* Header */}
-      <div className="px-8 py-5 border-b border-[#222222] bg-[#1a1a1a]/[0.3] flex flex-col md:flex-row items-center justify-between gap-4">
+      <div className="px-8 py-5 border-b border-white/[0.06] flex flex-col md:flex-row items-center justify-between gap-4">
         <div className="flex items-center gap-3">
-          <div className="relative w-10 h-10 flex items-center justify-center rounded-xl bg-gradient-to-tr from-[#599F8A] to-[#3d7a68] shadow-md">
-            <span className="font-extrabold text-white text-lg tracking-tighter" style={{ fontFamily: "var(--font-raleway)" }}>O</span>
-            <div className="absolute inset-0.5 rounded-[10px] border border-white/20 pointer-events-none" />
-          </div>
+          <LogoIcon size={40} />
           <span className="text-lg font-extrabold text-[#e8f5f2] tracking-wider uppercase" style={{ fontFamily: "var(--font-raleway)" }}>
             Obscura{" "}
             <span className="text-xs font-mono font-normal tracking-normal text-[#6db5a0]/80 lowercase bg-[#599F8A]/10 border border-[#599F8A]/20 px-2 py-0.5 rounded ml-1">v1.0-dev</span>
@@ -50,29 +51,29 @@ export default function SimulatedDashboard() {
         </div>
 
         <div className="flex items-center flex-wrap gap-3 text-sm font-mono">
-          <div className="flex items-center gap-2 px-4 py-2 rounded-xl bg-[#1a1a1a]/60 border border-[#2a2a2a]/60 text-[#8ecabb]">
+          <div className="flex items-center gap-2 px-4 py-2 rounded-xl border border-white/[0.07] text-[#8ecabb]">
             <Wallet size={14} className="text-[#6db5a0]" />
             <span className="text-[#6db5a0]/60 uppercase text-xs">Balance:</span>
             <span className="font-bold text-[#e8f5f2]">1,248.50 SOL</span>
           </div>
-          <div className="flex items-center gap-2 px-4 py-2 rounded-xl bg-[#1a1a1a]/60 border border-[#2a2a2a]/60 text-[#8ecabb]">
+          <div className="flex items-center gap-2 px-4 py-2 rounded-xl border border-white/[0.07] text-[#8ecabb]">
             <span className="w-2 h-2 rounded-full bg-[#6db5a0] shadow-[0_0_6px_#6db5a0] animate-pulse" />
             <span className="text-[#6db5a0]/60 uppercase text-xs">Tier:</span>
             <span className="font-bold text-[#e8f5f2]">GOLD TIER <span className="text-[#6db5a0]">(9.4K PTS)</span></span>
           </div>
-          <button className="px-4 py-2 rounded-xl bg-[#599F8A] hover:bg-[#4d8f7a] text-white text-sm font-semibold transition-all duration-200 shadow-sm border border-[#599F8A]/40">
+          <button className={`px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-200 ${PRIMARY}`}>
             Add Funds
           </button>
         </div>
       </div>
 
       {/* Tabs */}
-      <div className="px-8 border-b border-[#222222] bg-transparent flex items-center overflow-x-auto gap-1">
+      <div className="px-8 border-b border-white/[0.06] flex items-center overflow-x-auto gap-1">
         {[
-          { id: "shield",   label: "Shield SOL",        icon: Lock       },
-          { id: "withdraw", label: "Private Withdraw",   icon: ShieldCheck },
-          { id: "history",  label: "Transaction Logs",   icon: History    },
-          { id: "proofs",   label: "ZK Circuit Logs",    icon: Cpu        },
+          { id: "shield",   label: "Shield SOL",       icon: Lock        },
+          { id: "withdraw", label: "Private Withdraw",  icon: ShieldCheck },
+          { id: "history",  label: "Transaction Logs",  icon: History     },
+          { id: "proofs",   label: "ZK Circuit Logs",   icon: Cpu         },
         ].map((tab) => {
           const Icon = tab.icon;
           const isActive = activeTab === tab.id;
@@ -82,7 +83,7 @@ export default function SimulatedDashboard() {
               onClick={() => setActiveTab(tab.id as MockTab)}
               className={`px-6 py-5 border-b-2 flex items-center gap-2.5 text-sm font-semibold uppercase tracking-wider transition-all duration-200 whitespace-nowrap ${
                 isActive
-                  ? "border-[#599F8A] text-[#8ecabb] bg-[#599F8A]/[0.03]"
+                  ? "border-[#599F8A] text-[#8ecabb]"
                   : "border-transparent text-[#6db5a0]/50 hover:text-[#8ecabb]/80"
               }`}
               style={{ fontFamily: "var(--font-raleway)" }}
@@ -116,8 +117,8 @@ export default function SimulatedDashboard() {
                       onClick={() => !isGenerating && setDepositAmount(amt)}
                       className={`py-3.5 rounded-xl border text-sm font-mono font-bold transition-all duration-200 ${
                         depositAmount === amt && !isGenerating
-                          ? "bg-[#599F8A]/15 border-[#599F8A]/60 text-[#8ecabb] shadow-[0_0_12px_rgba(89,159,138,0.2)]"
-                          : "bg-[#1a1a1a]/[0.5] border-[#2a2a2a] text-[#6db5a0]/70 hover:border-[#333333] hover:text-[#8ecabb]"
+                          ? "border-[#3d7a68] bg-[#599F8A]/20 text-[#8ecabb] shadow-[0_0_12px_rgba(89,159,138,0.2)]"
+                          : "border-white/[0.08] text-[#6db5a0]/70 hover:border-white/[0.15] hover:text-[#8ecabb]"
                       }`}
                     >
                       {amt} SOL
@@ -125,7 +126,7 @@ export default function SimulatedDashboard() {
                   ))}
                 </div>
 
-                <div className="rounded-2xl border border-[#222222] bg-[#1a1a1a]/[0.6] p-5 space-y-4">
+                <div className="rounded-2xl border border-white/[0.07] p-5 space-y-4">
                   <div className="flex items-center justify-between text-sm">
                     <span className="text-[#6db5a0]/60">Asset</span>
                     <span className="font-mono text-[#8ecabb]">SOL (Solana)</span>
@@ -143,7 +144,7 @@ export default function SimulatedDashboard() {
                 </div>
               </div>
 
-              <div className="rounded-xl bg-[#0d0d0d] border border-[#2a2a2a] p-4 h-36 font-mono text-xs leading-relaxed text-[#6db5a0]/80 overflow-y-auto space-y-1.5 select-none">
+              <div className="rounded-xl border border-white/[0.06] p-4 h-36 font-mono text-xs leading-relaxed text-[#6db5a0]/80 overflow-y-auto space-y-1.5 select-none">
                 <p className="text-[#599F8A]/90 font-semibold">{`// Cryptographic log console`}</p>
                 {step === 0 && <p className="text-[#6db5a0]/50">{`> Waiting for shield initialization...`}</p>}
                 {step >= 1 && <p className="text-[#6db5a0]">{`> [WASM] Generating Poseidon secret note: ${secret}`}</p>}
@@ -155,48 +156,48 @@ export default function SimulatedDashboard() {
               <button
                 onClick={triggerSimulateShield}
                 disabled={isGenerating || step === 4}
-                className="w-full py-4 rounded-xl font-bold text-base tracking-wider uppercase transition-all duration-300 relative group overflow-hidden border border-[#599F8A] bg-[#599F8A] text-white shadow-[0_4px_20px_rgba(89,159,138,0.25),inset_0_1px_0_rgba(255,255,255,0.12)] hover:bg-[#4d8f7a] disabled:opacity-50"
+                className={`w-full py-4 rounded-xl font-bold text-base tracking-wider uppercase transition-all duration-200 disabled:opacity-50 ${PRIMARY}`}
               >
-                <span className="relative z-10 flex items-center justify-center gap-2">
+                <span className="flex items-center justify-center gap-2">
                   {isGenerating ? (
                     <><span className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" /> Shielding SOL...</>
                   ) : step === 4 ? (
-                    <><Check size={18} className="text-emerald-300" /> Shield Complete</>
+                    <><Check size={18} className="text-emerald-200" /> Shield Complete</>
                   ) : (
-                    <>Shield {depositAmount} SOL <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" /></>
+                    <>Shield {depositAmount} SOL <ArrowRight size={16} /></>
                   )}
                 </span>
               </button>
             </div>
 
             {/* ZK Visualizer */}
-            <div className="flex flex-col items-center justify-center rounded-2xl border border-[#222222] bg-[#1a1a1a]/[0.3] p-8 text-center space-y-5">
+            <div className="flex flex-col items-center justify-center rounded-2xl border border-white/[0.06] p-8 text-center space-y-5">
               <div className="relative w-full aspect-video flex items-center justify-center">
                 <svg viewBox="0 0 200 120" className="w-full h-full max-w-[360px]">
-                  <circle cx="100" cy="20" r="8" className={`fill-[#0d0d0d] stroke-2 ${step >= 3 ? "stroke-emerald-400" : "stroke-[#599F8A]"}`} />
+                  <circle cx="100" cy="20" r="8" className={`fill-[#111111] stroke-2 ${step >= 3 ? "stroke-emerald-400" : "stroke-[#599F8A]"}`} />
                   <text x="100" y="23" textAnchor="middle" fontSize="6" fill="#fff" fontWeight="bold">R</text>
 
-                  <line x1="100" y1="20" x2="60" y2="50" className={`stroke-2 ${step >= 3 ? "stroke-emerald-500/80" : "stroke-[#2a2a2a]/60"}`} />
-                  <line x1="100" y1="20" x2="140" y2="50" className="stroke-[#2a2a2a]/20 stroke-1" />
+                  <line x1="100" y1="20" x2="60" y2="50" className={`stroke-2 ${step >= 3 ? "stroke-emerald-500/80" : "stroke-white/10"}`} />
+                  <line x1="100" y1="20" x2="140" y2="50" className="stroke-white/[0.08] stroke-1" />
 
-                  <circle cx="60" cy="50" r="7" className={`fill-[#0d0d0d] stroke-2 ${step >= 2 ? "stroke-[#6db5a0]" : "stroke-[#2a2a2a]/60"}`} />
-                  <circle cx="140" cy="50" r="7" className="fill-[#0d0d0d] stroke-[#2a2a2a]/20 stroke-1" />
+                  <circle cx="60" cy="50" r="7" className={`fill-[#111111] stroke-2 ${step >= 2 ? "stroke-[#6db5a0]" : "stroke-white/10"}`} />
+                  <circle cx="140" cy="50" r="7" className="fill-[#111111] stroke-white/[0.08] stroke-1" />
 
-                  <line x1="60" y1="50" x2="40" y2="80" className={`stroke-2 ${step >= 2 ? "stroke-[#599F8A]/80" : "stroke-[#2a2a2a]/40"}`} />
-                  <line x1="60" y1="50" x2="80" y2="80" className="stroke-[#2a2a2a]/20 stroke-1" />
+                  <line x1="60" y1="50" x2="40" y2="80" className={`stroke-2 ${step >= 2 ? "stroke-[#599F8A]/80" : "stroke-white/[0.08]"}`} />
+                  <line x1="60" y1="50" x2="80" y2="80" className="stroke-white/[0.08] stroke-1" />
 
-                  <circle cx="40" cy="80" r="6" className={`fill-[#0d0d0d] stroke-2 ${step >= 2 ? "stroke-[#6db5a0]" : "stroke-[#2a2a2a]/40"}`} />
-                  <circle cx="80" cy="80" r="6" className="fill-[#0d0d0d] stroke-[#2a2a2a]/20 stroke-1" />
-                  <circle cx="120" cy="80" r="6" className="fill-[#0d0d0d] stroke-[#2a2a2a]/20 stroke-1" />
-                  <circle cx="160" cy="80" r="6" className="fill-[#0d0d0d] stroke-[#2a2a2a]/20 stroke-1" />
+                  <circle cx="40" cy="80" r="6" className={`fill-[#111111] stroke-2 ${step >= 2 ? "stroke-[#6db5a0]" : "stroke-white/[0.08]"}`} />
+                  <circle cx="80" cy="80" r="6" className="fill-[#111111] stroke-white/[0.08] stroke-1" />
+                  <circle cx="120" cy="80" r="6" className="fill-[#111111] stroke-white/[0.08] stroke-1" />
+                  <circle cx="160" cy="80" r="6" className="fill-[#111111] stroke-white/[0.08] stroke-1" />
 
-                  <line x1="40" y1="80" x2="30" y2="105" className={`stroke-2 ${step >= 1 ? "stroke-[#6db5a0]" : "stroke-[#1a1a1a]"}`} />
-                  <line x1="40" y1="80" x2="50" y2="105" className="stroke-[#1a1a1a] stroke-1" />
+                  <line x1="40" y1="80" x2="30" y2="105" className={`stroke-2 ${step >= 1 ? "stroke-[#6db5a0]" : "stroke-white/[0.06]"}`} />
+                  <line x1="40" y1="80" x2="50" y2="105" className="stroke-white/[0.06] stroke-1" />
 
-                  <circle cx="30" cy="105" r="5" className={`fill-[#0d0d0d] stroke-2 ${step >= 1 ? "stroke-[#8ecabb]" : "stroke-[#1a1a1a]"}`} />
-                  <circle cx="50" cy="105" r="5" className="fill-[#0d0d0d] stroke-[#1a1a1a] stroke-1" />
-                  <circle cx="70" cy="105" r="5" className="fill-[#0d0d0d] stroke-[#1a1a1a] stroke-1" />
-                  <circle cx="90" cy="105" r="5" className="fill-[#0d0d0d] stroke-[#1a1a1a] stroke-1" />
+                  <circle cx="30" cy="105" r="5" className={`fill-[#111111] stroke-2 ${step >= 1 ? "stroke-[#8ecabb]" : "stroke-white/[0.06]"}`} />
+                  <circle cx="50" cy="105" r="5" className="fill-[#111111] stroke-white/[0.06] stroke-1" />
+                  <circle cx="70" cy="105" r="5" className="fill-[#111111] stroke-white/[0.06] stroke-1" />
+                  <circle cx="90" cy="105" r="5" className="fill-[#111111] stroke-white/[0.06] stroke-1" />
 
                   {step >= 1 && <g className="animate-pulse"><circle cx="30" cy="105" r="8" className="fill-transparent stroke-[#6db5a0]/40 stroke-1" /></g>}
                   {step >= 2 && <g className="animate-pulse"><circle cx="40" cy="80" r="9" className="fill-transparent stroke-[#6db5a0]/40 stroke-1" /><circle cx="60" cy="50" r="10" className="fill-transparent stroke-[#6db5a0]/40 stroke-1" /></g>}
@@ -213,9 +214,7 @@ export default function SimulatedDashboard() {
               </div>
 
               <div>
-                <h4 className="text-sm font-bold text-[#d4ede9] flex items-center justify-center gap-2">
-                  Merkle Tree Membership
-                </h4>
+                <h4 className="text-sm font-bold text-[#d4ede9]">Merkle Tree Membership</h4>
                 <p className="text-xs text-[#6db5a0]/60 max-w-[280px] mx-auto mt-1.5 leading-relaxed">
                   {step === 0 && "Your deposit is computed into a Poseidon commitment leaf in an on-chain depth-4 Merkle tree."}
                   {step === 1 && "Generating local cryptographic secret parameters in WASM..."}
@@ -243,7 +242,7 @@ export default function SimulatedDashboard() {
                 <input
                   type="text"
                   placeholder="obscura-amountsol-secretkey..."
-                  className="w-full px-5 py-3.5 rounded-xl border border-[#222222] bg-[#1a1a1a]/[0.5] text-sm font-mono text-[#a8d5cc] placeholder-[#6db5a0]/20 focus:outline-none focus:border-[#599F8A]"
+                  className="w-full px-5 py-3.5 rounded-xl border border-white/[0.08] text-sm font-mono text-[#a8d5cc] placeholder-[#6db5a0]/20 focus:outline-none focus:border-[#599F8A] bg-transparent"
                 />
               </div>
               <div>
@@ -251,19 +250,19 @@ export default function SimulatedDashboard() {
                 <input
                   type="text"
                   placeholder="Solana wallet address (e.g. Fv4h...)"
-                  className="w-full px-5 py-3.5 rounded-xl border border-[#222222] bg-[#1a1a1a]/[0.5] text-sm font-mono text-[#a8d5cc] placeholder-[#6db5a0]/20 focus:outline-none focus:border-[#599F8A]"
+                  className="w-full px-5 py-3.5 rounded-xl border border-white/[0.08] text-sm font-mono text-[#a8d5cc] placeholder-[#6db5a0]/20 focus:outline-none focus:border-[#599F8A] bg-transparent"
                 />
               </div>
             </div>
 
-            <div className="rounded-xl bg-[#0d0d0d] border border-[#2a2a2a] p-4 flex items-start gap-3">
+            <div className="rounded-xl border border-white/[0.06] p-4 flex items-start gap-3">
               <Info size={16} className="text-[#599F8A] flex-shrink-0 mt-0.5" />
               <p className="text-xs text-[#6db5a0]/60 leading-relaxed">
                 Withdrawals generate a fresh Groth16 ZK-Proof that verifies leaf membership without disclosing which note is spent. A public nullifier prevents double-spending.
               </p>
             </div>
 
-            <button className="w-full py-4 rounded-xl font-bold text-base tracking-wider uppercase transition-all duration-300 border border-[#599F8A] bg-[#599F8A] text-white shadow-[0_4px_20px_rgba(89,159,138,0.25),inset_0_1px_0_rgba(255,255,255,0.12)] hover:bg-[#4d8f7a] flex items-center justify-center gap-2.5">
+            <button className={`w-full py-4 rounded-xl font-bold text-base tracking-wider uppercase transition-all duration-200 flex items-center justify-center gap-2.5 ${PRIMARY}`}>
               <ShieldCheck size={18} /> Prove & Withdraw SOL
             </button>
           </div>
@@ -284,7 +283,7 @@ export default function SimulatedDashboard() {
                 { type: "Shield",   tx: "0x69f2e3...f3a9", amount: "50.00 SOL",  time: "1 hour ago",  status: "Confirmed" },
                 { type: "Withdraw", tx: "0xf5e2d1...b3e8", amount: "100.00 SOL", time: "1 day ago",   status: "Confirmed" },
               ].map((log, idx) => (
-                <div key={idx} className="flex items-center justify-between p-4 rounded-xl border border-[#2a2a2a] bg-[#1a1a1a]/[0.3] text-sm hover:border-[#333333] transition-colors">
+                <div key={idx} className="flex items-center justify-between p-4 rounded-xl border border-white/[0.06] hover:border-white/[0.1] text-sm transition-colors">
                   <div className="flex items-center gap-3.5">
                     <span className={`w-9 h-9 rounded-lg flex items-center justify-center ${
                       log.type === "Shield" ? "bg-[#599F8A]/10 text-[#6db5a0]" : "bg-emerald-500/10 text-emerald-400"
@@ -311,7 +310,7 @@ export default function SimulatedDashboard() {
 
         {/* ZK CIRCUIT LOGS */}
         {activeTab === "proofs" && (
-          <div className="rounded-2xl border border-[#222222] bg-[#0d0d0d] p-6 font-mono text-sm text-[#6db5a0]/80 overflow-x-auto h-[340px] leading-7 space-y-1 select-none">
+          <div className="rounded-2xl border border-white/[0.06] p-6 font-mono text-sm text-[#6db5a0]/80 overflow-x-auto h-[340px] leading-7 space-y-1 select-none">
             <p className="text-[#6db5a0]/90">{`[Groth16 WASM Engine initializing...]`}</p>
             <p className="text-[#599F8A]">{`> Loaded BN254 Elliptic Curve parameters`}</p>
             <p className="text-[#599F8A]">{`> Poseidon Hash instances: Depth 4`}</p>

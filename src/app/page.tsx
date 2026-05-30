@@ -5,6 +5,7 @@ import Link from "next/link";
 import { motion } from "motion/react";
 import { Shield, Cpu, Zap, ArrowRight, CheckCircle2, Code, Terminal } from "lucide-react";
 import SimulatedDashboard from "@/components/layout/SimulatedDashboard";
+import LogoIcon from "@/components/ui/LogoIcon";
 
 /* Ring-shadow for cards/secondary elements */
 const CARD_SHADOW =
@@ -26,17 +27,7 @@ export default function LandingPage() {
       <nav className="sticky top-0 z-50 w-full bg-white shadow-[0_1px_0_0_rgba(0,0,0,0.06)]">
         <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
           <div className="flex items-center gap-2.5">
-            <svg width="32" height="32" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-              <defs>
-                <linearGradient id="navLogoGrad" x1="0" y1="0" x2="40" y2="40" gradientUnits="userSpaceOnUse">
-                  <stop offset="0%" stopColor="#599F8A" />
-                  <stop offset="100%" stopColor="#3d7a68" />
-                </linearGradient>
-              </defs>
-              <circle cx="20" cy="20" r="16" stroke="url(#navLogoGrad)" strokeWidth="3" fill="none" />
-              <circle cx="20" cy="20" r="9" stroke="url(#navLogoGrad)" strokeWidth="1.5" strokeDasharray="3 2" fill="none" />
-              <circle cx="20" cy="20" r="3.5" fill="url(#navLogoGrad)" />
-            </svg>
+            <LogoIcon size={32} />
             <span className="text-lg font-extrabold text-[#0f1a16] tracking-tight" style={{ fontFamily: "var(--font-raleway)" }}>
               Obscura
             </span>
@@ -223,18 +214,26 @@ export default function LandingPage() {
             </p>
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 md:grid-cols-4 divide-x divide-white/15 border border-white/15 rounded-2xl overflow-hidden">
             {[
-              { value: "256-bit", label: "Cryptographic security"  },
-              { value: "<2s",     label: "Proof generation time"   },
-              { value: "0",       label: "Wallet links on-chain"   },
-              { value: "Groth16", label: "ZK proof system"         },
-            ].map(({ value, label }) => (
-              <div key={label} className={`rounded-2xl bg-white p-6 ${CARD_SHADOW}`}>
-                <p className="text-2xl font-extrabold text-[#0f1a16] mb-1" style={{ fontFamily: "var(--font-jetbrains-mono)" }}>
+              { value: "256-bit", label: "Cryptographic security", sup: "" },
+              { value: "<2s",     label: "Proof generation time",  sup: "" },
+              { value: "0",       label: "Wallet links on-chain",  sup: "" },
+              { value: "Groth16", label: "ZK proof system",        sup: "" },
+            ].map(({ value, label }, i) => (
+              <div key={label} className={`flex flex-col justify-between px-7 py-6 group hover:bg-white/[0.06] transition-colors duration-200 ${i >= 2 ? "border-t border-white/15 md:border-t-0" : ""}`}>
+                <p
+                  className="text-4xl font-extrabold text-white tracking-tight leading-none mb-3"
+                  style={{ fontFamily: "var(--font-jetbrains-mono)" }}
+                >
                   {value}
                 </p>
-                <p className="text-xs text-[#5e8a83] leading-snug">{label}</p>
+                <div>
+                  <div className="w-6 h-px bg-white/30 mb-2 group-hover:w-10 transition-all duration-300" />
+                  <p className="text-xs text-white/60 uppercase tracking-widest leading-snug font-medium">
+                    {label}
+                  </p>
+                </div>
               </div>
             ))}
           </div>
@@ -362,9 +361,7 @@ export default function LandingPage() {
       <footer className="bg-white shadow-[0_-1px_0_0_rgba(0,0,0,0.06)]">
         <div className="max-w-6xl mx-auto px-6 py-10 flex flex-col sm:flex-row items-center justify-between gap-6">
           <div className="flex items-center gap-2">
-            <svg width="18" height="18" viewBox="0 0 40 40" fill="none" aria-hidden="true">
-              <circle cx="20" cy="20" r="15" stroke="#599F8A" strokeWidth="2.5" opacity="0.7" fill="none" />
-            </svg>
+            <LogoIcon size={28} />
             <span className="text-sm font-extrabold text-[#0f1a16] uppercase tracking-wider" style={{ fontFamily: "var(--font-raleway)" }}>
               Obscura
             </span>
