@@ -59,7 +59,7 @@ export default function ShieldPanel({ onShielded, onToast }: ShieldPanelProps) {
         </h2>
         <p className="text-sm text-[#5e8a83]">
           Deposit SOL into the privacy pool. Your commitment is added to a
-          Merkle tree — no link to your address on-chain.
+          Merkle tree, no link to your address on-chain.
         </p>
       </div>
 
@@ -87,7 +87,7 @@ export default function ShieldPanel({ onShielded, onToast }: ShieldPanelProps) {
           ))}
         </div>
 
-        {/* Number input — hide native arrows */}
+        {/* Number input - hide native arrows */}
         <div className="relative">
           <input
             type="number"

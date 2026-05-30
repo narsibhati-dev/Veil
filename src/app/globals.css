@@ -51,9 +51,9 @@ body {
 ::-webkit-scrollbar-thumb  { background: rgba(89, 159, 138, 0.3); border-radius: 2px; }
 ::-webkit-scrollbar-thumb:hover { background: rgba(89, 159, 138, 0.5); }
 
-/* ── Dark cards — ring-shadow style ── */
+/* ── Dark cards - ring-shadow style ── */
 .glass-card {
-  background: #0c1714;
+  background: #111111;
   border: 1px solid rgba(255, 255, 255, 0.18);
   box-shadow:
     0 0 0 1px rgba(89, 159, 138, 0.08),

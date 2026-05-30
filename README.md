@@ -1,6 +1,6 @@
-# Obscura — Private Payments on Solana
+# Obscura: Private Payments on Solana
 
-Obscura is a devnet demo of zero-knowledge private SOL transfers built on the Privacy Cash SDK. Deposit SOL into a shared privacy pool, then prove ownership and withdraw to any address — without linking the sender and recipient on-chain. Built with Next.js 16, React 19, and Tailwind CSS v4.
+Obscura is a devnet demo of zero-knowledge private SOL transfers built on the Privacy Cash SDK. Deposit SOL into a shared privacy pool, then prove ownership and withdraw to any address without linking the sender and recipient on-chain. Built with Next.js 16, React 19, and Tailwind CSS v4.
 
 ---
 
@@ -8,8 +8,8 @@ Obscura is a devnet demo of zero-knowledge private SOL transfers built on the Pr
 
 ### Requirements
 
-- **Node.js 24** — required. Earlier versions can cause WASM loading failures with the Rust-compiled hasher. Use `nvm install 24 && nvm use 24` if needed.
-- **bun** — package manager. Install from [bun.sh](https://bun.sh).
+- **Node.js 24** - required. Earlier versions can cause WASM loading failures with the Rust-compiled hasher. Use `nvm install 24 && nvm use 24` if needed.
+- **bun** - package manager. Install from [bun.sh](https://bun.sh).
 
 ### Install
 
@@ -96,17 +96,17 @@ getPrivateBalance(
 ): Promise<number>
 ```
 
-Nothing else imports the SDK directly — every call goes through this file.
+Nothing else imports the SDK directly. Every call goes through this file.
 
 ---
 
 ## How the Privacy Works
 
-**Shielding.** When you deposit SOL, the SDK generates a random secret and computes a *commitment* — a Poseidon hash of that secret. The commitment is submitted to an on-chain program which appends it as a leaf in a Merkle tree. Your SOL enters the shared pool. Because the on-chain record is only the commitment (a hash), there is no link between the deposit transaction and your wallet address.
+**Shielding.** When you deposit SOL, the SDK generates a random secret and computes a *commitment*, a Poseidon hash of that secret. The commitment is submitted to an on-chain program which appends it as a leaf in a Merkle tree. Your SOL enters the shared pool. Because the on-chain record is only the commitment (a hash), there is no link between the deposit transaction and your wallet address.
 
-**Withdrawing.** To withdraw, the SDK constructs a *zero-knowledge proof* using the Groth16 proving system (run in-browser via WASM — this is the multi-second step). The proof attests that you know the secret for *some valid leaf* in the Merkle tree, without revealing *which* leaf. A *nullifier* — another deterministic hash of your secret — is submitted alongside the proof. The on-chain verifier checks: (1) the Groth16 proof is valid against the current Merkle root, (2) the nullifier has not been used before. If both pass, the funds are released to the recipient.
+**Withdrawing.** To withdraw, the SDK constructs a *zero-knowledge proof* using the Groth16 proving system (run in-browser via WASM (this is the multi-second step). The proof attests that you know the secret for *some valid leaf* in the Merkle tree, without revealing *which* leaf. A *nullifier*, another deterministic hash of your secret - is submitted alongside the proof. The on-chain verifier checks: (1) the Groth16 proof is valid against the current Merkle root, (2) the nullifier has not been used before. If both pass, the funds are released to the recipient.
 
-**Why it's private.** The ZK proof only proves membership in the tree — it reveals nothing about which deposit is being spent. With many depositors sharing the pool, an observer cannot determine which withdrawal corresponds to which deposit. The nullifier mechanism prevents double-spending without creating any on-chain link between the shield and withdraw transactions.
+**Why it's private.** The ZK proof only proves membership in the tree. It reveals nothing about which deposit is being spent. With many depositors sharing the pool, an observer cannot determine which withdrawal corresponds to which deposit. The nullifier mechanism prevents double-spending without creating any on-chain link between the shield and withdraw transactions.
 
 ---
 

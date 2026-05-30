@@ -1,5 +1,6 @@
 "use client";
 
+import React from "react";
 import Link from "next/link";
 import { motion } from "motion/react";
 import { Shield, Cpu, Zap, ArrowRight, CheckCircle2, Code, Terminal } from "lucide-react";
@@ -11,7 +12,7 @@ const CARD_SHADOW =
 const CARD_HOVER =
   "hover:shadow-[0_0_0_1px_rgba(0,0,0,0.1),0_2px_8px_-1px_rgba(0,0,0,0.08),0_6px_16px_0px_rgba(0,0,0,0.05)]";
 
-/* Glossy 3D shadow for primary buttons — matches PrimaryButton */
+/* Glossy 3D shadow for primary buttons - matches PrimaryButton */
 const PRIMARY_SHADOW =
   "shadow-[inset_0_1px_0_0_rgba(255,255,255,0.6),inset_1px_0_0_0_rgba(255,255,255,0.3),inset_-1px_0_0_0_rgba(255,255,255,0.3),inset_4px_4px_0_0_rgba(255,255,255,0.06),inset_-4px_-4px_0_0_rgba(255,255,255,0.06),inset_6px_6px_0_0_rgba(255,255,255,0.04),inset_-6px_-6px_0_0_rgba(255,255,255,0.04),inset_8px_8px_0_0_rgba(255,255,255,0.02),inset_-8px_-8px_0_0_rgba(255,255,255,0.02),0_1px_2px_0_rgba(0,0,0,0.08),0_2px_4px_0_rgba(0,0,0,0.06),0_4px_6px_0_rgba(0,0,0,0.04),0_6px_8px_0_rgba(0,0,0,0.02),0_2px_1px_0_rgba(0,0,0,0.04)]";
 
@@ -97,7 +98,7 @@ export default function LandingPage() {
       </section>
 
       {/* ── DASHBOARD PREVIEW ── */}
-      <section className="max-w-6xl mx-auto px-6 pb-24">
+      <section className="max-w-7xl mx-auto px-6 pb-24">
         <div className="rounded-[32px] p-[6px] bg-gradient-to-b from-[rgba(255,255,255,0.18)] via-[rgba(255,255,255,0.06)] to-[rgba(89,159,138,0.08)] shadow-[0_0_0_1px_rgba(89,159,138,0.06),0_40px_80px_-20px_rgba(0,0,0,0.25)]">
           <SimulatedDashboard />
         </div>
@@ -150,13 +151,13 @@ export default function LandingPage() {
             {
               step: "02", icon: Cpu,
               title: "Generate Proof",
-              desc: "A Groth16 zero-knowledge proof is computed locally in WASM — attesting you own a valid note in the Merkle tree without revealing which one.",
+              desc: "A Groth16 zero-knowledge proof is computed locally in WASM, attesting you own a valid note in the Merkle tree without revealing which one.",
               badge: "Proving Stage",
             },
             {
               step: "03", icon: Zap,
               title: "Withdraw Privately",
-              desc: "Submit the proof and a one-time nullifier on-chain. Funds are released to any address — blocking double-spends while remaining completely untraceable.",
+              desc: "Submit the proof and a one-time nullifier on-chain. Funds are released to any address, blocking double-spends while remaining completely untraceable.",
               badge: "Withdrawal Stage",
             },
           ].map(({ step, icon: Icon, title, desc, badge }) => (
@@ -188,7 +189,7 @@ export default function LandingPage() {
               Discover how Obscura makes private transfers simple and verifiable.
             </p>
             <p className="text-xs text-[#5e8a83] mt-1">
-              Zero wallet links, zero trace — all proofs verified on-chain.
+              Zero wallet links, zero trace. All proofs verified on-chain.
             </p>
           </div>
           <motion.a
@@ -218,7 +219,7 @@ export default function LandingPage() {
               </h2>
             </div>
             <p className="text-white/70 text-sm leading-relaxed">
-              Every proof is generated locally in your browser using WebAssembly. Nothing private ever leaves your device. The on-chain contract only sees a cryptographic proof — never your wallet address, deposit amount, or note.
+              Every proof is generated locally in your browser using WebAssembly. Nothing private ever leaves your device. The on-chain contract only sees a cryptographic proof, never your wallet address, deposit amount, or note.
             </p>
           </div>
 
@@ -251,11 +252,11 @@ export default function LandingPage() {
               className="text-2xl sm:text-3xl font-extrabold text-[#0f1a16] leading-tight"
               style={{ fontFamily: "var(--font-raleway)" }}
             >
-              What is committed — and what remains invisible
+              What is committed and what remains invisible
             </h2>
           </div>
           <p className="text-sm text-[#5e8a83] leading-relaxed">
-            Every deposit updates a public Merkle tree. Zero-knowledge proofs verify path elements and valid secrets completely in-memory — leaving zero trace in transaction graphs.
+            Every deposit updates a public Merkle tree. Zero-knowledge proofs verify path elements and valid secrets completely in-memory, leaving zero trace in transaction graphs.
           </p>
           <div className="space-y-3">
             {[
@@ -270,45 +271,68 @@ export default function LandingPage() {
                   <span className="font-semibold text-[#0f1a16]" style={{ fontFamily: "var(--font-jetbrains-mono)" }}>
                     {term}
                   </span>
-                  {" — "}{desc}
+                  {": "}{desc}
                 </p>
               </div>
             ))}
           </div>
         </div>
 
-        <div className={`rounded-2xl bg-[#f7fbf9] p-5 ${CARD_SHADOW}`}>
-          <div className="flex items-center justify-between shadow-[0_1px_0_0_rgba(0,0,0,0.06)] pb-3 mb-4 text-[10px] font-mono text-[#5e8a83]">
-            <span className="flex items-center gap-1.5 text-[#0f1a16] font-semibold">
-              <Terminal size={12} className="text-[#599F8A]" /> ZK_Withdrawal.circom
-            </span>
-            <span className={`text-[9px] uppercase bg-white px-1.5 py-0.5 rounded text-[#599F8A] ${CARD_SHADOW}`}>
-              Poseidon Hash
+        {/* Code editor */}
+        <div className="rounded-2xl overflow-hidden shadow-[0_0_0_1px_rgba(0,0,0,0.1),0_4px_24px_rgba(0,0,0,0.12)]">
+          {/* Title bar */}
+          <div className="bg-[#1e1e1e] px-4 py-3 flex items-center justify-between border-b border-white/[0.06]">
+            <div className="flex items-center gap-3">
+              <div className="flex items-center gap-1.5">
+                <span className="w-3 h-3 rounded-full bg-[#ff5f57]" />
+                <span className="w-3 h-3 rounded-full bg-[#febc2e]" />
+                <span className="w-3 h-3 rounded-full bg-[#28c840]" />
+              </div>
+              <div className="flex items-center gap-1.5 bg-[#2d2d2d] px-3 py-1 rounded-md">
+                <Terminal size={11} className="text-[#599F8A]" />
+                <span className="text-[11px] text-[#cccccc]" style={{ fontFamily: "var(--font-jetbrains-mono)" }}>
+                  ZK_Withdrawal.circom
+                </span>
+              </div>
+            </div>
+            <span className="text-[10px] uppercase tracking-widest text-[#599F8A] bg-[#599F8A]/10 border border-[#599F8A]/20 px-2.5 py-1 rounded-md" style={{ fontFamily: "var(--font-jetbrains-mono)" }}>
+              circom
             </span>
           </div>
-          <pre
-            className="text-[10px] leading-6 text-[#3d7a68] whitespace-pre overflow-x-auto"
-            style={{ fontFamily: "var(--font-jetbrains-mono)" }}
-          >{`template Withdrawal(levels) {
-  // Private — never broadcast on-chain
-  signal private secret;
-  signal private pathElements[levels];
-
-  // Commitment = Poseidon(secret)
-  component h = Poseidon(1);
-  h.inputs[0] <== secret;
-  signal commitment <== h.out;
-
-  // Verify Merkle path membership
-  component tree = MerkleProof(levels);
-  tree.leaf  <== commitment;
-  tree.root  === merkleRoot;  // Public
-
-  // Nullifier prevents double-spend
-  component n = Poseidon(2);
-  n.inputs[0] <== secret;
-  n.out        === nullifier; // Public
-}`}</pre>
+          {/* Code body */}
+          <div className="bg-[#1e1e1e] p-0 overflow-x-auto">
+            <table className="w-full border-collapse text-[12px] leading-6" style={{ fontFamily: "var(--font-jetbrains-mono)" }}>
+              <tbody>
+                {([
+                  [<><span className="text-[#569cd6]">template</span> <span className="text-[#dcdcaa]">Withdrawal</span><span className="text-[#d4d4d4]">(</span><span className="text-[#9cdcfe]">levels</span><span className="text-[#d4d4d4]">) {"{"}</span></>],
+                  [<><span className="text-[#6a9955]">{"  "}// Private - never broadcast on-chain</span></>],
+                  [<><span className="text-[#569cd6]">{"  "}signal</span> <span className="text-[#569cd6]">private</span> <span className="text-[#9cdcfe]">secret</span><span className="text-[#d4d4d4]">;</span></>],
+                  [<><span className="text-[#569cd6]">{"  "}signal</span> <span className="text-[#569cd6]">private</span> <span className="text-[#9cdcfe]">pathElements</span><span className="text-[#d4d4d4]">[</span><span className="text-[#9cdcfe]">levels</span><span className="text-[#d4d4d4]">];</span></>],
+                  [<></>],
+                  [<><span className="text-[#6a9955]">{"  "}// Commitment = Poseidon(secret)</span></>],
+                  [<><span className="text-[#569cd6]">{"  "}component</span> <span className="text-[#9cdcfe]">h</span> <span className="text-[#d4d4d4]">=</span> <span className="text-[#dcdcaa]">Poseidon</span><span className="text-[#d4d4d4]">(</span><span className="text-[#b5cea8]">1</span><span className="text-[#d4d4d4]">);</span></>],
+                  [<><span className="text-[#9cdcfe]">{"  "}h</span><span className="text-[#d4d4d4]">.</span><span className="text-[#9cdcfe]">inputs</span><span className="text-[#d4d4d4]">[</span><span className="text-[#b5cea8]">0</span><span className="text-[#d4d4d4]">]</span> <span className="text-[#89ddff]">{"<=="}</span> <span className="text-[#9cdcfe]">secret</span><span className="text-[#d4d4d4]">;</span></>],
+                  [<><span className="text-[#569cd6]">{"  "}signal</span> <span className="text-[#9cdcfe]">commitment</span> <span className="text-[#89ddff]">{"<=="}</span> <span className="text-[#9cdcfe]">h</span><span className="text-[#d4d4d4]">.</span><span className="text-[#9cdcfe]">out</span><span className="text-[#d4d4d4]">;</span></>],
+                  [<></>],
+                  [<><span className="text-[#6a9955]">{"  "}// Verify Merkle path membership</span></>],
+                  [<><span className="text-[#569cd6]">{"  "}component</span> <span className="text-[#9cdcfe]">tree</span> <span className="text-[#d4d4d4]">=</span> <span className="text-[#dcdcaa]">MerkleProof</span><span className="text-[#d4d4d4]">(</span><span className="text-[#9cdcfe]">levels</span><span className="text-[#d4d4d4]">);</span></>],
+                  [<><span className="text-[#9cdcfe]">{"  "}tree</span><span className="text-[#d4d4d4]">.</span><span className="text-[#9cdcfe]">leaf</span>{"  "}<span className="text-[#89ddff]">{"<=="}</span> <span className="text-[#9cdcfe]">commitment</span><span className="text-[#d4d4d4]">;</span></>],
+                  [<><span className="text-[#9cdcfe]">{"  "}tree</span><span className="text-[#d4d4d4]">.</span><span className="text-[#9cdcfe]">root</span>{"  "}<span className="text-[#89ddff]">{"==="}</span> <span className="text-[#9cdcfe]">merkleRoot</span><span className="text-[#d4d4d4]">;</span>{"  "}<span className="text-[#6a9955]">// Public</span></>],
+                  [<></>],
+                  [<><span className="text-[#6a9955]">{"  "}// Nullifier prevents double-spend</span></>],
+                  [<><span className="text-[#569cd6]">{"  "}component</span> <span className="text-[#9cdcfe]">n</span> <span className="text-[#d4d4d4]">=</span> <span className="text-[#dcdcaa]">Poseidon</span><span className="text-[#d4d4d4]">(</span><span className="text-[#b5cea8]">2</span><span className="text-[#d4d4d4]">);</span></>],
+                  [<><span className="text-[#9cdcfe]">{"  "}n</span><span className="text-[#d4d4d4]">.</span><span className="text-[#9cdcfe]">inputs</span><span className="text-[#d4d4d4]">[</span><span className="text-[#b5cea8]">0</span><span className="text-[#d4d4d4]">]</span> <span className="text-[#89ddff]">{"<=="}</span> <span className="text-[#9cdcfe]">secret</span><span className="text-[#d4d4d4]">;</span></>],
+                  [<><span className="text-[#9cdcfe]">{"  "}n</span><span className="text-[#d4d4d4]">.</span><span className="text-[#9cdcfe]">out</span>{"        "}<span className="text-[#89ddff]">{"==="}</span> <span className="text-[#9cdcfe]">nullifier</span><span className="text-[#d4d4d4]">;</span> <span className="text-[#6a9955]">// Public</span></>],
+                  [<><span className="text-[#d4d4d4]">{"}"}</span></>],
+                ] as React.ReactNode[][]).map((cols, i) => (
+                  <tr key={i} className="hover:bg-white/[0.02]">
+                    <td className="pl-4 pr-3 py-0 text-right text-[#4e4e4e] select-none w-8">{i + 1}</td>
+                    <td className="pr-6 py-0 text-[#d4d4d4] whitespace-pre">{cols[0]}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       </section>
 
@@ -346,7 +370,7 @@ export default function LandingPage() {
             </span>
           </div>
           <p className="text-[10px] text-[#8db5ae] font-mono text-center">
-            Devnet alpha — test funds have no real value
+            Devnet alpha. Test funds have no real value
           </p>
           <Link
             href="/app"

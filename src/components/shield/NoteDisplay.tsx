@@ -25,7 +25,7 @@ export default function NoteDisplay({ note, signature, onConfirm }: NoteDisplayP
       {/* Warning */}
       <div className="rounded-xl border border-amber-700/40 bg-amber-950/25 p-4">
         <p className="text-amber-400 font-semibold text-sm mb-1.5">
-          ⚠ Save this note — it&apos;s the only way to recover funds
+          ⚠ Save this note. It&apos;s the only way to recover funds
         </p>
         <p className="text-amber-700/80 text-xs leading-relaxed">
           This string is your private key to the shielded deposit. It cannot be
@@ -108,7 +108,7 @@ export default function NoteDisplay({ note, signature, onConfirm }: NoteDisplayP
       </label>
 
       <Button onClick={onConfirm} disabled={!agreed} size="lg" className="w-full">
-        Done — Continue to Withdraw →
+        Done. Continue to Withdraw →
       </Button>
     </div>
   );

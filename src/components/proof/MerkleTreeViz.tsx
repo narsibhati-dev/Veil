@@ -40,7 +40,7 @@ export default function MerkleTreeViz({ depth = 4 }: { depth?: number }) {
           className="text-xs text-[#5e8a83] uppercase tracking-widest mb-4"
           style={{ fontFamily: "var(--font-nunito)" }}
         >
-          Merkle Tree — depth {depth}
+          Merkle Tree depth {depth}
         </p>
 
         <div className="overflow-x-auto">
@@ -167,7 +167,7 @@ export default function MerkleTreeViz({ depth = 4 }: { depth?: number }) {
             What the proof reveals
           </p>
           <p className="text-xs text-[#5e8a83] leading-relaxed">
-            Only that you know a valid leaf in this tree — not which one. A
+            Only that you know a valid leaf in this tree, not which one. A
             nullifier prevents double-spending without linking transactions.
           </p>
         </div>

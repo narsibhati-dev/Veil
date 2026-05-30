@@ -20,7 +20,7 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Obscura — Private Payments on Solana",
+  title: "Obscura: Private Payments on Solana",
   description: "Zero-knowledge private SOL transfers on devnet",
 };
 
