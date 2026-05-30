@@ -1,7 +1,7 @@
 import { ImageResponse } from "next/og";
 
 export const runtime = "edge";
-export const alt = "Obscura App: Private SOL Transfers";
+export const alt = "Veil App: Private SOL Transfers";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -50,7 +50,7 @@ export default function OGImage() {
             <rect x="18.7" y="27.8" width="2.6" height="3.2" rx="1.3" fill="url(#s2)" />
           </svg>
           <span style={{ fontSize: 28, fontWeight: 800, color: "#e8f5f2", letterSpacing: "-0.5px" }}>
-            Obscura
+            Veil
           </span>
           <span style={{
             fontSize: 13, fontWeight: 500, color: "#599F8A",

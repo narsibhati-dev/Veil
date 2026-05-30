@@ -29,7 +29,7 @@ export default function LandingPage() {
           <div className="flex items-center gap-2.5">
             <LogoIcon size={32} />
             <span className="text-lg font-extrabold text-[#0f1a16] tracking-tight" style={{ fontFamily: "var(--font-raleway)" }}>
-              Obscura
+              Veil
             </span>
           </div>
 
@@ -127,7 +127,7 @@ export default function LandingPage() {
             className="text-3xl sm:text-4xl font-extrabold text-[#0f1a16] leading-tight"
             style={{ fontFamily: "var(--font-raleway)" }}
           >
-            Obscura shields you in three simple steps.
+            Veil shields you in three simple steps.
           </h2>
         </div>
 
@@ -177,7 +177,7 @@ export default function LandingPage() {
         <div className={`rounded-2xl bg-[#f7fbf9] px-6 py-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 ${CARD_SHADOW}`}>
           <div>
             <p className="text-sm font-bold text-[#0f1a16]" style={{ fontFamily: "var(--font-raleway)" }}>
-              Discover how Obscura makes private transfers simple and verifiable.
+              Discover how Veil makes private transfers simple and verifiable.
             </p>
             <p className="text-xs text-[#5e8a83] mt-1">
               Zero wallet links, zero trace. All proofs verified on-chain.
@@ -206,7 +206,7 @@ export default function LandingPage() {
                 className="text-3xl sm:text-4xl font-extrabold text-white leading-tight"
                 style={{ fontFamily: "var(--font-raleway)" }}
               >
-                Obscura shields funds and never reveals the sender.
+                Veil shields funds and never reveals the sender.
               </h2>
             </div>
             <p className="text-white/70 text-sm leading-relaxed">
@@ -363,7 +363,7 @@ export default function LandingPage() {
           <div className="flex items-center gap-2">
             <LogoIcon size={28} />
             <span className="text-sm font-extrabold text-[#0f1a16] uppercase tracking-wider" style={{ fontFamily: "var(--font-raleway)" }}>
-              Obscura
+              Veil
             </span>
           </div>
           <p className="text-[10px] text-[#8db5ae] font-mono text-center">

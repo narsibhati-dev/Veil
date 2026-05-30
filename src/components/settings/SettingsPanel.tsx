@@ -155,7 +155,7 @@ export default function SettingsPanel({ note, onClearNote }: SettingsPanelProps)
       <div className="rounded-xl bg-[#f7fbf9] shadow-[0_0_0_1px_rgba(0,0,0,0.06)] px-4 py-3 flex items-center justify-between">
         <div>
           <p className="text-xs text-[#8db5ae]" style={{ fontFamily: "var(--font-raleway)" }}>
-            Obscura devnet demo
+            Veil devnet demo
           </p>
           <p className="text-xs text-white/[0.18] mt-0.5">
             All funds are testnet SOL with no real value.

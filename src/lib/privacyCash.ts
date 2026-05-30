@@ -81,8 +81,8 @@ export async function deposit(
   // Simulate wallet approval + commitment tx (~1.5 s)
   await sleep(1500);
   const sol = lamportsToSolStr(amountLamports);
-  // Note format mirrors Tornado Cash: "obscura-<amount>sol-<32 byte secret hex>"
-  const note: Note = `obscura-${sol}sol-${rndHex(32)}`;
+  // Note format: "veil-<amount>sol-<32 byte secret hex>"
+  const note: Note = `veil-${sol}sol-${rndHex(32)}`;
   return { note, signature: rnd58(87) };
 }
 
@@ -106,7 +106,7 @@ export async function getPrivateBalance(
   void wallet;
   await sleep(500);
   // Parse deposited amount from note string
-  const match = note.match(/^obscura-([0-9.]+)sol-/);
+  const match = note.match(/^veil-([0-9.]+)sol-/);
   if (!match) return 0;
   const sol = parseFloat(match[1]);
   if (isNaN(sol) || sol <= 0) return 0;

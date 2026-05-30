@@ -13,7 +13,7 @@ export default function TopBar() {
           <LogoIcon size={36} />
 
           <span className="text-xl font-extrabold text-[#0f1a16] tracking-tight" style={{ fontFamily: "var(--font-raleway)" }}>
-            Obscura
+            Veil
           </span>
 
           <span

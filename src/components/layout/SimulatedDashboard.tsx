@@ -17,7 +17,7 @@ export default function SimulatedDashboard() {
   const [depositAmount, setDepositAmount] = useState<number>(10);
   const [isGenerating, setIsGenerating] = useState<boolean>(false);
   const [commitment, setCommitment] = useState<string>("0x8b3af...9f2e");
-  const [secret, setSecret] = useState<string>("obscura-10sol-8af2...6c1d");
+  const [secret, setSecret] = useState<string>("veil-10sol-8af2...6c1d");
   const [step, setStep] = useState<number>(0);
 
   useEffect(() => {
@@ -25,7 +25,7 @@ export default function SimulatedDashboard() {
       Math.floor(Math.random() * 16).toString(16)
     ).join("");
     setCommitment(`0x${hex.slice(0, 6)}...${hex.slice(-4)}`);
-    setSecret(`obscura-${depositAmount}sol-${hex.slice(0, 10)}...${hex.slice(-6)}`);
+    setSecret(`veil-${depositAmount}sol-${hex.slice(0, 10)}...${hex.slice(-6)}`);
   }, [depositAmount]);
 
   const triggerSimulateShield = () => {
@@ -45,7 +45,7 @@ export default function SimulatedDashboard() {
         <div className="flex items-center gap-3">
           <LogoIcon size={40} />
           <span className="text-lg font-extrabold text-[#e8f5f2] tracking-wider uppercase" style={{ fontFamily: "var(--font-raleway)" }}>
-            Obscura{" "}
+            Veil{" "}
             <span className="text-xs font-mono font-normal tracking-normal text-[#6db5a0]/80 lowercase bg-[#599F8A]/10 border border-[#599F8A]/20 px-2 py-0.5 rounded ml-1">v1.0-dev</span>
           </span>
         </div>
@@ -241,7 +241,7 @@ export default function SimulatedDashboard() {
                 <label className="text-sm font-bold text-[#6db5a0] uppercase tracking-widest block mb-2.5">Secret Note</label>
                 <input
                   type="text"
-                  placeholder="obscura-amountsol-secretkey..."
+                  placeholder="veil-amountsol-secretkey..."
                   className="w-full px-5 py-3.5 rounded-xl border border-white/[0.08] text-sm font-mono text-[#a8d5cc] placeholder-[#6db5a0]/20 focus:outline-none focus:border-[#599F8A] bg-transparent"
                 />
               </div>

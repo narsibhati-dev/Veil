@@ -47,7 +47,7 @@ export default function AppPage() {
 
   function handleWithdrawn(sig: string) {
     // Parse deposited amount from the note so history shows the right value
-    const match = note?.match(/^obscura-([0-9.]+)sol-/);
+    const match = note?.match(/^veil-([0-9.]+)sol-/);
     const sol = match ? parseFloat(match[1]) : 0;
     const amount = sol ? Math.round(sol * 1_000_000_000) : 0;
     setTxHistory((prev) => [

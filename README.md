@@ -1,6 +1,6 @@
-# Obscura: Private Payments on Solana
+# Veil: Private Payments on Solana
 
-Obscura is a devnet demo of zero-knowledge private SOL transfers built on the Privacy Cash SDK. Deposit SOL into a shared privacy pool, then prove ownership and withdraw to any address without linking the sender and recipient on-chain. Built with Next.js 16, React 19, and Tailwind CSS v4.
+Veil is a devnet demo of zero-knowledge private SOL transfers built on the Privacy Cash SDK. Deposit SOL into a shared privacy pool, then prove ownership and withdraw to any address without linking the sender and recipient on-chain. Built with Next.js 16, React 19, and Tailwind CSS v4.
 
 ---
 
