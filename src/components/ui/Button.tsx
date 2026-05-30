@@ -1,5 +1,6 @@
 "use client";
 
+import { motion } from "motion/react";
 import type { ButtonHTMLAttributes } from "react";
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
@@ -8,6 +9,23 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   loading?: boolean;
 }
 
+const GLOSSY_SHADOW = [
+  "inset_0_1px_0_0_rgba(255,255,255,0.6)",
+  "inset_1px_0_0_0_rgba(255,255,255,0.3)",
+  "inset_-1px_0_0_0_rgba(255,255,255,0.3)",
+  "inset_4px_4px_0_0_rgba(255,255,255,0.06)",
+  "inset_-4px_-4px_0_0_rgba(255,255,255,0.06)",
+  "inset_6px_6px_0_0_rgba(255,255,255,0.04)",
+  "inset_-6px_-6px_0_0_rgba(255,255,255,0.04)",
+  "inset_8px_8px_0_0_rgba(255,255,255,0.02)",
+  "inset_-8px_-8px_0_0_rgba(255,255,255,0.02)",
+  "0_1px_2px_0_rgba(0,0,0,0.08)",
+  "0_2px_4px_0_rgba(0,0,0,0.06)",
+  "0_4px_6px_0_rgba(0,0,0,0.04)",
+  "0_6px_8px_0_rgba(0,0,0,0.02)",
+  "0_2px_1px_0_rgba(0,0,0,0.04)",
+].join(",");
+
 export default function Button({
   variant = "primary",
   size = "md",
@@ -15,33 +33,37 @@ export default function Button({
   disabled,
   children,
   className = "",
+  onClick,
   ...props
 }: ButtonProps) {
   const base =
-    "inline-flex items-center justify-center font-semibold rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-[#0a0a0f] disabled:opacity-40 disabled:cursor-not-allowed select-none";
+    "inline-flex items-center justify-center font-semibold rounded-xl transition-colors duration-150 focus:outline-none disabled:opacity-40 disabled:cursor-not-allowed select-none";
 
   const variants: Record<string, string> = {
     primary:
-      "bg-gradient-to-r from-[#6366f1] to-[#818cf8] text-white hover:from-[#4f51d8] hover:to-[#6366f1] focus:ring-[#6366f1] shadow-[0_0_20px_rgba(99,102,241,0.2)] hover:shadow-[0_0_28px_rgba(99,102,241,0.4)]",
+      `border border-[#3d7a68] bg-[#599F8A] hover:bg-[#4d8f7a] text-white shadow-[${GLOSSY_SHADOW}]`,
     secondary:
-      "bg-[#161626] border border-[#2d2d5e] text-[#94a3b8] hover:border-[#6366f1]/50 hover:text-[#f1f5f9] focus:ring-[#2d2d5e]",
+      `bg-white hover:bg-[#f0f8f5] text-[#5e8a83] hover:text-[#599F8A] shadow-[0_0_0_1px_rgba(0,0,0,0.08),0_1px_2px_-1px_rgba(0,0,0,0.06),0_2px_4px_0px_rgba(0,0,0,0.04)] transition-colors`,
     ghost:
-      "text-[#475569] hover:text-[#94a3b8] hover:bg-[#161626] focus:ring-[#2d2d5e]",
+      "text-[#5e8a83] hover:text-[#599F8A] hover:bg-[#f0f8f5] rounded-xl",
     danger:
-      "bg-red-950/40 border border-red-700/50 text-red-400 hover:bg-red-950/60 focus:ring-red-700",
+      "border border-red-700/50 bg-red-950/40 text-red-400 hover:bg-red-950/60 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]",
   };
 
   const sizes: Record<string, string> = {
-    sm: "px-3 py-1.5 text-xs",
-    md: "px-4 py-2.5 text-sm",
-    lg: "px-6 py-3.5 text-base",
+    sm: "gap-1.5 px-3 py-1.5 text-xs",
+    md: "gap-2 px-4 py-2.5 text-sm",
+    lg: "gap-2.5 px-6 py-3.5 text-base",
   };
 
   return (
-    <button
+    <motion.button
+      whileTap={{ scale: 0.97, transition: { type: "spring", stiffness: 500, damping: 20 } }}
+      whileHover={{ scale: 1.01 }}
       className={`${base} ${variants[variant]} ${sizes[size]} ${className}`}
       disabled={disabled || loading}
-      {...props}
+      onClick={onClick}
+      {...(props as object)}
     >
       {loading && (
         <svg
@@ -54,6 +76,6 @@ export default function Button({
         </svg>
       )}
       {children}
-    </button>
+    </motion.button>
   );
 }

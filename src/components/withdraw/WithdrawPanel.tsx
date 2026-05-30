@@ -42,25 +42,25 @@ export default function WithdrawPanel({
     return (
       <div className="space-y-5">
         {/* Success card */}
-        <div className="rounded-2xl border border-[#10b981]/25 bg-[#10b981]/5 p-6 text-center shadow-[0_0_32px_rgba(16,185,129,0.1)]">
-          <div className="w-14 h-14 rounded-full border-2 border-[#10b981] flex items-center justify-center mx-auto mb-4 text-[#10b981] text-2xl">
+        <div className="rounded-2xl border border-[#3ab96b]/25 bg-[#3ab96b]/5 p-6 text-center shadow-[0_0_32px_rgba(58,185,107,0.1)]">
+          <div className="w-14 h-14 rounded-full border-2 border-[#3ab96b] flex items-center justify-center mx-auto mb-4 text-[#3ab96b] text-2xl">
             ✓
           </div>
           <p
-            className="text-[#10b981] font-bold text-lg mb-1"
-            style={{ fontFamily: "var(--font-syne)" }}
+            className="text-[#3ab96b] font-bold text-lg mb-1"
+            style={{ fontFamily: "var(--font-raleway)" }}
           >
             Withdrawal Complete
           </p>
-          <p className="text-xs text-[#475569] mb-3">
+          <p className="text-xs text-[#5e8a83] mb-3">
             Funds sent privately via zero-knowledge proof
           </p>
           <a
             href={`https://explorer.solana.com/tx/${result.signature}?cluster=devnet`}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-xs text-[#334155] hover:text-[#10b981] transition-colors block truncate"
-            style={{ fontFamily: "var(--font-space-mono)" }}
+            className="text-xs text-[#8db5ae] hover:text-[#3ab96b] transition-colors block truncate"
+            style={{ fontFamily: "var(--font-jetbrains-mono)" }}
           >
             {result.signature.slice(0, 44)}…
           </a>
@@ -77,12 +77,12 @@ export default function WithdrawPanel({
       {/* Header */}
       <div>
         <h2
-          className="text-lg font-bold text-[#f1f5f9] mb-1"
-          style={{ fontFamily: "var(--font-syne)" }}
+          className="text-lg font-bold text-[#0f1a16] mb-1"
+          style={{ fontFamily: "var(--font-raleway)" }}
         >
           Withdraw
         </h2>
-        <p className="text-sm text-[#475569]">
+        <p className="text-sm text-[#5e8a83]">
           Prove ownership of a shielded deposit without revealing which one.
         </p>
       </div>
@@ -91,7 +91,7 @@ export default function WithdrawPanel({
 
       {/* Note */}
       <div>
-        <label className="block text-xs uppercase tracking-widest text-[#475569] mb-2">
+        <label className="block text-xs uppercase tracking-widest text-[#5e8a83] mb-2">
           Private Note
         </label>
         <textarea
@@ -99,8 +99,8 @@ export default function WithdrawPanel({
           onChange={(e) => setNote(e.target.value)}
           disabled={isProcessing}
           rows={5}
-          className="w-full bg-[#161626] border border-[#1e1e3a] rounded-xl px-4 py-3 text-[#94a3b8] text-xs focus:outline-none focus:border-[#6366f1] focus:shadow-[0_0_24px_rgba(99,102,241,0.12)] transition-all resize-none disabled:opacity-40"
-          style={{ fontFamily: "var(--font-space-mono)" }}
+          className="w-full bg-[#f7fbf9]  rounded-xl px-4 py-3 text-[#8db5ae] text-xs focus:outline-none focus:border-[#599F8A] focus:shadow-[0_0_24px_rgba(89,159,138,0.12)] transition-all resize-none disabled:opacity-40"
+          style={{ fontFamily: "var(--font-jetbrains-mono)" }}
           placeholder="Paste your private note here…"
         />
       </div>
@@ -108,13 +108,13 @@ export default function WithdrawPanel({
       {/* Recipient */}
       <div>
         <div className="flex items-center justify-between mb-2">
-          <label className="block text-xs uppercase tracking-widest text-[#475569]">
+          <label className="block text-xs uppercase tracking-widest text-[#5e8a83]">
             Recipient
           </label>
           {publicKey && (
             <button
               onClick={() => setRecipient(publicKey.toBase58())}
-              className="text-xs text-[#6366f1] hover:text-[#818cf8] transition-colors"
+              className="text-xs text-[#599F8A] hover:text-[#5e8a83] transition-colors"
             >
               Use connected wallet
             </button>
@@ -125,8 +125,8 @@ export default function WithdrawPanel({
           value={recipient}
           onChange={(e) => setRecipient(e.target.value)}
           disabled={isProcessing}
-          className="w-full bg-[#161626] border border-[#1e1e3a] rounded-xl px-4 py-3 text-[#94a3b8] text-sm focus:outline-none focus:border-[#6366f1] focus:shadow-[0_0_24px_rgba(99,102,241,0.12)] transition-all disabled:opacity-40"
-          style={{ fontFamily: "var(--font-space-mono)" }}
+          className="w-full bg-[#f7fbf9]  rounded-xl px-4 py-3 text-[#8db5ae] text-sm focus:outline-none focus:border-[#599F8A] focus:shadow-[0_0_24px_rgba(89,159,138,0.12)] transition-all disabled:opacity-40"
+          style={{ fontFamily: "var(--font-jetbrains-mono)" }}
           placeholder="Solana address"
         />
       </div>

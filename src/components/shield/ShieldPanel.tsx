@@ -52,12 +52,12 @@ export default function ShieldPanel({ onShielded, onToast }: ShieldPanelProps) {
       {/* Header */}
       <div>
         <h2
-          className="text-lg font-bold text-[#f1f5f9] mb-1"
-          style={{ fontFamily: "var(--font-syne)" }}
+          className="text-lg font-bold text-[#0f1a16] mb-1"
+          style={{ fontFamily: "var(--font-raleway)" }}
         >
           Shield SOL
         </h2>
-        <p className="text-sm text-[#475569]">
+        <p className="text-sm text-[#5e8a83]">
           Deposit SOL into the privacy pool. Your commitment is added to a
           Merkle tree — no link to your address on-chain.
         </p>
@@ -65,7 +65,7 @@ export default function ShieldPanel({ onShielded, onToast }: ShieldPanelProps) {
 
       {/* Amount */}
       <div>
-        <label className="block text-xs uppercase tracking-widest text-[#475569] mb-3">
+        <label className="block text-xs uppercase tracking-widest text-[#5e8a83] mb-3">
           Amount
         </label>
 
@@ -77,10 +77,10 @@ export default function ShieldPanel({ onShielded, onToast }: ShieldPanelProps) {
               onClick={() => setAmount(String(a))}
               className={`px-3 py-1.5 text-xs rounded-full border transition-all duration-150 ${
                 amount === String(a)
-                  ? "bg-[#6366f1]/10 border-[#6366f1] text-[#6366f1]"
-                  : "bg-[#161626] border-[#1e1e3a] text-[#475569] hover:border-[#2d2d5e] hover:text-[#94a3b8]"
+                  ? "bg-[#599F8A]/10 border-[#599F8A] text-[#599F8A]"
+                  : "bg-[#f7fbf9] border-[#e6f0ed] text-[#5e8a83] hover:border-[#d0e8e1] hover:text-[#8db5ae]"
               }`}
-              style={{ fontFamily: "var(--font-space-mono)" }}
+              style={{ fontFamily: "var(--font-jetbrains-mono)" }}
             >
               {a} SOL
             </button>
@@ -95,13 +95,13 @@ export default function ShieldPanel({ onShielded, onToast }: ShieldPanelProps) {
             onChange={(e) => setAmount(e.target.value)}
             min="0.01"
             step="0.01"
-            className="w-full bg-[#161626] border border-[#1e1e3a] rounded-xl px-4 py-4 text-center text-3xl text-[#f1f5f9] focus:outline-none focus:border-[#6366f1] focus:shadow-[0_0_24px_rgba(99,102,241,0.12)] transition-all [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
-            style={{ fontFamily: "var(--font-space-mono)" }}
+            className="w-full bg-[#f7fbf9]  rounded-xl px-4 py-4 text-center text-3xl text-[#0f1a16] focus:outline-none focus:border-[#599F8A] focus:shadow-[0_0_24px_rgba(89,159,138,0.12)] transition-all [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+            style={{ fontFamily: "var(--font-jetbrains-mono)" }}
             placeholder="0.00"
           />
           <span
-            className="absolute right-4 top-1/2 -translate-y-1/2 text-sm text-[#334155] pointer-events-none"
-            style={{ fontFamily: "var(--font-space-mono)" }}
+            className="absolute right-4 top-1/2 -translate-y-1/2 text-sm text-[#8db5ae] pointer-events-none"
+            style={{ fontFamily: "var(--font-jetbrains-mono)" }}
           >
             SOL
           </span>
@@ -109,30 +109,30 @@ export default function ShieldPanel({ onShielded, onToast }: ShieldPanelProps) {
       </div>
 
       {/* Fee summary */}
-      <div className="rounded-xl border border-[#1e1e3a] bg-[#161626]/60 px-4 py-3 space-y-2">
+      <div className="rounded-xl  bg-[#f7fbf9] px-4 py-3 space-y-2">
         <div className="flex justify-between text-sm">
-          <span className="text-[#475569]">Deposit</span>
+          <span className="text-[#5e8a83]">Deposit</span>
           <span
-            className="text-[#94a3b8] tabular-nums"
-            style={{ fontFamily: "var(--font-space-mono)" }}
+            className="text-[#8db5ae] tabular-nums"
+            style={{ fontFamily: "var(--font-jetbrains-mono)" }}
           >
             {parsed.toFixed(4)} SOL
           </span>
         </div>
         <div className="flex justify-between text-sm">
-          <span className="text-[#475569]">Est. fee</span>
+          <span className="text-[#5e8a83]">Est. fee</span>
           <span
-            className="text-[#94a3b8] tabular-nums"
-            style={{ fontFamily: "var(--font-space-mono)" }}
+            className="text-[#8db5ae] tabular-nums"
+            style={{ fontFamily: "var(--font-jetbrains-mono)" }}
           >
             ~{estFee.toFixed(3)} SOL
           </span>
         </div>
-        <div className="flex justify-between text-sm border-t border-[#1e1e3a] pt-2">
-          <span className="text-[#94a3b8] font-medium">Total</span>
+        <div className="flex justify-between text-sm border-t border-[#e6f0ed] pt-2">
+          <span className="text-[#8db5ae] font-medium">Total</span>
           <span
-            className="text-[#f1f5f9] font-semibold tabular-nums"
-            style={{ fontFamily: "var(--font-space-mono)" }}
+            className="text-[#0f1a16] font-semibold tabular-nums"
+            style={{ fontFamily: "var(--font-jetbrains-mono)" }}
           >
             ≈{total.toFixed(4)} SOL
           </span>

@@ -69,7 +69,7 @@ export default function AppPage() {
   }
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-white text-[#0f1a16]">
       <DevnetBanner />
       <TopBar />
 
@@ -83,7 +83,7 @@ export default function AppPage() {
         />
 
         {/* Panel card with indigo top edge */}
-        <div className="rounded-2xl border border-[#1e1e3a] bg-[#0f0f1a] [border-top:2px_solid_#6366f1] p-6">
+        <div className="rounded-2xl shadow-[0_0_0_1px_rgba(0,0,0,0.08),0_1px_2px_-1px_rgba(0,0,0,0.06),0_4px_8px_0px_rgba(0,0,0,0.04)] [border-top:2px_solid_#599F8A] bg-white p-6">
           {activeTab === "shield" && (
             <ShieldPanel onShielded={handleShielded} onToast={handleToast} />
           )}

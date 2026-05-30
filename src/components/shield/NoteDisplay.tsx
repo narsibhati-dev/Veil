@@ -34,25 +34,25 @@ export default function NoteDisplay({ note, signature, onConfirm }: NoteDisplayP
       </div>
 
       {/* Note block */}
-      <div className="rounded-xl border border-[#1e1e3a] bg-[#161626] overflow-hidden">
-        <div className="flex items-center justify-between px-4 py-2.5 border-b border-[#1e1e3a]">
+      <div className="rounded-xl  bg-[#f7fbf9] overflow-hidden">
+        <div className="flex items-center justify-between px-4 py-2.5 border-b border-[#e6f0ed]">
           <span
-            className="text-xs text-[#475569] uppercase tracking-widest"
-            style={{ fontFamily: "var(--font-geist-sans)" }}
+            className="text-xs text-[#5e8a83] uppercase tracking-widest"
+            style={{ fontFamily: "var(--font-nunito)" }}
           >
             Private Note
           </span>
           <button
             onClick={copy}
-            className="text-xs px-2.5 py-1 rounded-md border border-[#2d2d5e] text-[#94a3b8] hover:text-[#6366f1] hover:border-[#6366f1]/50 transition-all"
+            className="text-xs px-2.5 py-1 rounded-md border border-[#d0e8e1] text-[#8db5ae] hover:text-[#599F8A] hover:border-[#599F8A]/50 transition-all"
           >
             {copied ? "Copied ✓" : "Copy"}
           </button>
         </div>
         <div className="p-4">
           <code
-            className="text-[#94a3b8] text-xs break-all leading-relaxed block"
-            style={{ fontFamily: "var(--font-space-mono)" }}
+            className="text-[#8db5ae] text-xs break-all leading-relaxed block"
+            style={{ fontFamily: "var(--font-jetbrains-mono)" }}
           >
             {note}
           </code>
@@ -60,14 +60,14 @@ export default function NoteDisplay({ note, signature, onConfirm }: NoteDisplayP
       </div>
 
       {/* Tx link */}
-      <div className="text-xs text-[#334155]">
+      <div className="text-xs text-[#8db5ae]">
         Transaction:{" "}
         <a
           href={`https://explorer.solana.com/tx/${signature}?cluster=devnet`}
           target="_blank"
           rel="noopener noreferrer"
-          className="hover:text-[#6366f1] transition-colors"
-          style={{ fontFamily: "var(--font-space-mono)" }}
+          className="hover:text-[#599F8A] transition-colors"
+          style={{ fontFamily: "var(--font-jetbrains-mono)" }}
         >
           {shortenAddress(signature, 10)}
         </a>
@@ -85,8 +85,8 @@ export default function NoteDisplay({ note, signature, onConfirm }: NoteDisplayP
           <div
             className={`w-4 h-4 rounded border transition-all duration-150 flex items-center justify-center ${
               agreed
-                ? "bg-[#6366f1] border-[#6366f1]"
-                : "bg-[#161626] border-[#2d2d5e] group-hover:border-[#6366f1]/50"
+                ? "bg-[#599F8A] border-[#599F8A]"
+                : "bg-[#f7fbf9] border-[#d0e8e1] group-hover:border-[#599F8A]/50"
             }`}
           >
             {agreed && (
@@ -102,7 +102,7 @@ export default function NoteDisplay({ note, signature, onConfirm }: NoteDisplayP
             )}
           </div>
         </div>
-        <span className="text-sm text-[#94a3b8] leading-relaxed">
+        <span className="text-sm text-[#8db5ae] leading-relaxed">
           I&apos;ve saved this note securely. I understand it cannot be recovered if lost.
         </span>
       </label>

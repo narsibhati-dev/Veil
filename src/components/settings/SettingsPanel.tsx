@@ -27,24 +27,24 @@ export default function SettingsPanel({ note, onClearNote }: SettingsPanelProps)
       {/* Header */}
       <div>
         <h2
-          className="text-lg font-bold text-[#f1f5f9] mb-1"
-          style={{ fontFamily: "var(--font-syne)" }}
+          className="text-lg font-bold text-[#0f1a16] mb-1"
+          style={{ fontFamily: "var(--font-raleway)" }}
         >
           Settings
         </h2>
-        <p className="text-sm text-[#475569]">Network info, note management, and session.</p>
+        <p className="text-sm text-[#5e8a83]">Network info, note management, and session.</p>
       </div>
 
       {/* Network */}
       <section className="space-y-2">
-        <p className="text-xs uppercase tracking-widest text-[#475569]">Network</p>
-        <div className="rounded-xl border border-[#1e1e3a] bg-[#161626] divide-y divide-[#1e1e3a]">
+        <p className="text-xs uppercase tracking-widest text-[#5e8a83]">Network</p>
+        <div className="rounded-xl  bg-[#f7fbf9] divide-y divide-[#e6f0ed]">
           {/* Network label */}
           <div className="flex items-center justify-between px-4 py-3">
-            <span className="text-sm text-[#94a3b8]">Network</span>
+            <span className="text-sm text-[#8db5ae]">Network</span>
             <span
-              className="px-2.5 py-1 text-xs rounded-full bg-[#6366f1]/10 border border-[#6366f1]/25 text-[#6366f1] font-medium"
-              style={{ fontFamily: "var(--font-space-mono)" }}
+              className="px-2.5 py-1 text-xs rounded-full bg-[#599F8A]/10 border border-[#599F8A]/25 text-[#599F8A] font-medium"
+              style={{ fontFamily: "var(--font-jetbrains-mono)" }}
             >
               {NETWORK_LABEL}
             </span>
@@ -52,17 +52,17 @@ export default function SettingsPanel({ note, onClearNote }: SettingsPanelProps)
 
           {/* RPC endpoint */}
           <div className="flex items-center justify-between gap-3 px-4 py-3">
-            <span className="text-sm text-[#94a3b8] flex-shrink-0">RPC</span>
+            <span className="text-sm text-[#8db5ae] flex-shrink-0">RPC</span>
             <div className="flex items-center gap-2 min-w-0">
               <span
-                className="text-xs text-[#475569] truncate max-w-[180px] sm:max-w-[240px]"
-                style={{ fontFamily: "var(--font-space-mono)" }}
+                className="text-xs text-[#5e8a83] truncate max-w-[180px] sm:max-w-[240px]"
+                style={{ fontFamily: "var(--font-jetbrains-mono)" }}
               >
                 {DEVNET_RPC_URL}
               </span>
               <button
                 onClick={() => copyText(DEVNET_RPC_URL, setRpcCopied)}
-                className="flex-shrink-0 px-2.5 py-1 text-xs border border-[#1e1e3a] text-[#475569] rounded-lg hover:border-[#2d2d5e] hover:text-[#94a3b8] transition-all"
+                className="flex-shrink-0 px-2.5 py-1 text-xs  text-[#5e8a83] rounded-lg hover:border-[#d0e8e1] hover:text-[#8db5ae] transition-all"
               >
                 {rpcCopied ? "✓" : "Copy"}
               </button>
@@ -72,10 +72,10 @@ export default function SettingsPanel({ note, onClearNote }: SettingsPanelProps)
           {/* Program ID — only show when set */}
           {PROGRAM_ID && (
             <div className="flex items-center justify-between gap-3 px-4 py-3">
-              <span className="text-sm text-[#94a3b8] flex-shrink-0">Program</span>
+              <span className="text-sm text-[#8db5ae] flex-shrink-0">Program</span>
               <span
-                className="text-xs text-[#475569]"
-                style={{ fontFamily: "var(--font-space-mono)" }}
+                className="text-xs text-[#5e8a83]"
+                style={{ fontFamily: "var(--font-jetbrains-mono)" }}
               >
                 {shortenAddress(PROGRAM_ID, 8)}
               </span>
@@ -86,20 +86,20 @@ export default function SettingsPanel({ note, onClearNote }: SettingsPanelProps)
 
       {/* Private Note */}
       <section className="space-y-2">
-        <p className="text-xs uppercase tracking-widest text-[#475569]">Private Note</p>
+        <p className="text-xs uppercase tracking-widest text-[#5e8a83]">Private Note</p>
 
         {note ? (
-          <div className="rounded-xl border border-[#1e1e3a] bg-[#161626] p-4 space-y-3">
+          <div className="rounded-xl  bg-[#f7fbf9] p-4 space-y-3">
             <code
-              className="text-xs text-[#6366f1] break-all leading-relaxed block"
-              style={{ fontFamily: "var(--font-space-mono)" }}
+              className="text-xs text-[#599F8A] break-all leading-relaxed block"
+              style={{ fontFamily: "var(--font-jetbrains-mono)" }}
             >
               {note.length > 88 ? note.slice(0, 88) + "…" : note}
             </code>
             <div className="flex flex-wrap gap-2 pt-1">
               <button
                 onClick={() => copyText(note, setNoteCopied)}
-                className="px-3 py-1.5 text-xs border border-[#1e1e3a] text-[#94a3b8] rounded-lg hover:border-[#2d2d5e] hover:text-[#f1f5f9] transition-all"
+                className="px-3 py-1.5 text-xs  text-[#8db5ae] rounded-lg hover:border-[#d0e8e1] hover:text-[#0f1a16] transition-all"
               >
                 {noteCopied ? "Copied ✓" : "Copy full note"}
               </button>
@@ -112,10 +112,10 @@ export default function SettingsPanel({ note, onClearNote }: SettingsPanelProps)
             </div>
           </div>
         ) : (
-          <div className="rounded-xl border border-[#1e1e3a] bg-[#161626]/50 px-4 py-4">
-            <p className="text-sm text-[#334155]">
+          <div className="rounded-xl  bg-[#f7fbf9] px-4 py-4">
+            <p className="text-sm text-[#8db5ae]">
               No active note.{" "}
-              <span className="text-[#2d2d5e]">Shield SOL to create one.</span>
+              <span className="text-[#8db5ae]">Shield SOL to create one.</span>
             </p>
           </div>
         )}
@@ -123,17 +123,17 @@ export default function SettingsPanel({ note, onClearNote }: SettingsPanelProps)
 
       {/* Session */}
       <section className="space-y-2">
-        <p className="text-xs uppercase tracking-widest text-[#475569]">Session</p>
-        <div className="rounded-xl border border-[#1e1e3a] bg-[#161626] px-4 py-3">
+        <p className="text-xs uppercase tracking-widest text-[#5e8a83]">Session</p>
+        <div className="rounded-xl  bg-[#f7fbf9] px-4 py-3">
           <div className="flex items-center justify-between gap-4">
             <div>
-              <p className="text-sm text-[#94a3b8]">
+              <p className="text-sm text-[#8db5ae]">
                 {connected ? "Wallet connected" : "No wallet connected"}
               </p>
               {publicKey && (
                 <p
-                  className="text-xs text-[#475569] mt-0.5"
-                  style={{ fontFamily: "var(--font-space-mono)" }}
+                  className="text-xs text-[#5e8a83] mt-0.5"
+                  style={{ fontFamily: "var(--font-jetbrains-mono)" }}
                 >
                   {shortenAddress(publicKey.toBase58(), 8)}
                 </p>
@@ -152,12 +152,12 @@ export default function SettingsPanel({ note, onClearNote }: SettingsPanelProps)
       </section>
 
       {/* About */}
-      <div className="rounded-xl border border-[#1e1e3a]/50 bg-[#0f0f1a]/50 px-4 py-3 flex items-center justify-between">
+      <div className="rounded-xl bg-[#f7fbf9] shadow-[0_0_0_1px_rgba(0,0,0,0.06)] px-4 py-3 flex items-center justify-between">
         <div>
-          <p className="text-xs text-[#2d2d5e]" style={{ fontFamily: "var(--font-syne)" }}>
+          <p className="text-xs text-[#8db5ae]" style={{ fontFamily: "var(--font-raleway)" }}>
             Obscura — devnet demo
           </p>
-          <p className="text-xs text-[#1e1e3a] mt-0.5">
+          <p className="text-xs text-white/[0.18] mt-0.5">
             All funds are testnet SOL with no real value.
           </p>
         </div>
@@ -165,7 +165,7 @@ export default function SettingsPanel({ note, onClearNote }: SettingsPanelProps)
           href="https://explorer.solana.com/?cluster=devnet"
           target="_blank"
           rel="noopener noreferrer"
-          className="text-xs text-[#334155] hover:text-[#6366f1] transition-colors flex-shrink-0"
+          className="text-xs text-[#8db5ae] hover:text-[#599F8A] transition-colors flex-shrink-0"
         >
           Explorer ↗
         </a>

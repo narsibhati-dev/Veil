@@ -17,10 +17,10 @@ export default function ProofStatus({ step }: ProofStatusProps) {
   const isGenerating = step === "generating";
 
   return (
-    <div className="rounded-xl border border-[#6366f1]/20 bg-[#6366f1]/5 p-4">
+    <div className="rounded-xl border border-[#599F8A]/20 bg-[#edf6f2] p-4">
       <p
-        className="text-xs text-[#6366f1] uppercase tracking-widest font-medium mb-4"
-        style={{ fontFamily: "var(--font-geist-sans)" }}
+        className="text-xs text-[#599F8A] uppercase tracking-widest font-medium mb-4"
+        style={{ fontFamily: "var(--font-nunito)" }}
       >
         ZK Proof Pipeline
       </p>
@@ -38,10 +38,10 @@ export default function ProofStatus({ step }: ProofStatusProps) {
               <div
                 className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0 transition-all duration-300 ${
                   isComplete
-                    ? "bg-[#10b981] border-0"
+                    ? "bg-[#3ab96b] border-0"
                     : isPulsing
-                    ? "border-2 border-[#6366f1] bg-[#6366f1]/10 animate-pulse"
-                    : "border border-[#2d2d5e] bg-[#161626] text-[#334155]"
+                    ? "border-2 border-[#599F8A] bg-[#599F8A]/10 animate-pulse"
+                    : "border border-[#d0e8e1] bg-[#f7fbf9] text-[#8db5ae]"
                 }`}
               >
                 {isComplete ? (
@@ -55,7 +55,7 @@ export default function ProofStatus({ step }: ProofStatusProps) {
                     />
                   </svg>
                 ) : (
-                  <span className={isPulsing ? "text-[#6366f1]" : "text-[#334155]"}>
+                  <span className={isPulsing ? "text-[#599F8A]" : "text-[#8db5ae]"}>
                     {i + 1}
                   </span>
                 )}
@@ -65,17 +65,17 @@ export default function ProofStatus({ step }: ProofStatusProps) {
               <span
                 className={`text-sm transition-colors duration-300 flex-1 ${
                   isComplete
-                    ? "text-[#10b981]"
+                    ? "text-[#3ab96b]"
                     : isPulsing
-                    ? "text-[#94a3b8]"
-                    : "text-[#334155]"
+                    ? "text-[#8db5ae]"
+                    : "text-[#8db5ae]"
                 }`}
               >
                 {label}
               </span>
 
               {isPulsing && (
-                <span className="text-xs text-[#6366f1]/50 animate-pulse tracking-widest">•••</span>
+                <span className="text-xs text-[#599F8A]/50 animate-pulse tracking-widest">•••</span>
               )}
             </div>
           );

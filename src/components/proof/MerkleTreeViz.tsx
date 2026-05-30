@@ -28,17 +28,17 @@ export default function MerkleTreeViz({ depth = 4 }: { depth?: number }) {
   return (
     <div className="space-y-4">
       <h2
-        className="text-lg font-bold text-[#f1f5f9]"
-        style={{ fontFamily: "var(--font-syne)" }}
+        className="text-lg font-bold text-[#0f1a16]"
+        style={{ fontFamily: "var(--font-raleway)" }}
       >
         Privacy Proof
       </h2>
 
       {/* Tree */}
-      <div className="rounded-2xl border border-[#1e1e3a] bg-[#0f0f1a] p-5 overflow-hidden">
+      <div className="rounded-2xl  bg-white shadow-[0_0_0_1px_rgba(0,0,0,0.08),0_1px_2px_-1px_rgba(0,0,0,0.06),0_2px_4px_0px_rgba(0,0,0,0.04)] p-5 overflow-hidden">
         <p
-          className="text-xs text-[#475569] uppercase tracking-widest mb-4"
-          style={{ fontFamily: "var(--font-geist-sans)" }}
+          className="text-xs text-[#5e8a83] uppercase tracking-widest mb-4"
+          style={{ fontFamily: "var(--font-nunito)" }}
         >
           Merkle Tree — depth {depth}
         </p>
@@ -67,7 +67,7 @@ export default function MerkleTreeViz({ depth = 4 }: { depth?: number }) {
                   <line
                     key={key}
                     x1={x} y1={y} x2={px} y2={py}
-                    stroke={onPath ? "#6366f1" : "#1e1e3a"}
+                    stroke={onPath ? "#599F8A" : "#272725"}
                     strokeWidth={onPath ? 1.5 : 1}
                     opacity={onPath ? 0.5 : 1}
                   />
@@ -84,16 +84,16 @@ export default function MerkleTreeViz({ depth = 4 }: { depth?: number }) {
                 const isPath    = !isActive && pathNodes.has(`${row}-${c}`);
                 const isSibling = siblingNodes.has(`${row}-${c}`);
 
-                let fill   = "#0f0f1a";
-                let stroke = "#1e1e3a";
+                let fill   = "#141412";
+                let stroke = "#272725";
                 let r      = 6;
 
                 if (isActive) {
-                  fill = "#6366f1"; stroke = "#818cf8"; r = 8;
+                  fill = "#599F8A"; stroke = "#6db5a0"; r = 8;
                 } else if (isPath) {
-                  fill = "#6366f1"; stroke = "#818cf8"; r = 6;
+                  fill = "#599F8A"; stroke = "#6db5a0"; r = 6;
                 } else if (isSibling) {
-                  fill = "#2d2d5e"; stroke = "#6366f1"; r = 6;
+                  fill = "#3b3b39"; stroke = "#599F8A"; r = 6;
                 }
 
                 return (
@@ -101,11 +101,11 @@ export default function MerkleTreeViz({ depth = 4 }: { depth?: number }) {
                     {/* Pulsing rings on active leaf */}
                     {isActive && (
                       <>
-                        <circle cx={x} cy={y} r={r} fill="none" stroke="#6366f1" strokeWidth="1">
+                        <circle cx={x} cy={y} r={r} fill="none" stroke="#599F8A" strokeWidth="1">
                           <animate attributeName="r"       values={`${r};${r + 10}`} dur="2s" repeatCount="indefinite" />
                           <animate attributeName="opacity" values="0.7;0"            dur="2s" repeatCount="indefinite" />
                         </circle>
-                        <circle cx={x} cy={y} r={r} fill="none" stroke="#6366f1" strokeWidth="0.5">
+                        <circle cx={x} cy={y} r={r} fill="none" stroke="#599F8A" strokeWidth="0.5">
                           <animate attributeName="r"       values={`${r};${r + 18}`} dur="2s" begin="0.5s" repeatCount="indefinite" />
                           <animate attributeName="opacity" values="0.4;0"            dur="2s" begin="0.5s" repeatCount="indefinite" />
                         </circle>
@@ -126,7 +126,7 @@ export default function MerkleTreeViz({ depth = 4 }: { depth?: number }) {
               y={getY(0) - 13}
               textAnchor="middle"
               fontSize="9"
-              fill="#475569"
+              fill="#5e8a83"
               fontFamily="sans-serif"
             >
               Merkle Root
@@ -136,7 +136,7 @@ export default function MerkleTreeViz({ depth = 4 }: { depth?: number }) {
               y={getY(depth) + 19}
               textAnchor="middle"
               fontSize="9"
-              fill="#6366f1"
+              fill="#599F8A"
               fontFamily="sans-serif"
             >
               Your commitment
@@ -147,26 +147,26 @@ export default function MerkleTreeViz({ depth = 4 }: { depth?: number }) {
 
       {/* Two-column explainer */}
       <div className="grid grid-cols-2 gap-4">
-        <div className="rounded-xl border border-[#1e1e3a] bg-[#0f0f1a] p-4">
+        <div className="rounded-xl  bg-white shadow-[0_0_0_1px_rgba(0,0,0,0.08),0_1px_2px_-1px_rgba(0,0,0,0.06),0_2px_4px_0px_rgba(0,0,0,0.04)] p-4">
           <p
-            className="text-xs font-semibold text-[#94a3b8] mb-2"
-            style={{ fontFamily: "var(--font-syne)" }}
+            className="text-xs font-semibold text-[#8db5ae] mb-2"
+            style={{ fontFamily: "var(--font-raleway)" }}
           >
             What&apos;s in the tree
           </p>
-          <p className="text-xs text-[#475569] leading-relaxed">
+          <p className="text-xs text-[#5e8a83] leading-relaxed">
             Every deposit creates a cryptographic commitment added as a leaf.
             The root summarises all deposits without revealing any one of them.
           </p>
         </div>
-        <div className="rounded-xl border border-[#1e1e3a] bg-[#0f0f1a] p-4">
+        <div className="rounded-xl  bg-white shadow-[0_0_0_1px_rgba(0,0,0,0.08),0_1px_2px_-1px_rgba(0,0,0,0.06),0_2px_4px_0px_rgba(0,0,0,0.04)] p-4">
           <p
-            className="text-xs font-semibold text-[#94a3b8] mb-2"
-            style={{ fontFamily: "var(--font-syne)" }}
+            className="text-xs font-semibold text-[#8db5ae] mb-2"
+            style={{ fontFamily: "var(--font-raleway)" }}
           >
             What the proof reveals
           </p>
-          <p className="text-xs text-[#475569] leading-relaxed">
+          <p className="text-xs text-[#5e8a83] leading-relaxed">
             Only that you know a valid leaf in this tree — not which one. A
             nullifier prevents double-spending without linking transactions.
           </p>

@@ -8,16 +8,16 @@ interface ToastProps {
 }
 
 const leftBorder: Record<string, string> = {
-  success: "border-l-[#10b981]",
+  success: "border-l-[#3ab96b]",
   error:   "border-l-red-500",
-  info:    "border-l-[#6366f1]",
+  info:    "border-l-[#599F8A]",
   warning: "border-l-amber-400",
 };
 
 const dotColor: Record<string, string> = {
-  success: "bg-[#10b981]",
+  success: "bg-[#3ab96b]",
   error:   "bg-red-500",
-  info:    "bg-[#6366f1]",
+  info:    "bg-[#599F8A]",
   warning: "bg-amber-400",
 };
 
@@ -27,14 +27,14 @@ export default function Toast({ toasts, onDismiss }: ToastProps) {
       {toasts.map((t) => (
         <div
           key={t.id}
-          className={`flex items-start gap-3 px-4 py-3 bg-[#0f0f1a] border-l-[3px] border border-[#1e1e3a] rounded-xl shadow-2xl max-w-sm pointer-events-auto ${leftBorder[t.type]}`}
+          className={`flex items-start gap-3 px-4 py-3 bg-white shadow-[0_0_0_1px_rgba(0,0,0,0.08),0_1px_2px_-1px_rgba(0,0,0,0.06),0_2px_4px_0px_rgba(0,0,0,0.04)] border-l-[3px]  rounded-xl shadow-2xl max-w-sm pointer-events-auto ${leftBorder[t.type]}`}
           style={{ animation: "slideIn 0.2s ease-out" }}
         >
           <span className={`w-1.5 h-1.5 rounded-full flex-shrink-0 mt-1.5 ${dotColor[t.type]}`} />
-          <span className="text-sm text-[#94a3b8] flex-1 leading-relaxed">{t.message}</span>
+          <span className="text-sm text-[#8db5ae] flex-1 leading-relaxed">{t.message}</span>
           <button
             onClick={() => onDismiss(t.id)}
-            className="text-[#334155] hover:text-[#475569] flex-shrink-0 mt-0.5 text-xs transition-colors"
+            className="text-[#8db5ae] hover:text-[#5e8a83] flex-shrink-0 mt-0.5 text-xs transition-colors"
           >
             ✕
           </button>

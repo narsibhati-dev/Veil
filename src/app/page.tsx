@@ -1,290 +1,296 @@
+"use client";
+
 import Link from "next/link";
-import DevnetBanner from "@/components/layout/DevnetBanner";
+import { motion } from "motion/react";
+import { Shield, Cpu, Zap, ArrowRight, CheckCircle2, Code, Terminal } from "lucide-react";
+import SimulatedDashboard from "@/components/layout/SimulatedDashboard";
+
+/* Ring-shadow for cards/secondary elements */
+const CARD_SHADOW =
+  "shadow-[0_0_0_1px_rgba(0,0,0,0.08),0_1px_2px_-1px_rgba(0,0,0,0.06),0_2px_4px_0px_rgba(0,0,0,0.04)]";
+const CARD_HOVER =
+  "hover:shadow-[0_0_0_1px_rgba(0,0,0,0.1),0_2px_8px_-1px_rgba(0,0,0,0.08),0_6px_16px_0px_rgba(0,0,0,0.05)]";
+
+/* Glossy 3D shadow for primary buttons — matches PrimaryButton */
+const PRIMARY_SHADOW =
+  "shadow-[inset_0_1px_0_0_rgba(255,255,255,0.6),inset_1px_0_0_0_rgba(255,255,255,0.3),inset_-1px_0_0_0_rgba(255,255,255,0.3),inset_4px_4px_0_0_rgba(255,255,255,0.06),inset_-4px_-4px_0_0_rgba(255,255,255,0.06),inset_6px_6px_0_0_rgba(255,255,255,0.04),inset_-6px_-6px_0_0_rgba(255,255,255,0.04),inset_8px_8px_0_0_rgba(255,255,255,0.02),inset_-8px_-8px_0_0_rgba(255,255,255,0.02),0_1px_2px_0_rgba(0,0,0,0.08),0_2px_4px_0_rgba(0,0,0,0.06),0_4px_6px_0_rgba(0,0,0,0.04),0_6px_8px_0_rgba(0,0,0,0.02),0_2px_1px_0_rgba(0,0,0,0.04)]";
+
+const TAP = { scale: 0.97, transition: { type: "spring" as const, stiffness: 500, damping: 20 } };
 
 export default function LandingPage() {
   return (
-    <div className="min-h-screen flex flex-col">
-      <DevnetBanner />
+    <div className="min-h-screen flex flex-col bg-white text-[#0f1a16] overflow-x-hidden">
 
-      {/* Nav */}
-      <nav className="sticky top-0 z-40 border-b border-[#1e1e3a]/60 backdrop-blur-xl bg-[#0a0a0f]/85">
+      {/* ── NAV ── */}
+      <nav className="sticky top-0 z-50 w-full bg-white shadow-[0_1px_0_0_rgba(0,0,0,0.06)]">
         <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <svg width="32" height="32" viewBox="0 0 40 40" fill="none" aria-hidden="true">
+          <div className="flex items-center gap-2.5">
+            <svg width="32" height="32" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
               <defs>
-                <linearGradient id="navLogo" x1="0" y1="0" x2="40" y2="40" gradientUnits="userSpaceOnUse">
-                  <stop offset="0%" stopColor="#6366f1" />
-                  <stop offset="100%" stopColor="#818cf8" />
+                <linearGradient id="navLogoGrad" x1="0" y1="0" x2="40" y2="40" gradientUnits="userSpaceOnUse">
+                  <stop offset="0%" stopColor="#599F8A" />
+                  <stop offset="100%" stopColor="#3d7a68" />
                 </linearGradient>
               </defs>
-              <polygon points="12,1 28,1 39,12 39,28 28,39 12,39 1,28 1,12" fill="url(#navLogo)" />
-              <text x="20" y="27" textAnchor="middle" fontSize="19" fontWeight="800" fill="white" fontFamily="sans-serif" letterSpacing="-1">O</text>
+              <circle cx="20" cy="20" r="16" stroke="url(#navLogoGrad)" strokeWidth="3" fill="none" />
+              <circle cx="20" cy="20" r="9" stroke="url(#navLogoGrad)" strokeWidth="1.5" strokeDasharray="3 2" fill="none" />
+              <circle cx="20" cy="20" r="3.5" fill="url(#navLogoGrad)" />
             </svg>
-            <span className="text-xl font-black text-[#f1f5f9] tracking-tight" style={{ fontFamily: "var(--font-syne)" }}>
+            <span className="text-lg font-extrabold text-[#0f1a16] tracking-tight" style={{ fontFamily: "var(--font-raleway)" }}>
               Obscura
             </span>
           </div>
 
-          <div className="flex items-center gap-4">
-            <span
-              className="hidden sm:inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#161626] border border-[#1e1e3a] text-[#475569] text-xs"
-              style={{ fontFamily: "var(--font-space-mono)" }}
-            >
-              <span className="w-1.5 h-1.5 rounded-full bg-[#10b981]" style={{ animation: "glowPulse 2s ease infinite" }} />
-              devnet
-            </span>
-            <Link
-              href="/app"
-              className="px-4 py-2 rounded-lg bg-gradient-to-r from-[#6366f1] to-[#818cf8] text-white text-sm font-semibold hover:shadow-[0_0_24px_rgba(99,102,241,0.4)] transition-all duration-200"
-              style={{ fontFamily: "var(--font-syne)" }}
-            >
-              Launch App →
-            </Link>
+          <div className="hidden md:flex items-center gap-8">
+            <a href="#how-it-works" className="text-sm text-[#5e8a83] hover:text-[#0f1a16] transition-colors">How it works</a>
+            <a href="#privacy" className="text-sm text-[#5e8a83] hover:text-[#0f1a16] transition-colors">Privacy</a>
+            <a href="#tech" className="text-sm text-[#5e8a83] hover:text-[#0f1a16] transition-colors">Tech Stack</a>
           </div>
+
+          <motion.a
+            href="/app"
+            whileTap={TAP}
+            className={`px-4 py-2 rounded-[12px] border border-[#3d7a68] bg-[#599F8A] hover:bg-[#4d8f7a] text-white text-sm font-semibold transition-colors cursor-pointer ${PRIMARY_SHADOW}`}
+            style={{ fontFamily: "var(--font-raleway)" }}
+          >
+            Launch App
+          </motion.a>
         </div>
       </nav>
 
-      {/* Hero */}
-      <section className="relative flex flex-col items-center justify-center px-6 pt-28 pb-24 text-center overflow-hidden">
-        {/* Background glow orbs */}
-        <div
-          className="absolute top-0 left-1/2 -translate-x-1/2 w-[700px] h-[500px] pointer-events-none"
-          style={{
-            background: "radial-gradient(ellipse at center, rgba(99,102,241,0.08) 0%, transparent 65%)",
-          }}
-        />
-        <div
-          className="absolute bottom-0 left-1/4 w-[400px] h-[300px] pointer-events-none"
-          style={{
-            background: "radial-gradient(ellipse at center, rgba(16,185,129,0.04) 0%, transparent 65%)",
-          }}
-        />
+      {/* ── HERO ── */}
+      <section className="max-w-6xl mx-auto px-6 pt-20 pb-12 text-center">
+        <div className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white text-[10px] uppercase tracking-widest font-mono text-[#599F8A] mb-8 ${CARD_SHADOW}`}>
+          <span className="w-1.5 h-1.5 rounded-full bg-[#599F8A] animate-pulse" />
+          Zero-Knowledge Privacy on Solana
+        </div>
 
-        <div
-          className="relative max-w-3xl mx-auto space-y-7"
-          style={{ animation: "fadeUp 0.7s ease both" }}
+        <h1
+          className="text-[clamp(2.4rem,6vw,4.5rem)] font-extrabold leading-[1.08] tracking-tight text-[#0f1a16] max-w-3xl mx-auto mb-6"
+          style={{ fontFamily: "var(--font-raleway)" }}
         >
-          {/* Badge */}
-          <div
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-[#6366f1]/25 bg-[#6366f1]/5 text-[#6366f1] text-xs uppercase tracking-widest"
-            style={{ fontFamily: "var(--font-space-mono)" }}
+          Shield every transfer.<br />Leave zero trace.
+        </h1>
+
+        <p className="text-base text-[#5e8a83] max-w-lg mx-auto mb-10 leading-relaxed">
+          Deposit SOL anonymously into a shielded cryptographic pool. Generate Groth16 zero-knowledge proofs completely in-browser. Withdraw to any address with zero on-chain link.
+        </p>
+
+        <div className="flex items-center justify-center gap-3 flex-wrap">
+          <motion.a
+            href="/app"
+            whileTap={TAP}
+            className={`inline-flex items-center gap-2 px-6 py-2.5 rounded-[12px] border border-[#3d7a68] bg-[#599F8A] hover:bg-[#4d8f7a] text-white font-semibold text-sm transition-colors cursor-pointer ${PRIMARY_SHADOW}`}
+            style={{ fontFamily: "var(--font-raleway)" }}
           >
-            <span className="w-1.5 h-1.5 rounded-full bg-[#6366f1]" style={{ animation: "glowPulse 2s ease infinite" }} />
-            Zero-Knowledge Privacy on Solana
-          </div>
-
-          {/* Headline */}
-          <h1
-            className="text-[clamp(3.5rem,11vw,7rem)] font-black leading-none tracking-tight"
-            style={{ fontFamily: "var(--font-syne)" }}
+            Start Shielding <ArrowRight size={15} />
+          </motion.a>
+          <motion.a
+            href="#how-it-works"
+            whileTap={TAP}
+            className="inline-flex items-center gap-2 px-6 py-2.5 rounded-[12px] bg-white text-[#5e8a83] hover:text-[#599F8A] hover:bg-[#f0f8f5] font-semibold text-sm transition-colors cursor-pointer shadow-[0_0_0_1px_rgba(0,0,0,0.08),0_1px_2px_-1px_rgba(0,0,0,0.06),0_2px_4px_0px_rgba(0,0,0,0.04)]"
+            style={{ fontFamily: "var(--font-raleway)" }}
           >
-            <span className="text-[#f1f5f9]">Private</span>
-            <br />
-            <span
-              style={{
-                background: "linear-gradient(135deg, #6366f1 0%, #818cf8 50%, #a5b4fc 100%)",
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-                backgroundClip: "text",
-              }}
-            >
-              Payments.
-            </span>
-          </h1>
-
-          <p className="text-lg text-[#475569] max-w-xl mx-auto leading-relaxed">
-            Deposit SOL into a shared privacy pool. Generate a Groth16 zero-knowledge proof.
-            Withdraw to any address — with no on-chain link between sender and recipient.
-          </p>
-
-          <div className="flex flex-col sm:flex-row gap-3 justify-center pt-2">
-            <Link
-              href="/app"
-              className="inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-xl bg-gradient-to-r from-[#6366f1] to-[#818cf8] text-white text-sm font-semibold hover:shadow-[0_0_36px_rgba(99,102,241,0.45)] transition-all duration-200"
-              style={{ fontFamily: "var(--font-syne)" }}
-            >
-              Open App
-              <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
-                <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-            </Link>
-            <a
-              href="https://explorer.solana.com/?cluster=devnet"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center justify-center px-8 py-3.5 rounded-xl border border-[#1e1e3a] bg-[#0f0f1a] text-[#475569] text-sm hover:border-[#2d2d5e] hover:text-[#94a3b8] transition-all duration-200"
-              style={{ fontFamily: "var(--font-syne)" }}
-            >
-              Solana Explorer ↗
-            </a>
-          </div>
+            How it works
+          </motion.a>
         </div>
       </section>
 
-      {/* Proof spec strip */}
-      <div className="border-y border-[#1e1e3a]">
-        <div className="max-w-4xl mx-auto px-6 py-5 grid grid-cols-3 divide-x divide-[#1e1e3a]">
+      {/* ── DASHBOARD PREVIEW ── */}
+      <section className="max-w-6xl mx-auto px-6 pb-24">
+        <div className="rounded-[32px] p-[6px] bg-gradient-to-b from-[rgba(255,255,255,0.18)] via-[rgba(255,255,255,0.06)] to-[rgba(89,159,138,0.08)] shadow-[0_0_0_1px_rgba(89,159,138,0.06),0_40px_80px_-20px_rgba(0,0,0,0.25)]">
+          <SimulatedDashboard />
+        </div>
+      </section>
+
+      {/* ── TECH STRIP ── */}
+      <section className="bg-[#f7fbf9] shadow-[0_1px_0_0_rgba(0,0,0,0.05),0_-1px_0_0_rgba(0,0,0,0.05)]">
+        <div className="max-w-5xl mx-auto px-6 py-5 flex flex-wrap items-center justify-center gap-10">
           {[
-            { label: "Proving System", value: "Groth16" },
-            { label: "Hash Function",  value: "Poseidon" },
-            { label: "Elliptic Curve", value: "BN254"    },
+            { label: "Proving Engine", value: "Groth16 ZK" },
+            { label: "Hash Function",  value: "Poseidon"   },
+            { label: "Elliptic Curve", value: "BN254"      },
+            { label: "Chain",          value: "Solana"     },
+            { label: "Proof Runtime",  value: "WASM"       },
           ].map(({ label, value }) => (
-            <div key={label} className="px-6 text-center">
-              <p
-                className="text-base font-bold text-[#818cf8]"
-                style={{ fontFamily: "var(--font-space-mono)" }}
-              >
+            <div key={label} className="text-center">
+              <p className="text-sm font-bold text-[#0f1a16]" style={{ fontFamily: "var(--font-jetbrains-mono)" }}>
                 {value}
               </p>
-              <p className="text-xs text-[#334155] mt-1 uppercase tracking-widest">
+              <p className="text-[9px] uppercase tracking-widest text-[#8db5ae] mt-0.5 font-mono">
                 {label}
               </p>
             </div>
           ))}
         </div>
-      </div>
+      </section>
 
-      {/* How it works */}
-      <section className="max-w-6xl mx-auto px-6 py-20">
+      {/* ── HOW IT WORKS ── */}
+      <section id="how-it-works" className="max-w-6xl mx-auto px-6 py-24">
         <div className="text-center mb-14">
-          <h2
-            className="text-4xl font-black text-[#f1f5f9] mb-3"
-            style={{ fontFamily: "var(--font-syne)" }}
-          >
+          <span className={`inline-flex items-center px-3 py-1 rounded-full bg-white text-[10px] font-mono text-[#599F8A] uppercase tracking-widest mb-5 ${CARD_SHADOW}`}>
             How it works
+          </span>
+          <h2
+            className="text-3xl sm:text-4xl font-extrabold text-[#0f1a16] leading-tight"
+            style={{ fontFamily: "var(--font-raleway)" }}
+          >
+            Obscura shields you in three simple steps.
           </h2>
-          <p className="text-[#475569] text-sm">
-            Three steps. No on-chain link between sender and recipient.
-          </p>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-5">
-          {/* Step 1 */}
-          <div className="rounded-2xl border border-[#1e1e3a] bg-[#0f0f1a] p-6 space-y-4">
+        <div className="grid md:grid-cols-3 gap-5 mb-8">
+          {[
+            {
+              step: "01", icon: Shield,
+              title: "Shield Funds",
+              desc: "Deposit SOL. A Poseidon commitment is computed from a browser-generated secret note and registered as a leaf in the on-chain Merkle tree.",
+              badge: "Deposit Stage",
+            },
+            {
+              step: "02", icon: Cpu,
+              title: "Generate Proof",
+              desc: "A Groth16 zero-knowledge proof is computed locally in WASM — attesting you own a valid note in the Merkle tree without revealing which one.",
+              badge: "Proving Stage",
+            },
+            {
+              step: "03", icon: Zap,
+              title: "Withdraw Privately",
+              desc: "Submit the proof and a one-time nullifier on-chain. Funds are released to any address — blocking double-spends while remaining completely untraceable.",
+              badge: "Withdrawal Stage",
+            },
+          ].map(({ step, icon: Icon, title, desc, badge }) => (
             <div
-              className="w-10 h-10 rounded-xl bg-[#6366f1]/10 border border-[#6366f1]/20 flex items-center justify-center text-sm font-bold text-[#6366f1]"
-              style={{ fontFamily: "var(--font-space-mono)" }}
+              key={step}
+              className={`rounded-2xl bg-white p-6 transition-all duration-200 group ${CARD_SHADOW} ${CARD_HOVER}`}
             >
-              01
-            </div>
-            <div>
-              <h3
-                className="text-base font-bold text-[#f1f5f9] mb-2"
-                style={{ fontFamily: "var(--font-syne)" }}
-              >
-                Shield SOL
+              <div className="flex items-center justify-between mb-5">
+                <span className={`text-xs font-mono font-bold text-[#599F8A] bg-white px-2.5 py-1 rounded-lg ${CARD_SHADOW}`}>
+                  Step {step}
+                </span>
+                <Icon size={16} className="text-[#8db5ae] group-hover:text-[#599F8A] transition-colors" />
+              </div>
+              <h3 className="text-base font-bold text-[#0f1a16] mb-2" style={{ fontFamily: "var(--font-raleway)" }}>
+                {title}
               </h3>
-              <p className="text-sm text-[#475569] leading-relaxed">
-                Deposit any amount. The SDK computes a Poseidon commitment — a hash of your random
-                secret — and submits it as a leaf in an on-chain Merkle tree. Your secret never
-                leaves your browser.
-              </p>
+              <p className="text-sm text-[#5e8a83] leading-relaxed mb-5">{desc}</p>
+              <span className={`text-[9px] font-mono text-[#5e8a83] bg-white px-2 py-0.5 rounded uppercase tracking-wider ${CARD_SHADOW}`}>
+                {badge}
+              </span>
             </div>
+          ))}
+        </div>
+
+        {/* CTA strip */}
+        <div className={`rounded-2xl bg-[#f7fbf9] px-6 py-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 ${CARD_SHADOW}`}>
+          <div>
+            <p className="text-sm font-bold text-[#0f1a16]" style={{ fontFamily: "var(--font-raleway)" }}>
+              Discover how Obscura makes private transfers simple and verifiable.
+            </p>
+            <p className="text-xs text-[#5e8a83] mt-1">
+              Zero wallet links, zero trace — all proofs verified on-chain.
+            </p>
+          </div>
+          <motion.a
+            href="/app"
+            whileTap={TAP}
+            className={`flex-shrink-0 inline-flex items-center gap-2 px-5 py-2.5 rounded-[12px] border border-[#3d7a68] bg-[#599F8A] hover:bg-[#4d8f7a] text-white text-sm font-semibold transition-colors whitespace-nowrap cursor-pointer ${PRIMARY_SHADOW}`}
+            style={{ fontFamily: "var(--font-raleway)" }}
+          >
+            Try the App <ArrowRight size={14} />
+          </motion.a>
+        </div>
+      </section>
+
+      {/* ── STATS / TRUST SECTION ── */}
+      <section className="bg-[#599F8A]">
+        <div className="max-w-6xl mx-auto px-6 py-20">
+          <div className="grid md:grid-cols-2 gap-12 items-center mb-14">
+            <div>
+              <span className={`inline-block px-3 py-1 rounded-full bg-white/20 text-white text-[10px] font-mono uppercase tracking-widest mb-5 ${CARD_SHADOW}`}>
+                Trustworthy
+              </span>
+              <h2
+                className="text-3xl sm:text-4xl font-extrabold text-white leading-tight"
+                style={{ fontFamily: "var(--font-raleway)" }}
+              >
+                Obscura shields funds and never reveals the sender.
+              </h2>
+            </div>
+            <p className="text-white/70 text-sm leading-relaxed">
+              Every proof is generated locally in your browser using WebAssembly. Nothing private ever leaves your device. The on-chain contract only sees a cryptographic proof — never your wallet address, deposit amount, or note.
+            </p>
           </div>
 
-          {/* Step 2 */}
-          <div className="rounded-2xl border border-[#1e1e3a] bg-[#0f0f1a] p-6 space-y-4">
-            <div
-              className="w-10 h-10 rounded-xl bg-[#6366f1]/10 border border-[#6366f1]/20 flex items-center justify-center text-sm font-bold text-[#6366f1]"
-              style={{ fontFamily: "var(--font-space-mono)" }}
-            >
-              02
-            </div>
-            <div>
-              <h3
-                className="text-base font-bold text-[#f1f5f9] mb-2"
-                style={{ fontFamily: "var(--font-syne)" }}
-              >
-                Generate Proof
-              </h3>
-              <p className="text-sm text-[#475569] leading-relaxed">
-                A Groth16 zero-knowledge proof is built entirely in-browser via WASM. It attests
-                that you know a valid leaf in the Merkle tree — without revealing which one.
-                Anyone can verify it; no one can trace it.
-              </p>
-            </div>
-          </div>
-
-          {/* Step 3 */}
-          <div className="rounded-2xl border border-[#10b981]/20 bg-[#10b981]/[0.03] p-6 space-y-4">
-            <div
-              className="w-10 h-10 rounded-xl bg-[#10b981]/10 border border-[#10b981]/20 flex items-center justify-center text-sm font-bold text-[#10b981]"
-              style={{ fontFamily: "var(--font-space-mono)" }}
-            >
-              03
-            </div>
-            <div>
-              <h3
-                className="text-base font-bold text-[#f1f5f9] mb-2"
-                style={{ fontFamily: "var(--font-syne)" }}
-              >
-                Withdraw Anywhere
-              </h3>
-              <p className="text-sm text-[#475569] leading-relaxed">
-                Submit the proof and a nullifier to the on-chain verifier. Funds are released to
-                any address. The nullifier prevents double-spending while creating zero link
-                to your original deposit.
-              </p>
-            </div>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {[
+              { value: "256-bit", label: "Cryptographic security"  },
+              { value: "<2s",     label: "Proof generation time"   },
+              { value: "0",       label: "Wallet links on-chain"   },
+              { value: "Groth16", label: "ZK proof system"         },
+            ].map(({ value, label }) => (
+              <div key={label} className={`rounded-2xl bg-white p-6 ${CARD_SHADOW}`}>
+                <p className="text-2xl font-extrabold text-[#0f1a16] mb-1" style={{ fontFamily: "var(--font-jetbrains-mono)" }}>
+                  {value}
+                </p>
+                <p className="text-xs text-[#5e8a83] leading-snug">{label}</p>
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* Privacy model + circuit */}
-      <section className="border-t border-[#1e1e3a] bg-[#0f0f1a]/40">
-        <div className="max-w-6xl mx-auto px-6 py-20 grid md:grid-cols-2 gap-12 items-center">
-          {/* Left: explanation */}
+      {/* ── PRIVACY CIRCUIT ── */}
+      <section id="privacy" className="max-w-6xl mx-auto px-6 py-24 grid md:grid-cols-2 gap-14 items-center">
+        <div className="space-y-6">
           <div>
-            <p
-              className="text-xs uppercase tracking-widest text-[#6366f1] mb-4"
-              style={{ fontFamily: "var(--font-space-mono)" }}
-            >
-              The privacy model
-            </p>
+            <span className="inline-flex items-center gap-1.5 text-[10px] font-mono uppercase tracking-widest text-[#599F8A] mb-3">
+              <Code size={12} /> Mathematical Privacy
+            </span>
             <h2
-              className="text-3xl font-black text-[#f1f5f9] mb-4 leading-tight"
-              style={{ fontFamily: "var(--font-syne)" }}
+              className="text-2xl sm:text-3xl font-extrabold text-[#0f1a16] leading-tight"
+              style={{ fontFamily: "var(--font-raleway)" }}
             >
-              What the chain sees —{" "}
-              <span className="text-[#334155]">and what it doesn&apos;t</span>
+              What is committed — and what remains invisible
             </h2>
-            <p className="text-[#475569] leading-relaxed mb-6 text-sm">
-              The on-chain record is only a Poseidon hash. Every withdrawal submits a
-              Groth16 membership proof — verifiable by anyone, interpretable by no one.
-            </p>
-            <ul className="space-y-3">
-              {[
-                ["Commitment hash", "public, but unlinkable to your wallet"],
-                ["Merkle root", "summarises all deposits without revealing any"],
-                ["ZK proof", "proves leaf membership — not which leaf"],
-                ["Nullifier", "prevents double-spend, creates no deposit link"],
-              ].map(([term, desc]) => (
-                <li key={term} className="flex items-start gap-3 text-sm">
-                  <span className="text-[#10b981] mt-0.5 flex-shrink-0 font-bold">✓</span>
-                  <span>
-                    <span className="text-[#94a3b8] font-medium" style={{ fontFamily: "var(--font-space-mono)" }}>
-                      {term}
-                    </span>
-                    <span className="text-[#475569]"> — {desc}</span>
-                  </span>
-                </li>
-              ))}
-            </ul>
           </div>
+          <p className="text-sm text-[#5e8a83] leading-relaxed">
+            Every deposit updates a public Merkle tree. Zero-knowledge proofs verify path elements and valid secrets completely in-memory — leaving zero trace in transaction graphs.
+          </p>
+          <div className="space-y-3">
+            {[
+              { term: "Commitment hash",        desc: "Verifiable publicly, yet completely unlinkable to your wallet." },
+              { term: "Merkle Root Update",     desc: "Registers your token without listing keys or amounts." },
+              { term: "ZK Proof Verification",  desc: "Attests tree membership while disclosing zero indices." },
+              { term: "Double-Spend Nullifier", desc: "Prevents duplicate spends with zero reference to deposits." },
+            ].map(({ term, desc }) => (
+              <div key={term} className="flex items-start gap-2.5 text-sm text-[#5e8a83]">
+                <CheckCircle2 size={15} className="text-[#599F8A] mt-0.5 flex-shrink-0" />
+                <p>
+                  <span className="font-semibold text-[#0f1a16]" style={{ fontFamily: "var(--font-jetbrains-mono)" }}>
+                    {term}
+                  </span>
+                  {" — "}{desc}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
 
-          {/* Right: circuit pseudocode */}
-          <div className="rounded-2xl border border-[#1e1e3a] bg-[#0a0a0f] p-5 overflow-x-auto">
-            <p
-              className="text-xs text-[#334155] uppercase tracking-widest mb-4"
-              style={{ fontFamily: "var(--font-geist-sans)" }}
-            >
-              ZK Circuit — simplified
-            </p>
-            <pre
-              className="text-xs leading-6 text-[#475569] whitespace-pre"
-              style={{ fontFamily: "var(--font-space-mono)" }}
-            >{`template Withdrawal(levels) {
-  // Private — never revealed on-chain
+        <div className={`rounded-2xl bg-[#f7fbf9] p-5 ${CARD_SHADOW}`}>
+          <div className="flex items-center justify-between shadow-[0_1px_0_0_rgba(0,0,0,0.06)] pb-3 mb-4 text-[10px] font-mono text-[#5e8a83]">
+            <span className="flex items-center gap-1.5 text-[#0f1a16] font-semibold">
+              <Terminal size={12} className="text-[#599F8A]" /> ZK_Withdrawal.circom
+            </span>
+            <span className={`text-[9px] uppercase bg-white px-1.5 py-0.5 rounded text-[#599F8A] ${CARD_SHADOW}`}>
+              Poseidon Hash
+            </span>
+          </div>
+          <pre
+            className="text-[10px] leading-6 text-[#3d7a68] whitespace-pre overflow-x-auto"
+            style={{ fontFamily: "var(--font-jetbrains-mono)" }}
+          >{`template Withdrawal(levels) {
+  // Private — never broadcast on-chain
   signal private secret;
   signal private pathElements[levels];
 
@@ -293,71 +299,61 @@ export default function LandingPage() {
   h.inputs[0] <== secret;
   signal commitment <== h.out;
 
-  // Merkle membership proof
+  // Verify Merkle path membership
   component tree = MerkleProof(levels);
-  tree.leaf     <== commitment;
-  tree.root     === merkleRoot;   // public
+  tree.leaf  <== commitment;
+  tree.root  === merkleRoot;  // Public
 
   // Nullifier prevents double-spend
   component n = Poseidon(2);
-  n.inputs[0]  <== secret;
-  n.out        === nullifier;     // public
+  n.inputs[0] <== secret;
+  n.out        === nullifier; // Public
 }`}</pre>
+        </div>
+      </section>
+
+      {/* ── TECH STACK ── */}
+      <section id="tech" className="bg-[#f7fbf9] shadow-[0_1px_0_0_rgba(0,0,0,0.05),0_-1px_0_0_rgba(0,0,0,0.05)]">
+        <div className="max-w-6xl mx-auto px-6 py-20 text-center">
+          <p className="text-[10px] uppercase font-mono tracking-widest text-[#8db5ae] mb-8">Built with</p>
+          <div className="flex flex-wrap justify-center gap-2.5">
+            {[
+              "Next.js 16", "React 19", "Tailwind CSS v4", "Solana Devnet",
+              "Groth16 ZK", "Poseidon Hash", "BN254 Curve", "WASM",
+              "TypeScript 5", "Bun",
+            ].map((tech) => (
+              <span
+                key={tech}
+                className={`px-3.5 py-1.5 rounded-xl bg-white text-[10px] font-mono text-[#5e8a83] hover:text-[#599F8A] transition-colors cursor-default ${CARD_SHADOW} hover:shadow-[0_0_0_1px_rgba(89,159,138,0.2),0_1px_4px_rgba(89,159,138,0.06)]`}
+                style={{ fontFamily: "var(--font-jetbrains-mono)" }}
+              >
+                {tech}
+              </span>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* Tech stack */}
-      <section className="max-w-6xl mx-auto px-6 py-16 text-center">
-        <p className="text-xs uppercase tracking-widest text-[#334155] mb-7">Built with</p>
-        <div className="flex flex-wrap justify-center gap-2.5">
-          {[
-            "Next.js 16",
-            "React 19",
-            "Tailwind CSS v4",
-            "Solana devnet",
-            "@solana/wallet-adapter",
-            "Groth16",
-            "Poseidon",
-            "BN254",
-            "WASM",
-            "TypeScript 5",
-            "bun",
-          ].map((tech) => (
-            <span
-              key={tech}
-              className="px-3.5 py-1.5 rounded-full border border-[#1e1e3a] bg-[#0f0f1a] text-xs text-[#334155] hover:border-[#2d2d5e] hover:text-[#94a3b8] transition-colors"
-              style={{ fontFamily: "var(--font-space-mono)" }}
-            >
-              {tech}
-            </span>
-          ))}
-        </div>
-      </section>
-
-      {/* Footer */}
-      <footer className="border-t border-[#1e1e3a] mt-auto">
-        <div className="max-w-6xl mx-auto px-6 py-8 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-2.5">
+      {/* ── FOOTER ── */}
+      <footer className="bg-white shadow-[0_-1px_0_0_rgba(0,0,0,0.06)]">
+        <div className="max-w-6xl mx-auto px-6 py-10 flex flex-col sm:flex-row items-center justify-between gap-6">
+          <div className="flex items-center gap-2">
             <svg width="18" height="18" viewBox="0 0 40 40" fill="none" aria-hidden="true">
-              <polygon points="12,1 28,1 39,12 39,28 28,39 12,39 1,28 1,12" fill="#6366f1" opacity="0.6" />
+              <circle cx="20" cy="20" r="15" stroke="#599F8A" strokeWidth="2.5" opacity="0.7" fill="none" />
             </svg>
-            <span
-              className="text-sm text-[#2d2d5e]"
-              style={{ fontFamily: "var(--font-syne)" }}
-            >
+            <span className="text-sm font-extrabold text-[#0f1a16] uppercase tracking-wider" style={{ fontFamily: "var(--font-raleway)" }}>
               Obscura
             </span>
           </div>
-          <p className="text-xs text-[#1e1e3a] text-center">
-            Devnet demo only — all funds are testnet SOL with no real value
+          <p className="text-[10px] text-[#8db5ae] font-mono text-center">
+            Devnet alpha — test funds have no real value
           </p>
           <Link
             href="/app"
-            className="text-sm text-[#6366f1] hover:text-[#818cf8] transition-colors"
-            style={{ fontFamily: "var(--font-syne)" }}
+            className="text-xs font-bold text-[#5e8a83] hover:text-[#599F8A] transition-colors flex items-center gap-1"
+            style={{ fontFamily: "var(--font-raleway)" }}
           >
-            Open App →
+            Launch Privacy Pool →
           </Link>
         </div>
       </footer>
