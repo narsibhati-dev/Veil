@@ -21,7 +21,7 @@ export default function Tabs({ tabs, active, onChange }: TabsProps) {
             <button
               key={tab.id}
               onClick={() => onChange(tab.id)}
-              className={`relative px-5 py-3 text-sm font-semibold transition-colors duration-200 ${
+              className={`relative px-5 py-3 text-sm font-semibold transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#599F8A]/70 focus-visible:ring-inset rounded-t-lg ${
                 isActive
                   ? "text-[#599F8A]"
                   : "text-[#5e8a83] hover:text-[#8db5ae]"

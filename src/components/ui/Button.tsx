@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "motion/react";
+import { motion, useReducedMotion } from "motion/react";
 import type { ButtonHTMLAttributes } from "react";
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
@@ -36,8 +36,10 @@ export default function Button({
   onClick,
   ...props
 }: ButtonProps) {
+  const prefersReduced = useReducedMotion();
+
   const base =
-    "inline-flex items-center justify-center font-semibold rounded-xl transition-colors duration-150 focus:outline-none disabled:opacity-40 disabled:cursor-not-allowed select-none";
+    "inline-flex items-center justify-center font-semibold rounded-xl transition-colors duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#599F8A]/70 focus-visible:ring-offset-1 disabled:opacity-40 disabled:cursor-not-allowed select-none";
 
   const variants: Record<string, string> = {
     primary:
@@ -58,8 +60,8 @@ export default function Button({
 
   return (
     <motion.button
-      whileTap={{ scale: 0.97, transition: { type: "spring", stiffness: 500, damping: 20 } }}
-      whileHover={{ scale: 1.01 }}
+      whileTap={prefersReduced ? undefined : { scale: 0.97, transition: { type: "spring", stiffness: 500, damping: 20 } }}
+      whileHover={prefersReduced ? undefined : { scale: 1.01 }}
       className={`${base} ${variants[variant]} ${sizes[size]} ${className}`}
       disabled={disabled || loading}
       onClick={onClick}
@@ -67,6 +69,7 @@ export default function Button({
     >
       {loading && (
         <svg
+          aria-hidden="true"
           className="animate-spin -ml-0.5 mr-2 h-4 w-4 flex-shrink-0"
           fill="none"
           viewBox="0 0 24 24"

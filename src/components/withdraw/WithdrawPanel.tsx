@@ -91,15 +91,19 @@ export default function WithdrawPanel({
 
       {/* Note */}
       <div>
-        <label className="block text-xs uppercase tracking-widest text-[#5e8a83] mb-2">
+        <label htmlFor="withdraw-note" className="block text-xs uppercase tracking-widest text-[#5e8a83] mb-2">
           Private Note
         </label>
         <textarea
+          id="withdraw-note"
+          name="note"
           value={note}
           onChange={(e) => setNote(e.target.value)}
           disabled={isProcessing}
           rows={5}
-          className="w-full bg-[#f7fbf9]  rounded-xl px-4 py-3 text-[#8db5ae] text-xs focus:outline-none focus:border-[#599F8A] focus:shadow-[0_0_24px_rgba(89,159,138,0.12)] transition-all resize-none disabled:opacity-40"
+          spellCheck={false}
+          autoComplete="off"
+          className="w-full bg-[#f7fbf9] rounded-xl px-4 py-3 text-[#8db5ae] text-xs focus:outline-none focus-visible:ring-2 focus-visible:ring-[#599F8A]/70 focus-visible:ring-offset-1 transition-all resize-none disabled:opacity-40"
           style={{ fontFamily: "var(--font-jetbrains-mono)" }}
           placeholder="Paste your private note here…"
         />
@@ -108,26 +112,30 @@ export default function WithdrawPanel({
       {/* Recipient */}
       <div>
         <div className="flex items-center justify-between mb-2">
-          <label className="block text-xs uppercase tracking-widest text-[#5e8a83]">
+          <label htmlFor="withdraw-recipient" className="block text-xs uppercase tracking-widest text-[#5e8a83]">
             Recipient
           </label>
           {publicKey && (
             <button
               onClick={() => setRecipient(publicKey.toBase58())}
-              className="text-xs text-[#599F8A] hover:text-[#5e8a83] transition-colors"
+              className="text-xs text-[#599F8A] hover:text-[#5e8a83] transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[#599F8A]/70 focus-visible:ring-offset-1 rounded"
             >
               Use connected wallet
             </button>
           )}
         </div>
         <input
+          id="withdraw-recipient"
           type="text"
+          name="recipient"
+          autoComplete="off"
+          spellCheck={false}
           value={recipient}
           onChange={(e) => setRecipient(e.target.value)}
           disabled={isProcessing}
-          className="w-full bg-[#f7fbf9]  rounded-xl px-4 py-3 text-[#8db5ae] text-sm focus:outline-none focus:border-[#599F8A] focus:shadow-[0_0_24px_rgba(89,159,138,0.12)] transition-all disabled:opacity-40"
+          className="w-full bg-[#f7fbf9] rounded-xl px-4 py-3 text-[#8db5ae] text-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-[#599F8A]/70 focus-visible:ring-offset-1 transition-all disabled:opacity-40"
           style={{ fontFamily: "var(--font-jetbrains-mono)" }}
-          placeholder="Solana address"
+          placeholder="Solana address…"
         />
       </div>
 

@@ -65,7 +65,7 @@ export default function ShieldPanel({ onShielded, onToast }: ShieldPanelProps) {
 
       {/* Amount */}
       <div>
-        <label className="block text-xs uppercase tracking-widest text-[#5e8a83] mb-3">
+        <label htmlFor="shield-amount" className="block text-xs uppercase tracking-widest text-[#5e8a83] mb-3">
           Amount
         </label>
 
@@ -90,12 +90,16 @@ export default function ShieldPanel({ onShielded, onToast }: ShieldPanelProps) {
         {/* Number input - hide native arrows */}
         <div className="relative">
           <input
+            id="shield-amount"
             type="number"
+            name="amount"
+            autoComplete="off"
+            inputMode="decimal"
             value={amount}
             onChange={(e) => setAmount(e.target.value)}
             min="0.01"
             step="0.01"
-            className="w-full bg-[#f7fbf9]  rounded-xl px-4 py-4 text-center text-3xl text-[#0f1a16] focus:outline-none focus:border-[#599F8A] focus:shadow-[0_0_24px_rgba(89,159,138,0.12)] transition-all [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+            className="w-full bg-[#f7fbf9] rounded-xl px-4 py-4 text-center text-3xl text-[#0f1a16] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#599F8A]/70 focus-visible:ring-offset-1 transition-all [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
             style={{ fontFamily: "var(--font-jetbrains-mono)" }}
             placeholder="0.00"
           />

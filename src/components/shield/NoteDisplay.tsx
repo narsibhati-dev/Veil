@@ -44,7 +44,7 @@ export default function NoteDisplay({ note, signature, onConfirm }: NoteDisplayP
           </span>
           <button
             onClick={copy}
-            className="text-xs px-2.5 py-1 rounded-md border border-[#d0e8e1] text-[#8db5ae] hover:text-[#599F8A] hover:border-[#599F8A]/50 transition-all"
+            className="text-xs px-2.5 py-1 rounded-md border border-[#d0e8e1] text-[#8db5ae] hover:text-[#599F8A] hover:border-[#599F8A]/50 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-[#599F8A]/70 focus-visible:ring-offset-1"
           >
             {copied ? "Copied ✓" : "Copy"}
           </button>
@@ -90,7 +90,7 @@ export default function NoteDisplay({ note, signature, onConfirm }: NoteDisplayP
             }`}
           >
             {agreed && (
-              <svg width="10" height="8" viewBox="0 0 10 8" fill="none">
+              <svg aria-hidden="true" width="10" height="8" viewBox="0 0 10 8" fill="none">
                 <path
                   d="M1 4L3.5 6.5L9 1"
                   stroke="white"

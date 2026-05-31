@@ -18,6 +18,7 @@ export default function TxItem({ tx }: TxItemProps) {
         }`}
       >
         <svg
+          aria-hidden="true"
           width="16"
           height="16"
           viewBox="0 0 24 24"
@@ -60,7 +61,7 @@ export default function TxItem({ tx }: TxItemProps) {
           {formatSol(tx.amount, 4)} SOL
         </p>
         <p className="text-xs text-[#8db5ae]">
-          {new Date(tx.timestamp).toLocaleDateString()}
+          {new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric", year: "numeric", timeZone: "UTC" }).format(new Date(tx.timestamp))}
         </p>
       </div>
     </div>

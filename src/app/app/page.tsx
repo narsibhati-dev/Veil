@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { Suspense, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import TopBar from "@/components/layout/TopBar";
 import DevnetBanner from "@/components/layout/DevnetBanner";
 import Tabs from "@/components/ui/Tabs";
@@ -25,8 +26,17 @@ const TABS: { id: Tab; label: string }[] = [
   { id: "settings", label: "Settings" },
 ];
 
-export default function AppPage() {
-  const [activeTab, setActiveTab] = useState<Tab>("shield");
+function AppPageInner() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const activeTab = (searchParams.get("tab") as Tab | null) ?? "shield";
+
+  function setActiveTab(tab: Tab) {
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("tab", tab);
+    router.replace(`?${params.toString()}`, { scroll: false });
+  }
+
   const [note, setNote]           = useState<Note | null>(null);
   const [txHistory, setTxHistory] = useState<TxRecord[]>([]);
   const [lastProof, setLastProof] = useState<ProofData | null>(null);
@@ -46,7 +56,6 @@ export default function AppPage() {
   }
 
   function handleWithdrawn(sig: string) {
-    // Parse deposited amount from the note so history shows the right value
     const match = note?.match(/^veil-([0-9.]+)sol-/);
     const sol = match ? parseFloat(match[1]) : 0;
     const amount = sol ? Math.round(sol * 1_000_000_000) : 0;
@@ -73,7 +82,7 @@ export default function AppPage() {
       <DevnetBanner />
       <TopBar />
 
-      <main className="max-w-2xl mx-auto px-4 py-8 space-y-5">
+      <main id="main-content" className="max-w-2xl mx-auto px-4 py-8 space-y-5">
         <BalanceCard note={note} />
 
         <Tabs
@@ -82,7 +91,6 @@ export default function AppPage() {
           onChange={(id) => setActiveTab(id as Tab)}
         />
 
-        {/* Panel card with indigo top edge */}
         <div className="rounded-2xl shadow-[0_0_0_1px_rgba(0,0,0,0.08),0_1px_2px_-1px_rgba(0,0,0,0.06),0_4px_8px_0px_rgba(0,0,0,0.04)] [border-top:2px_solid_#599F8A] bg-white p-6">
           {activeTab === "shield" && (
             <ShieldPanel onShielded={handleShielded} onToast={handleToast} />
@@ -109,5 +117,13 @@ export default function AppPage() {
 
       <Toast toasts={toasts} onDismiss={dismiss} />
     </div>
+  );
+}
+
+export default function AppPage() {
+  return (
+    <Suspense>
+      <AppPageInner />
+    </Suspense>
   );
 }

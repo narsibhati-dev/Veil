@@ -51,7 +51,7 @@ export default function LandingPage() {
       </nav>
 
       {/* ── HERO ── */}
-      <section className="max-w-6xl mx-auto px-6 pt-20 pb-12 text-center">
+      <section id="main-content" className="max-w-6xl mx-auto px-6 pt-20 pb-12 text-center">
         <div className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white text-[10px] uppercase tracking-widest font-mono text-[#599F8A] mb-8 ${CARD_SHADOW}`}>
           <span className="w-1.5 h-1.5 rounded-full bg-[#599F8A] animate-pulse" />
           Zero-Knowledge Privacy on Solana

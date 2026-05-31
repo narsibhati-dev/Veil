@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Raleway, Nunito, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import "@solana/wallet-adapter-react-ui/styles.css";
@@ -19,7 +19,12 @@ const jetbrainsMono = JetBrains_Mono({
   subsets: ["latin"],
 });
 
+export const viewport: Viewport = {
+  themeColor: "#ffffff",
+};
+
 export const metadata: Metadata = {
+  metadataBase: new URL("https://veil.audoralabs.com"),
   title: "Veil: Private Payments on Solana",
   description: "Zero-knowledge private SOL transfers on Solana devnet. Groth16 proofs generated entirely in your browser.",
   icons: {
@@ -48,6 +53,12 @@ export default function RootLayout({
       className={`${raleway.variable} ${nunito.variable} ${jetbrainsMono.variable} h-full`}
     >
       <body className="min-h-full flex flex-col">
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[9999] focus:px-4 focus:py-2 focus:bg-white focus:text-[#0f1a16] focus:rounded-lg focus:shadow-[0_0_0_1px_rgba(0,0,0,0.1),0_4px_16px_rgba(0,0,0,0.12)] focus:font-semibold focus:text-sm"
+        >
+          Skip to main content
+        </a>
         <Providers>{children}</Providers>
       </body>
     </html>

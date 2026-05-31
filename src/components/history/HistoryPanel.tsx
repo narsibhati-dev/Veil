@@ -52,8 +52,8 @@ export default function HistoryPanel({ txs }: HistoryPanelProps) {
 
         {txs.length === 0 ? (
           <div className="py-14 text-center">
-            <div className="w-12 h-12 rounded-full bg-[#f7fbf9]  flex items-center justify-center mx-auto mb-3">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" className="text-[#8db5ae]">
+            <div className="w-12 h-12 rounded-full bg-[#f7fbf9] flex items-center justify-center mx-auto mb-3">
+              <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" className="text-[#8db5ae]">
                 <path
                   d="M12 2L3 7l.01 5c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-9-5z"
                   fill="currentColor"
@@ -62,7 +62,7 @@ export default function HistoryPanel({ txs }: HistoryPanelProps) {
               </svg>
             </div>
             <p className="text-[#8db5ae] text-sm">No transactions yet</p>
-            <p className="text-white/[0.18] text-xs mt-1">
+            <p className="text-[#8db5ae]/60 text-xs mt-1">
               Shield some SOL to get started
             </p>
           </div>

@@ -18,6 +18,13 @@ const nextConfig: NextConfig = {
       config.plugins.push(new ProvidePlugin({ Buffer: ["buffer", "Buffer"] }));
     }
     config.experiments = { ...config.experiments, asyncWebAssembly: true };
+
+    // Suppress dynamic-require warning from ox/viem/reown chain definitions
+    config.module = {
+      ...config.module,
+      exprContextCritical: false,
+    };
+
     return config;
   },
 };
