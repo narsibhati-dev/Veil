@@ -7,7 +7,7 @@
     "build": "next build --webpack",
     "start": "next start",
     "lint": "eslint",
-    "postinstall": "cp node_modules/@lightprotocol/hasher.rs/dist/hasher_wasm_simd_bg.wasm node_modules/@lightprotocol/hasher.rs/dist/browser-fat/es/ && cp node_modules/@lightprotocol/hasher.rs/dist/light_wasm_hasher_bg.wasm node_modules/@lightprotocol/hasher.rs/dist/browser-fat/es/"
+    "postinstall": "cp node_modules/@lightprotocol/hasher.rs/dist/hasher_wasm_simd_bg.wasm node_modules/@lightprotocol/hasher.rs/dist/browser-fat/es/ && cp node_modules/@lightprotocol/hasher.rs/dist/light_wasm_hasher_bg.wasm node_modules/@lightprotocol/hasher.rs/dist/browser-fat/es/ && mkdir -p public/circuit2 && cp node_modules/privacycash/circuit2/transaction2.wasm public/circuit2/ && cp node_modules/privacycash/circuit2/transaction2.zkey public/circuit2/"
   },
   "dependencies": {
     "@lightprotocol/hasher.rs": "^0.2.1",
@@ -20,6 +20,7 @@
     "lucide-react": "^1.17.0",
     "motion": "^12.40.0",
     "next": "16.2.6",
+    "privacycash": "^1.1.23",
     "react": "19.2.4",
     "react-dom": "19.2.4"
   },

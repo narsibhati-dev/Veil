@@ -1,11 +1,9 @@
 "use client";
 
+import { PublicKey } from "@solana/web3.js";
 import type { WalletContextState } from "@solana/wallet-adapter-react";
 import type { Note, ProofData } from "@/types";
-
-// TODO: replace mock bodies with real SDK once package is confirmed:
-// import { PrivacyCash } from '<sdk-package>';
-// import { DEVNET_RPC_URL, RELAYER_URL } from './constants';
+import { connection } from "./connection";
 
 export interface DepositResult {
   note: Note;
@@ -19,15 +17,6 @@ export interface WithdrawResult {
 
 // ─── helpers ─────────────────────────────────────────────────────────────────
 
-const BASE58 = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz";
-
-function rnd58(len: number): string {
-  return Array.from(
-    { length: len },
-    () => BASE58[Math.floor(Math.random() * BASE58.length)]
-  ).join("");
-}
-
 function rndHex(bytes: number): string {
   return Array.from({ length: bytes }, () =>
     Math.floor(Math.random() * 256)
@@ -36,25 +25,19 @@ function rndHex(bytes: number): string {
   ).join("");
 }
 
-// BN254 scalar field prime - field elements must be < this value
-const BN254 = BigInt(
-  "21888242871839275222246405745257275088548364400416034343698204186575808495617"
-);
-
-function rndField(): string {
-  const raw = BigInt("0x" + rndHex(31)) % BN254;
-  return raw.toString();
-}
-
-function sleep(ms: number): Promise<void> {
-  return new Promise((r) => setTimeout(r, ms));
-}
-
 function lamportsToSolStr(lamports: number): string {
   const sol = lamports / 1_000_000_000;
   return sol % 1 === 0
     ? sol.toString()
     : sol.toFixed(9).replace(/\.?0+$/, "");
+}
+
+const BN254 = BigInt(
+  "21888242871839275222246405745257275088548364400416034343698204186575808495617"
+);
+
+function rndField(): string {
+  return (BigInt("0x" + rndHex(31)) % BN254).toString();
 }
 
 function mockGroth16Proof(): ProofData {
@@ -71,19 +54,80 @@ function mockGroth16Proof(): ProofData {
   };
 }
 
+// ─── WASM + EncryptionService singletons ─────────────────────────────────────
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type AnyVal = any;
+
+let lightWasmPromise: Promise<AnyVal> | null = null;
+const encryptionCache = new Map<string, AnyVal>();
+
+async function getLightWasm(): Promise<AnyVal> {
+  if (typeof window === "undefined") {
+    throw new Error("WASM only available in browser");
+  }
+  if (!lightWasmPromise) {
+    lightWasmPromise = import("@lightprotocol/hasher.rs").then(
+      (m) => m.WasmFactory.getInstance()
+    );
+  }
+  return lightWasmPromise;
+}
+
+async function getEncryptionService(wallet: WalletContextState): Promise<AnyVal> {
+  if (!wallet.publicKey || !wallet.signMessage) {
+    throw new Error("Wallet not connected or does not support signMessage");
+  }
+  const key = wallet.publicKey.toString();
+  if (encryptionCache.has(key)) return encryptionCache.get(key)!;
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const { EncryptionService } = await import("privacycash/utils") as any;
+  const service = new EncryptionService();
+
+  const msgBytes = new TextEncoder().encode("Privacy Money account sign in");
+  const rawSig = await wallet.signMessage(msgBytes);
+  // Some wallet adapters wrap the result: { signature: Uint8Array }
+  const sigBytes: Uint8Array =
+    rawSig instanceof Uint8Array
+      ? rawSig
+      : (rawSig as AnyVal).signature;
+  service.deriveEncryptionKeyFromSignature(sigBytes);
+
+  encryptionCache.set(key, service);
+  return service;
+}
+
 // ─── SDK surface ──────────────────────────────────────────────────────────────
 
 export async function deposit(
   wallet: WalletContextState,
   amountLamports: number
 ): Promise<DepositResult> {
-  void wallet;
-  // Simulate wallet approval + commitment tx (~1.5 s)
-  await sleep(1500);
-  const sol = lamportsToSolStr(amountLamports);
-  // Note format: "veil-<amount>sol-<32 byte secret hex>"
-  const note: Note = `veil-${sol}sol-${rndHex(32)}`;
-  return { note, signature: rnd58(87) };
+  if (!wallet.publicKey || !wallet.signTransaction) {
+    throw new Error("Wallet not connected");
+  }
+
+  const [lightWasm, encSvc, sdk] = await Promise.all([
+    getLightWasm(),
+    getEncryptionService(wallet),
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    import("privacycash/utils") as Promise<any>,
+  ]);
+
+  const result = await sdk.deposit({
+    lightWasm,
+    storage: localStorage,
+    keyBasePath: "/circuit2/transaction2",
+    publicKey: wallet.publicKey,
+    connection,
+    amount_in_lamports: amountLamports,
+    encryptionService: encSvc,
+    transactionSigner: (tx: AnyVal) => wallet.signTransaction!(tx),
+  });
+
+  const note: Note = `veil-${lamportsToSolStr(amountLamports)}sol-${rndHex(32)}`;
+  return { note, signature: result.tx };
 }
 
 export async function withdraw(
@@ -91,26 +135,56 @@ export async function withdraw(
   note: Note,
   recipientAddress: string
 ): Promise<WithdrawResult> {
-  void wallet;
-  void note;
-  void recipientAddress;
-  // Simulate witness building (~2 s) + Groth16 WASM proof generation (~2–3 s)
-  await sleep(4000 + Math.random() * 1500);
-  return { signature: rnd58(87), proof: mockGroth16Proof() };
+  if (!wallet.publicKey) throw new Error("Wallet not connected");
+
+  const match = note.match(/^veil-([0-9.]+)sol-/);
+  const sol = match ? parseFloat(match[1]) : 0;
+  const amountLamports = Math.round(sol * 1_000_000_000);
+  if (!amountLamports) throw new Error("Invalid note format");
+
+  const [lightWasm, encSvc, sdk] = await Promise.all([
+    getLightWasm(),
+    getEncryptionService(wallet),
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    import("privacycash/utils") as Promise<any>,
+  ]);
+
+  const result = await sdk.withdraw({
+    recipient: new PublicKey(recipientAddress),
+    lightWasm,
+    storage: localStorage,
+    keyBasePath: "/circuit2/transaction2",
+    publicKey: wallet.publicKey,
+    connection,
+    amount_in_lamports: amountLamports,
+    encryptionService: encSvc,
+  });
+
+  return { signature: result.tx, proof: mockGroth16Proof() };
 }
 
 export async function getPrivateBalance(
   wallet: WalletContextState,
-  note: Note
+  _note: Note
 ): Promise<number> {
-  void wallet;
-  await sleep(500);
-  // Parse deposited amount from note string
-  const match = note.match(/^veil-([0-9.]+)sol-/);
-  if (!match) return 0;
-  const sol = parseFloat(match[1]);
-  if (isNaN(sol) || sol <= 0) return 0;
-  const lamports = Math.round(sol * 1_000_000_000);
-  // Deduct ~0.5% relayer fee so balance reflects real-world behaviour
-  return lamports - Math.round(lamports * 0.005);
+  if (!wallet.publicKey) return 0;
+  try {
+    const [, encSvc, sdk] = await Promise.all([
+      getLightWasm(),
+      getEncryptionService(wallet),
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      import("privacycash/utils") as Promise<any>,
+    ]);
+
+    const utxos = await sdk.getUtxos({
+      publicKey: wallet.publicKey,
+      connection,
+      encryptionService: encSvc,
+      storage: localStorage,
+    });
+
+    return sdk.getBalanceFromUtxos(utxos).lamports;
+  } catch {
+    return 0;
+  }
 }
