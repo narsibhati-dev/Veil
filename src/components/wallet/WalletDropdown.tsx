@@ -87,9 +87,7 @@ export default function WalletDropdown() {
         <div
           role="dialog"
           aria-label={connected ? "Wallet options" : "Connect a wallet"}
-          className="absolute right-0 top-full mt-2 w-64 rounded-2xl bg-white z-50
-            shadow-[0_0_0_1px_rgba(0,0,0,0.07),0_4px_24px_-4px_rgba(0,0,0,0.14)]
-            overflow-hidden"
+          className="absolute right-0 top-full mt-2 w-64 rounded-2xl bg-white z-50 shadow-[0_0_0_1px_rgba(0,0,0,0.07),0_4px_24px_-4px_rgba(0,0,0,0.14)] overflow-hidden"
         >
           {connected ? (
             /* ── Connected state ── */
@@ -115,9 +113,7 @@ export default function WalletDropdown() {
               <div className="p-2">
                 <button
                   onClick={copyAddress}
-                  className="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-sm
-                    text-[#5e8a83] hover:bg-[#f0f8f5] transition-colors text-left
-                    focus:outline-none focus-visible:ring-2 focus-visible:ring-[#599F8A]/50"
+                  className="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-sm text-[#5e8a83] hover:bg-[#f0f8f5] transition-colors text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-[#599F8A]/50"
                 >
                   {copied
                     ? <Check size={14} aria-hidden="true" />
@@ -127,9 +123,7 @@ export default function WalletDropdown() {
 
                 <button
                   onClick={() => { disconnect(); setOpen(false); }}
-                  className="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-sm
-                    text-red-400 hover:bg-red-50 transition-colors text-left
-                    focus:outline-none focus-visible:ring-2 focus-visible:ring-red-400/50"
+                  className="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-sm text-red-400 hover:bg-red-50 transition-colors text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-red-400/50"
                 >
                   <LogOut size={14} aria-hidden="true" />
                   Disconnect
@@ -150,9 +144,7 @@ export default function WalletDropdown() {
                   <button
                     key={w.adapter.name}
                     onClick={() => { select(w.adapter.name); setOpen(false); }}
-                    className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm
-                      text-[#0f1a16] hover:bg-[#f0f8f5] transition-colors text-left
-                      focus:outline-none focus-visible:ring-2 focus-visible:ring-[#599F8A]/50"
+                    className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-[#0f1a16] hover:bg-[#f0f8f5] transition-colors text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-[#599F8A]/50"
                   >
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img

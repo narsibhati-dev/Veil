@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useWallet } from "@solana/wallet-adapter-react";
-import { Globe, Key, Wallet, Copy, Check, Trash2, ExternalLink, LogOut } from "lucide-react";
+import { Globe, Database, Wallet, Copy, Check, Trash2, ExternalLink, LogOut } from "lucide-react";
 import { DEVNET_RPC_URL, NETWORK_LABEL, PROGRAM_ID } from "@/lib/constants";
 import { shortenAddress } from "@/lib/format";
 import type { Note } from "@/types";
@@ -62,7 +62,7 @@ export default function SettingsPanel({ note, onClearNote }: SettingsPanelProps)
         >
           Settings
         </h2>
-        <p className="text-sm text-[#8db5ae]">Network info, note management, and session.</p>
+        <p className="text-sm text-[#8db5ae]">Network info, session data, and wallet.</p>
       </div>
 
       {/* ── Network ── */}
@@ -109,13 +109,16 @@ export default function SettingsPanel({ note, onClearNote }: SettingsPanelProps)
         </div>
       </section>
 
-      {/* ── Private Note ── */}
+      {/* ── Session Data ── */}
       <section>
-        <SectionHeader icon={Key} label="Private Note" />
+        <SectionHeader icon={Database} label="Session Data" />
 
         {note ? (
           <div className={CARD}>
-            <div className="px-5 pt-4 pb-3">
+            <div className="px-5 pt-4 pb-4">
+              <p className="text-xs text-[#8db5ae] leading-relaxed mb-3">
+                Encrypted UTXO data is stored locally in your browser. Withdrawals work from this device only. Clearing will reset your session — your shielded funds are unaffected on-chain.
+              </p>
               <div className="rounded-xl bg-[#f7fbf9] border border-[#e6f0ed] px-4 py-3 mb-3">
                 <code
                   className="text-xs text-[#599F8A] break-all leading-[1.7] block"
@@ -124,28 +127,24 @@ export default function SettingsPanel({ note, onClearNote }: SettingsPanelProps)
                   {note.length > 96 ? note.slice(0, 96) + "…" : note}
                 </code>
               </div>
-              <div className="flex items-center gap-2">
-                <CopyBtn text={note} label="Copy full note" />
-                <div className="w-px h-4 bg-[#e6f0ed]" />
-                <button
-                  onClick={onClearNote}
-                  className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-medium text-red-400 hover:text-red-500 hover:bg-red-50 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-red-400/50 focus-visible:ring-offset-1"
-                >
-                  <Trash2 size={11} aria-hidden="true" />
-                  Clear note
-                </button>
-              </div>
+              <button
+                onClick={onClearNote}
+                className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-medium text-red-400 hover:text-red-500 hover:bg-red-50 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-red-400/50 focus-visible:ring-offset-1"
+              >
+                <Trash2 size={11} aria-hidden="true" />
+                Clear session data
+              </button>
             </div>
           </div>
         ) : (
           <div className={`${CARD} px-5 py-4`}>
             <div className="flex items-center gap-3">
               <div className="w-8 h-8 rounded-lg bg-[#f7fbf9] border border-[#e6f0ed] flex items-center justify-center flex-shrink-0">
-                <Key size={14} className="text-[#8db5ae]" aria-hidden="true" />
+                <Database size={14} className="text-[#8db5ae]" aria-hidden="true" />
               </div>
               <div>
-                <p className="text-sm text-[#5e8a83] font-medium">No active note</p>
-                <p className="text-xs text-[#8db5ae] mt-0.5">Shield SOL to create one.</p>
+                <p className="text-sm text-[#5e8a83] font-medium">No session data</p>
+                <p className="text-xs text-[#8db5ae] mt-0.5">Shield SOL to start a session.</p>
               </div>
             </div>
           </div>

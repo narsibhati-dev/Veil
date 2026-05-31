@@ -14,12 +14,6 @@ function LegendDot({ color, label }: { color: string; label: string }) {
   );
 }
 
-// Deterministic fake hash so the tree always looks the same
-function seedHash(seed: number, len = 4): string {
-  const v = Math.abs(Math.sin(seed * 9301 + 49297) * 233280);
-  return Math.floor(v).toString(16).substring(0, len).padStart(len, "0");
-}
-
 export default function MerkleTreeViz({ depth = 4 }: { depth?: number }) {
   const maxLeaves = Math.pow(2, depth);
 
@@ -77,7 +71,7 @@ export default function MerkleTreeViz({ depth = 4 }: { depth?: number }) {
               Merkle Tree · depth {depth}
             </p>
             <p className="text-[10px] text-[#8db5ae] mt-0.5">
-              {maxLeaves} leaf slots &middot; 1 commitment tracked
+              {maxLeaves} leaf slots &middot; illustrative visualization
             </p>
           </div>
           <div className="flex items-center gap-3">
@@ -160,8 +154,6 @@ export default function MerkleTreeViz({ depth = 4 }: { depth?: number }) {
 
                 // Show truncated hash below witness (sibling) nodes — these are what
                 // the ZK proof actually reveals to the verifier.
-                const showWitnessHash = isSibling && row >= 1 && row < depth;
-
                 return (
                   <g key={`n-${row}-${col}`}>
                     {/* Pulsing rings on active leaf */}
@@ -185,42 +177,20 @@ export default function MerkleTreeViz({ depth = 4 }: { depth?: number }) {
                       filter={filter}
                     />
 
-                    {/* Witness hash hint */}
-                    {showWitnessHash && (
-                      <text
-                        x={x} y={y + r + 10}
-                        textAnchor="middle"
-                        fontSize="7"
-                        fill="#a8cfc6"
-                        fontFamily="monospace"
-                        opacity="0.9"
-                      >
-                        {seedHash(row * 31 + col, 6)}…
-                      </text>
-                    )}
                   </g>
                 );
               })
             )}
 
-            {/* ── Root label + hash ── */}
+            {/* ── Root label ── */}
             <text
-              x={getX(0, 0)} y={getY(0) - 16}
+              x={getX(0, 0)} y={getY(0) - 12}
               textAnchor="middle"
               fontSize="10" fontWeight="600"
               fill="#5e8a83" letterSpacing="0.3"
               fontFamily="sans-serif"
             >
               Merkle Root
-            </text>
-            <text
-              x={getX(0, 0)} y={getY(0) - 5}
-              textAnchor="middle"
-              fontSize="7.5"
-              fill="#8db5ae"
-              fontFamily="monospace"
-            >
-              0x{seedHash(7, 8)}…
             </text>
 
             {/* ── Active leaf: connector + pill + commitment hash ── */}
@@ -246,14 +216,6 @@ export default function MerkleTreeViz({ depth = 4 }: { depth?: number }) {
                     fill="#599F8A" fontFamily="sans-serif"
                   >
                     Your commitment
-                  </text>
-                  <text
-                    x={cx} y={pillY + pillH + 14}
-                    textAnchor="middle"
-                    fontSize="8"
-                    fill="#8db5ae" fontFamily="monospace"
-                  >
-                    0x{seedHash(depth * 31 + activeCol, 10)}…
                   </text>
                 </>
               );

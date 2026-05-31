@@ -3,32 +3,43 @@
 import { useState } from "react";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { useWithdraw } from "@/hooks/useWithdraw";
+import { solToLamports, formatSol } from "@/lib/format";
 import Button from "@/components/ui/Button";
 import ProofStatus from "./ProofStatus";
-import type { ToastType, ProofData } from "@/types";
+import type { Note, ToastType, ProofData } from "@/types";
 
 interface WithdrawPanelProps {
+  note: Note | null;
   onToast: (msg: string, type: ToastType) => void;
-  onWithdrawn: (sig: string) => void;
+  onWithdrawn: (sig: string, amount: number) => void;
   onProof?: (proof: ProofData) => void;
 }
 
-export default function WithdrawPanel({ onToast, onWithdrawn, onProof }: WithdrawPanelProps) {
+const CARD_SHA = "shadow-[0_0_0_1px_rgba(0,0,0,0.07),0_1px_2px_-1px_rgba(0,0,0,0.05),0_2px_8px_0px_rgba(0,0,0,0.04)]";
+
+export default function WithdrawPanel({ note, onToast, onWithdrawn, onProof }: WithdrawPanelProps) {
   const { connected, publicKey } = useWallet();
   const { executeWithdraw, proofStep, error, result, reset } = useWithdraw();
-  const [note,      setNote]      = useState("");
+  const [amount, setAmount] = useState("");
   const [recipient, setRecipient] = useState("");
 
   const isProcessing = proofStep === "generating";
+  const parsedSol = parseFloat(amount) || 0;
+
+  // Parse the shielded amount from the note display string (e.g. "veil-0.1sol-...")
+  const noteMatch = note?.match(/^veil-([0-9.]+)sol-/);
+  const shieldedSol = noteMatch ? parseFloat(noteMatch[1]) : null;
 
   async function handleWithdraw() {
-    const dest = recipient || publicKey?.toBase58() || "";
-    if (!note.trim() || !dest) return;
+    const dest = recipient.trim() || publicKey?.toBase58() || "";
+    if (!dest || parsedSol <= 0) return;
+    const lamports = solToLamports(parsedSol);
     try {
-      const res = await executeWithdraw(note.trim(), dest);
+      const res = await executeWithdraw(lamports, dest);
+      if (!res) return; // wallet interaction cancelled — useWithdraw swallowed it silently
       onToast("Withdrawal successful!", "success");
       onProof?.(res.proof);
-      onWithdrawn(res.signature);
+      onWithdrawn(res.signature, res.proof.amountLamports);
     } catch (e) {
       onToast(e instanceof Error ? e.message : "Withdrawal failed", "error");
     }
@@ -44,7 +55,12 @@ export default function WithdrawPanel({ onToast, onWithdrawn, onProof }: Withdra
           <p className="text-[#3ab96b] font-bold text-lg mb-1" style={{ fontFamily: "var(--font-raleway)" }}>
             Withdrawal Complete
           </p>
-          <p className="text-xs text-[#5e8a83] mb-3">Funds sent privately via zero-knowledge proof</p>
+          <p className="text-xs text-[#5e8a83] mb-1">
+            {formatSol(result.proof.amountLamports, 4)} SOL sent privately via zero-knowledge proof
+          </p>
+          {result.proof.isPartial && (
+            <p className="text-xs text-amber-500 mb-2">Partial withdrawal — remaining balance still shielded</p>
+          )}
           <a
             href={`https://explorer.solana.com/tx/${result.signature}?cluster=devnet`}
             target="_blank"
@@ -63,37 +79,65 @@ export default function WithdrawPanel({ onToast, onWithdrawn, onProof }: Withdra
   }
 
   return (
-    <div className="space-y-6">
+    <div data-testid="withdraw-panel" className="space-y-6">
       <div>
         <h2 className="text-lg font-bold text-[#0f1a16] mb-1" style={{ fontFamily: "var(--font-raleway)" }}>
           Withdraw
         </h2>
         <p className="text-sm text-[#5e8a83]">
-          Prove ownership of a shielded deposit without revealing which one.
+          Prove ownership of shielded funds without revealing which deposit they came from.
         </p>
       </div>
 
       <ProofStatus step={proofStep} />
 
+      {/* Amount */}
       <div>
-        <label htmlFor="withdraw-note" className="block text-xs uppercase tracking-widest text-[#5e8a83] mb-2">
-          Private Note
-        </label>
-        <textarea
-          id="withdraw-note"
-          name="note"
-          value={note}
-          onChange={(e) => setNote(e.target.value)}
-          disabled={isProcessing}
-          rows={5}
-          spellCheck={false}
-          autoComplete="off"
-          className="w-full bg-[#f7fbf9] rounded-xl px-4 py-3 text-[#8db5ae] text-xs focus:outline-none focus-visible:ring-2 focus-visible:ring-[#599F8A]/70 focus-visible:ring-offset-1 transition-all resize-none disabled:opacity-40"
-          style={{ fontFamily: "var(--font-jetbrains-mono)" }}
-          placeholder="Paste your private note here…"
-        />
+        <div className="flex items-center justify-between mb-2">
+          <label htmlFor="withdraw-amount" className="block text-xs uppercase tracking-widest text-[#5e8a83]">
+            Amount (SOL)
+          </label>
+          {shieldedSol !== null && (
+            <button
+              data-testid="withdraw-max-btn"
+              onClick={() => setAmount(String(shieldedSol))}
+              className="text-xs text-[#599F8A] hover:text-[#5e8a83] transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[#599F8A]/70 focus-visible:ring-offset-1 rounded"
+            >
+              Max: {shieldedSol} SOL
+            </button>
+          )}
+        </div>
+        <div className={`bg-white rounded-xl ${CARD_SHA} flex items-center gap-3 px-4 py-3.5 focus-within:ring-2 focus-within:ring-[#599F8A]/60 transition-shadow`}>
+          <input
+            id="withdraw-amount"
+            data-testid="withdraw-amount-input"
+            type="number"
+            name="amount"
+            autoComplete="off"
+            inputMode="decimal"
+            value={amount}
+            onChange={(e) => setAmount(e.target.value)}
+            disabled={isProcessing}
+            min="0.001"
+            step="0.001"
+            placeholder="0.00"
+            className="flex-1 text-3xl font-bold text-[#0f1a16] bg-transparent focus:outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none disabled:opacity-40"
+            style={{ fontFamily: "var(--font-jetbrains-mono)" }}
+            aria-label="Withdrawal amount in SOL"
+          />
+          <span
+            className="text-sm font-semibold text-[#8db5ae] flex-shrink-0"
+            style={{ fontFamily: "var(--font-jetbrains-mono)" }}
+          >
+            SOL
+          </span>
+        </div>
+        <p className="mt-1.5 text-xs text-[#8db5ae]">
+          Your private balance is shown at the top of the page.
+        </p>
       </div>
 
+      {/* Recipient */}
       <div>
         <div className="flex items-center justify-between mb-2">
           <label htmlFor="withdraw-recipient" className="block text-xs uppercase tracking-widest text-[#5e8a83]">
@@ -110,6 +154,7 @@ export default function WithdrawPanel({ onToast, onWithdrawn, onProof }: Withdra
         </div>
         <input
           id="withdraw-recipient"
+          data-testid="withdraw-recipient-input"
           type="text"
           name="recipient"
           autoComplete="off"
@@ -119,7 +164,7 @@ export default function WithdrawPanel({ onToast, onWithdrawn, onProof }: Withdra
           disabled={isProcessing}
           className="w-full bg-[#f7fbf9] rounded-xl px-4 py-3 text-[#8db5ae] text-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-[#599F8A]/70 focus-visible:ring-offset-1 transition-all disabled:opacity-40"
           style={{ fontFamily: "var(--font-jetbrains-mono)" }}
-          placeholder="Solana address…"
+          placeholder="Solana address (defaults to connected wallet)"
         />
       </div>
 
@@ -130,13 +175,14 @@ export default function WithdrawPanel({ onToast, onWithdrawn, onProof }: Withdra
       )}
 
       <Button
+        data-testid="withdraw-submit-btn"
         onClick={handleWithdraw}
         loading={isProcessing}
-        disabled={!connected || !note.trim() || isProcessing}
+        disabled={!connected || parsedSol <= 0 || isProcessing}
         size="lg"
         className="w-full"
       >
-        {isProcessing ? "Generating ZK Proof…" : "Withdraw →"}
+        {isProcessing ? "Generating ZK Proof…" : parsedSol > 0 ? `Withdraw ${parsedSol} SOL →` : "Enter an amount"}
       </Button>
     </div>
   );

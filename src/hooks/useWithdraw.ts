@@ -2,8 +2,8 @@
 
 import { useState, useCallback } from "react";
 import { useWallet } from "@solana/wallet-adapter-react";
+import { WalletError } from "@solana/wallet-adapter-base";
 import { withdraw, type WithdrawResult } from "@/lib/privacyCash";
-import type { Note } from "@/types";
 
 export type ProofStep = "idle" | "generating" | "done";
 
@@ -14,16 +14,17 @@ export function useWithdraw() {
   const [result, setResult] = useState<WithdrawResult | null>(null);
 
   const executeWithdraw = useCallback(
-    async (note: Note, recipient: string) => {
+    async (amountLamports: number, recipient: string) => {
       setError(null);
       setResult(null);
       setProofStep("generating");
       try {
-        const res = await withdraw(wallet, note, recipient);
+        const res = await withdraw(wallet, amountLamports, recipient);
         setResult(res);
         setProofStep("done");
         return res;
       } catch (e) {
+        if (e instanceof WalletError) { setProofStep("idle"); return; }
         const msg = e instanceof Error ? e.message : "Withdrawal failed";
         setError(msg);
         setProofStep("idle");

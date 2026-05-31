@@ -15,6 +15,8 @@ import MerkleTreeViz from "@/features/proof/MerkleTreeViz";
 import ProofBox      from "@/features/proof/ProofBox";
 import SettingsPanel from "@/features/settings/SettingsPanel";
 import { useToast }  from "@/hooks/useToast";
+import { usePrivateBalance } from "@/hooks/usePrivateBalance";
+import { clearPrivacyPoolCache } from "@/lib/privacyCash";
 import type { TxRecord, ProofData, Note, ToastType } from "@/types";
 import type { Tab } from "@/features/app-shell/AppSidebar";
 
@@ -33,6 +35,7 @@ function AppPageInner() {
   const [txHistory, setTxHistory] = useState<TxRecord[]>([]);
   const [lastProof, setLastProof] = useState<ProofData | null>(null);
   const { toasts, toast, dismiss } = useToast();
+  const { balance, loading: balanceLoading, refresh: refreshBalance, setBalance: setPrivateBalance } = usePrivateBalance(note);
 
   // Rehydrate on mount
   useEffect(() => {
@@ -50,7 +53,10 @@ function AppPageInner() {
 
   // Persist history
   useEffect(() => {
-    localStorage.setItem("veil_tx_history", JSON.stringify(txHistory));
+    if (txHistory.length > 0)
+      localStorage.setItem("veil_tx_history", JSON.stringify(txHistory));
+    else
+      localStorage.removeItem("veil_tx_history");
   }, [txHistory]);
 
   function handleToast(msg: string, type: ToastType) { toast(msg, type); }
@@ -59,14 +65,16 @@ function AppPageInner() {
     setNote(newNote);
     setTxHistory((prev) => [{ signature: sig, type: "shield", amount, timestamp: Date.now() }, ...prev]);
     setActiveTab("withdraw");
+    // Optimistic update so balance shows instantly; note change also triggers auto-refresh
+    setPrivateBalance((prev) => (prev ?? 0) + amount);
   }
 
-  function handleWithdrawn(sig: string) {
-    const match  = note?.match(/^veil-([0-9.]+)sol-/);
-    const sol    = match ? parseFloat(match[1]) : 0;
-    const amount = sol ? Math.round(sol * 1_000_000_000) : 0;
+  function handleWithdrawn(sig: string, amount: number) {
     setTxHistory((prev) => [{ signature: sig, type: "withdraw", amount, timestamp: Date.now() }, ...prev]);
     setActiveTab("history");
+    // Optimistic update; explicit refresh since note doesn't change after a withdrawal
+    setPrivateBalance((prev) => (prev !== null ? Math.max(0, prev - amount) : null));
+    refreshBalance();
   }
 
   function handleProof(proof: ProofData) {
@@ -77,7 +85,8 @@ function AppPageInner() {
   function handleClearNote() {
     setNote(null);
     setLastProof(null);
-    toast("Note cleared. Balance reset.", "info");
+    clearPrivacyPoolCache();
+    toast("Session cleared.", "info");
   }
 
   return (
@@ -86,7 +95,7 @@ function AppPageInner() {
       <TopBar />
 
       <main id="main-content" className="max-w-5xl mx-auto px-4 py-6 space-y-4">
-        <BalanceCard note={note} />
+        <BalanceCard note={note} balance={balance} balanceLoading={balanceLoading} />
 
         <div className="flex gap-4 items-start">
           <AppSidebar activeTab={activeTab} setActiveTab={setActiveTab} />
@@ -96,7 +105,7 @@ function AppPageInner() {
               <ShieldPanel onShielded={handleShielded} onToast={handleToast} />
             )}
             {activeTab === "withdraw" && (
-              <WithdrawPanel onToast={handleToast} onWithdrawn={handleWithdrawn} onProof={handleProof} />
+              <WithdrawPanel note={note} onToast={handleToast} onWithdrawn={handleWithdrawn} onProof={handleProof} />
             )}
             {activeTab === "history" && <HistoryPanel txs={txHistory} />}
             {activeTab === "proof" && (

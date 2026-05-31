@@ -32,35 +32,14 @@ function lamportsToSolStr(lamports: number): string {
     : sol.toFixed(9).replace(/\.?0+$/, "");
 }
 
-const BN254 = BigInt(
-  "21888242871839275222246405745257275088548364400416034343698204186575808495617"
-);
-
-function rndField(): string {
-  return (BigInt("0x" + rndHex(31)) % BN254).toString();
-}
-
-function mockGroth16Proof(): ProofData {
-  return {
-    proof: {
-      a: [rndField(), rndField()],
-      b: [
-        [rndField(), rndField()],
-        [rndField(), rndField()],
-      ],
-      c: [rndField(), rndField()],
-    },
-    publicInputs: [rndField(), rndField(), rndField()],
-  };
-}
-
 // ─── WASM + EncryptionService singletons ─────────────────────────────────────
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type AnyVal = any;
 
 let lightWasmPromise: Promise<AnyVal> | null = null;
-const encryptionCache = new Map<string, AnyVal>();
+// Promise-based cache prevents duplicate signMessage prompts on concurrent calls
+const encryptionCache = new Map<string, Promise<AnyVal>>();
 
 async function getLightWasm(): Promise<AnyVal> {
   if (typeof window === "undefined") {
@@ -81,21 +60,28 @@ async function getEncryptionService(wallet: WalletContextState): Promise<AnyVal>
   const key = wallet.publicKey.toString();
   if (encryptionCache.has(key)) return encryptionCache.get(key)!;
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const { EncryptionService } = await import("privacycash/utils") as any;
-  const service = new EncryptionService();
+  const promise = (async () => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const { EncryptionService } = await import("privacycash/utils") as any;
+    const service = new EncryptionService();
+    const msgBytes = new TextEncoder().encode("Privacy Money account sign in");
+    const rawSig = await wallet.signMessage!(msgBytes);
+    const sigBytes: Uint8Array =
+      rawSig instanceof Uint8Array ? rawSig : (rawSig as AnyVal).signature;
+    service.deriveEncryptionKeyFromSignature(sigBytes);
+    return service;
+  })();
 
-  const msgBytes = new TextEncoder().encode("Privacy Money account sign in");
-  const rawSig = await wallet.signMessage(msgBytes);
-  // Some wallet adapters wrap the result: { signature: Uint8Array }
-  const sigBytes: Uint8Array =
-    rawSig instanceof Uint8Array
-      ? rawSig
-      : (rawSig as AnyVal).signature;
-  service.deriveEncryptionKeyFromSignature(sigBytes);
+  encryptionCache.set(key, promise);
+  // If signMessage is cancelled or fails, remove the rejected entry so the
+  // next attempt prompts again instead of returning an immediately-rejected Promise.
+  promise.catch(() => encryptionCache.delete(key));
+  return promise;
+}
 
-  encryptionCache.set(key, service);
-  return service;
+/** Returns true only if the encryption key has already been derived this session. */
+export function hasEncryptionKey(publicKeyStr: string): boolean {
+  return encryptionCache.has(publicKeyStr);
 }
 
 // ─── SDK surface ──────────────────────────────────────────────────────────────
@@ -126,21 +112,18 @@ export async function deposit(
     transactionSigner: (tx: AnyVal) => wallet.signTransaction!(tx),
   });
 
-  const note: Note = `veil-${lamportsToSolStr(amountLamports)}sol-${rndHex(32)}`;
+  // Note stores the amount for display; actual UTXO state lives in localStorage via SDK
+  const note: Note = `veil-${lamportsToSolStr(amountLamports)}sol-${rndHex(8)}`;
   return { note, signature: result.tx };
 }
 
 export async function withdraw(
   wallet: WalletContextState,
-  note: Note,
+  amountLamports: number,
   recipientAddress: string
 ): Promise<WithdrawResult> {
   if (!wallet.publicKey) throw new Error("Wallet not connected");
-
-  const match = note.match(/^veil-([0-9.]+)sol-/);
-  const sol = match ? parseFloat(match[1]) : 0;
-  const amountLamports = Math.round(sol * 1_000_000_000);
-  if (!amountLamports) throw new Error("Invalid note format");
+  if (amountLamports <= 0) throw new Error("Amount must be greater than 0");
 
   const [lightWasm, encSvc, sdk] = await Promise.all([
     getLightWasm(),
@@ -160,7 +143,16 @@ export async function withdraw(
     encryptionService: encSvc,
   });
 
-  return { signature: result.tx, proof: mockGroth16Proof() };
+  return {
+    signature: result.tx,
+    proof: {
+      signature: result.tx,
+      amountLamports: result.amount_in_lamports,
+      feeLamports: result.fee_in_lamports,
+      recipient: result.recipient,
+      isPartial: result.isPartial,
+    },
+  };
 }
 
 export async function getPrivateBalance(
@@ -168,6 +160,11 @@ export async function getPrivateBalance(
   _note: Note
 ): Promise<number> {
   if (!wallet.publicKey) return 0;
+
+  const controller = new AbortController();
+  // areUtxosSpent inside getUtxos retries indefinitely on RPC errors; cap the whole scan.
+  const timeoutId = setTimeout(() => controller.abort(), 90_000);
+
   try {
     const [, encSvc, sdk] = await Promise.all([
       getLightWasm(),
@@ -181,10 +178,29 @@ export async function getPrivateBalance(
       connection,
       encryptionService: encSvc,
       storage: localStorage,
+      abortSignal: controller.signal,
     });
 
     return sdk.getBalanceFromUtxos(utxos).lamports;
-  } catch {
+  } catch (e) {
+    if (e instanceof Error && e.message === "aborted") {
+      throw new Error("balance_scan_timeout");
+    }
     return 0;
+  } finally {
+    clearTimeout(timeoutId);
   }
+}
+
+// Clears the SDK's localStorage UTXO cache for this wallet session
+export function clearPrivacyPoolCache(): void {
+  // SDK keys are prefixed with first 6 chars of the program ID
+  const prefix = "ATZj4j";
+  Object.keys(localStorage).forEach((k) => {
+    if (k.includes(prefix) || k === "fetch_offset" || k === "encrypted_outputs") {
+      localStorage.removeItem(k);
+    }
+  });
+  localStorage.removeItem("veil_balance");
+  encryptionCache.clear();
 }

@@ -14,7 +14,7 @@ export default function HistoryPanel({ txs }: HistoryPanelProps) {
   const totalWithdrawn = txs.filter((t) => t.type === "withdraw").reduce((s, t) => s + t.amount, 0);
 
   return (
-    <div className="space-y-6">
+    <div data-testid="history-panel" className="space-y-6">
       <h2 className="text-lg font-bold text-[#0f1a16]" style={{ fontFamily: "var(--font-raleway)" }}>
         History
       </h2>

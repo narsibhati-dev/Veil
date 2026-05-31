@@ -1,22 +1,23 @@
 "use client";
 
 import { useWallet } from "@solana/wallet-adapter-react";
-import { usePrivateBalance } from "@/hooks/usePrivateBalance";
 import { formatSol, shortenAddress } from "@/lib/format";
 import type { Note } from "@/types";
 
 interface BalanceCardProps {
   note: Note | null;
+  balance: number | null;
+  balanceLoading: boolean;
 }
 
-export default function BalanceCard({ note }: BalanceCardProps) {
+export default function BalanceCard({ note, balance, balanceLoading: loading }: BalanceCardProps) {
   const { publicKey } = useWallet();
-  const { balance, loading } = usePrivateBalance(note);
 
   const hasBalance = balance !== null && balance > 0;
 
   return (
     <div
+      data-testid="balance-card"
       className={`rounded-2xl  bg-white shadow-[0_0_0_1px_rgba(0,0,0,0.08),0_1px_2px_-1px_rgba(0,0,0,0.06),0_2px_4px_0px_rgba(0,0,0,0.04)] p-6 transition-shadow duration-700 ${
         hasBalance
           ? "shadow-[0_0_48px_rgba(58,185,107,0.12)]"
@@ -33,11 +34,12 @@ export default function BalanceCard({ note }: BalanceCardProps) {
             Private Balance
           </p>
 
-          {loading ? (
-            <div className="h-12 w-44 bg-[#f7fbf9] rounded-xl animate-pulse" />
+          {loading && balance === null ? (
+            <div data-testid="balance-skeleton" className="h-12 w-44 bg-[#f7fbf9] rounded-xl animate-pulse" />
           ) : (
             <div className="flex items-baseline gap-2.5">
               <span
+                data-testid="balance-value"
                 className={`text-5xl font-bold tabular-nums leading-none ${
                   hasBalance ? "text-[#0f1a16]" : "text-[#8db5ae]"
                 }`}

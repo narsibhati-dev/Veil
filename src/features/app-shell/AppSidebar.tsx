@@ -21,7 +21,7 @@ interface AppSidebarProps {
 
 export default function AppSidebar({ activeTab, setActiveTab }: AppSidebarProps) {
   return (
-    <nav className={`${CARD} w-52 flex-shrink-0 p-2`} aria-label="App navigation">
+    <nav data-testid="app-sidebar" className={`${CARD} w-52 flex-shrink-0 p-2`} aria-label="App navigation">
       <div className="px-3 pt-2 pb-3 mb-1 border-b border-[#f0f7f4]">
         <div className="flex items-center gap-2">
           <Wallet size={12} className="text-[#8db5ae]" />
@@ -38,6 +38,8 @@ export default function AppSidebar({ activeTab, setActiveTab }: AppSidebarProps)
           return (
             <button
               key={tab.id}
+              data-testid={`tab-${tab.id}`}
+              aria-selected={isActive}
               onClick={() => setActiveTab(tab.id)}
               className={[
                 "w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-left transition-all",

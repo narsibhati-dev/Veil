@@ -7,7 +7,7 @@ import WalletDropdown from "@/components/wallet/WalletDropdown";
 
 export default function TopBar() {
   return (
-    <header className="sticky top-0 z-40 bg-white shadow-[0_1px_0_0_rgba(0,0,0,0.06)]">
+    <header data-testid="topbar" className="sticky top-0 z-40 bg-white shadow-[0_1px_0_0_rgba(0,0,0,0.06)]">
       <div className="max-w-2xl mx-auto px-4 h-16 flex items-center justify-between">
         <Link href="/" className="flex items-center gap-3 no-underline">
           <LogoIcon size={36} />

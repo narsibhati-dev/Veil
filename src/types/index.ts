@@ -8,12 +8,11 @@ export interface TxRecord {
 }
 
 export interface ProofData {
-  proof: {
-    a: string[];
-    b: string[][];
-    c: string[];
-  };
-  publicInputs: string[];
+  signature: string;
+  amountLamports: number;
+  feeLamports: number;
+  recipient: string;
+  isPartial: boolean;
 }
 
 export type ToastType = "success" | "error" | "info" | "warning";

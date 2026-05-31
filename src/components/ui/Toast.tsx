@@ -32,6 +32,7 @@ export default function Toast({ toasts, onDismiss }: ToastProps) {
       {toasts.map((t) => (
         <div
           key={t.id}
+          data-testid="toast"
           className={`flex items-start gap-3 px-4 py-3 bg-white shadow-[0_0_0_1px_rgba(0,0,0,0.08),0_1px_2px_-1px_rgba(0,0,0,0.06),0_2px_4px_0px_rgba(0,0,0,0.04)] border-l-[3px] rounded-xl max-w-sm pointer-events-auto ${leftBorder[t.type]}`}
           style={{ animation: "slideIn 0.2s ease-out" }}
         >

@@ -60,7 +60,8 @@ export default function ShieldPanel({ onShielded, onToast }: ShieldPanelProps) {
     if (lamports <= 0) return;
     try {
       const res = await shield(lamports);
-      onToast("SOL shielded! Save your private note.", "success");
+      if (!res) return; // wallet interaction cancelled — useShield swallowed it silently
+      onToast("SOL shielded successfully!", "success");
       onShielded(res.note, lamports, res.signature);
     } catch (e) {
       onToast(e instanceof Error ? e.message : "Shield failed", "error");
@@ -70,15 +71,15 @@ export default function ShieldPanel({ onShielded, onToast }: ShieldPanelProps) {
   if (result && !confirmed) {
     return (
       <NoteDisplay
-        note={result.note}
         signature={result.signature}
+        amountLamports={solToLamports(parsed)}
         onConfirm={() => { setConfirmed(true); reset(); }}
       />
     );
   }
 
   return (
-    <div className="space-y-5">
+    <div data-testid="shield-panel" className="space-y-5">
 
       {/* ── Header ── */}
       <div className="flex items-start gap-3">
@@ -109,6 +110,7 @@ export default function ShieldPanel({ onShielded, onToast }: ShieldPanelProps) {
             return (
               <button
                 key={a}
+                data-testid={`preset-${a}`}
                 onClick={() => setAmount(String(a))}
                 className={[
                   "px-3.5 py-1.5 text-xs rounded-full border font-medium transition-all",
@@ -126,12 +128,10 @@ export default function ShieldPanel({ onShielded, onToast }: ShieldPanelProps) {
         </div>
 
         {/* Input */}
-        <div
-          className={`bg-white rounded-xl ${CARD_SHA} flex items-center gap-3 px-4 py-3.5
-            focus-within:ring-2 focus-within:ring-[#599F8A]/60 transition-shadow`}
-        >
+        <div className={`bg-white rounded-xl ${CARD_SHA} flex items-center gap-3 px-4 py-3.5 focus-within:ring-2 focus-within:ring-[#599F8A]/60 transition-shadow`}>
           <input
             id="shield-amount"
+            data-testid="shield-amount-input"
             type="number"
             name="amount"
             autoComplete="off"
@@ -141,9 +141,7 @@ export default function ShieldPanel({ onShielded, onToast }: ShieldPanelProps) {
             min="0.01"
             step="0.01"
             placeholder="0.00"
-            className="flex-1 text-3xl font-bold text-[#0f1a16] bg-transparent focus:outline-none
-              [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none
-              [&::-webkit-inner-spin-button]:appearance-none"
+            className="flex-1 text-3xl font-bold text-[#0f1a16] bg-transparent focus:outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
             style={{ fontFamily: "var(--font-jetbrains-mono)" }}
             aria-label="Amount in SOL"
           />
@@ -166,6 +164,7 @@ export default function ShieldPanel({ onShielded, onToast }: ShieldPanelProps) {
 
       {/* ── CTA ── */}
       <Button
+        data-testid="shield-submit-btn"
         onClick={handleShield}
         loading={loading}
         disabled={!connected || parsed <= 0}
