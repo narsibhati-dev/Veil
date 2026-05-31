@@ -89,9 +89,12 @@ export default function LandingPage() {
       </section>
 
       {/* ── DASHBOARD PREVIEW ── */}
-      <section className="max-w-7xl mx-auto px-6 pb-24">
-        <div className="rounded-[32px] p-[6px] bg-gradient-to-b from-[rgba(255,255,255,0.18)] via-[rgba(255,255,255,0.06)] to-[rgba(89,159,138,0.08)] shadow-[0_0_0_1px_rgba(89,159,138,0.06),0_40px_80px_-20px_rgba(0,0,0,0.25)]">
-          <SimulatedDashboard />
+      <section className="pb-24 overflow-hidden">
+        {/* Fixed-width frame — never reflows regardless of viewport */}
+        <div className="w-[960px] mx-auto">
+          <div className="rounded-[32px] p-[6px] bg-gradient-to-b from-[rgba(255,255,255,0.18)] via-[rgba(255,255,255,0.06)] to-[rgba(89,159,138,0.08)] shadow-[0_0_0_1px_rgba(89,159,138,0.08)]">
+            <SimulatedDashboard />
+          </div>
         </div>
       </section>
 
@@ -335,47 +338,48 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* ── TECH STACK ── */}
-      <section id="tech" className="bg-[#f7fbf9] shadow-[0_1px_0_0_rgba(0,0,0,0.05),0_-1px_0_0_rgba(0,0,0,0.05)]">
-        <div className="max-w-6xl mx-auto px-6 py-20 text-center">
-          <p className="text-[10px] uppercase font-mono tracking-widest text-[#8db5ae] mb-8">Built with</p>
-          <div className="flex flex-wrap justify-center gap-2.5">
-            {[
-              "Next.js 16", "React 19", "Tailwind CSS v4", "Solana Devnet",
-              "Groth16 ZK", "Poseidon Hash", "BN254 Curve", "WASM",
-              "TypeScript 5", "Bun",
-            ].map((tech) => (
-              <span
-                key={tech}
-                className={`px-3.5 py-1.5 rounded-xl bg-white text-[10px] font-mono text-[#5e8a83] hover:text-[#599F8A] transition-colors cursor-default ${CARD_SHADOW} hover:shadow-[0_0_0_1px_rgba(89,159,138,0.2),0_1px_4px_rgba(89,159,138,0.06)]`}
-                style={{ fontFamily: "var(--font-jetbrains-mono)" }}
-              >
-                {tech}
-              </span>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* ── FOOTER ── */}
-      <footer className="bg-white shadow-[0_-1px_0_0_rgba(0,0,0,0.06)]">
-        <div className="max-w-6xl mx-auto px-6 py-10 flex flex-col sm:flex-row items-center justify-between gap-6">
-          <div className="flex items-center gap-2">
-            <LogoIcon size={28} />
-            <span className="text-sm font-extrabold text-[#0f1a16] uppercase tracking-wider" style={{ fontFamily: "var(--font-raleway)" }}>
-              Veil
-            </span>
+      <footer className="bg-[#f7fbf9] border-t border-[#e6f0ed]">
+        <div className="max-w-6xl mx-auto px-6 py-12">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-8">
+
+            {/* Brand */}
+            <div className="flex items-center gap-3">
+              <LogoIcon size={32} />
+              <div>
+                <span
+                  className="block text-base font-extrabold text-[#0f1a16] tracking-tight"
+                  style={{ fontFamily: "var(--font-raleway)" }}
+                >
+                  Veil
+                </span>
+                <span className="block text-[10px] text-[#8db5ae] mt-0.5 uppercase tracking-widest">
+                  Devnet alpha
+                </span>
+              </div>
+            </div>
+
+            {/* Centre note */}
+            <p className="text-xs text-[#8db5ae] text-center leading-relaxed">
+              ZK privacy on Solana &middot; All funds are testnet SOL with no real value
+            </p>
+
+            {/* CTA */}
+            <Link
+              href="/app"
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#599F8A] text-white text-xs font-bold hover:bg-[#4d8f7a] transition-colors shadow-sm"
+              style={{ fontFamily: "var(--font-raleway)" }}
+            >
+              Launch App →
+            </Link>
           </div>
-          <p className="text-[10px] text-[#8db5ae] font-mono text-center">
-            Devnet alpha. Test funds have no real value
-          </p>
-          <Link
-            href="/app"
-            className="text-xs font-bold text-[#5e8a83] hover:text-[#599F8A] transition-colors flex items-center gap-1"
-            style={{ fontFamily: "var(--font-raleway)" }}
-          >
-            Launch Privacy Pool →
-          </Link>
+
+          {/* Bottom rule */}
+          <div className="mt-10 pt-6 border-t border-[#e6f0ed] flex items-center justify-center">
+            <p className="text-[10px] text-[#8db5ae]/60 uppercase tracking-widest">
+              © {new Date().getFullYear()} Veil &mdash; for educational &amp; devnet use only
+            </p>
+          </div>
         </div>
       </footer>
     </div>

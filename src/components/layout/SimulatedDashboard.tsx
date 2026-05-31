@@ -38,10 +38,10 @@ export default function SimulatedDashboard() {
   };
 
   return (
-    <div className="w-full rounded-[28px] glass-card overflow-hidden transition-all duration-300">
+    <div className="w-full rounded-[28px] glass-card overflow-hidden" style={{ minWidth: 0 }}>
 
-      {/* Header */}
-      <div className="px-8 py-5 border-b border-white/[0.06] flex flex-col md:flex-row items-center justify-between gap-4">
+      {/* Header — always single row, never wraps */}
+      <div className="px-8 py-5 border-b border-white/[0.06] flex flex-row items-center justify-between gap-4 flex-nowrap overflow-hidden">
         <div className="flex items-center gap-3">
           <LogoIcon size={40} />
           <span className="text-lg font-extrabold text-[#e8f5f2] tracking-wider uppercase" style={{ fontFamily: "var(--font-raleway)" }}>
@@ -96,13 +96,13 @@ export default function SimulatedDashboard() {
       </div>
 
       {/* Panel Body */}
-      <div className="p-8 md:p-10 min-h-[430px]">
+      <div className="p-8 md:p-10 h-[520px] overflow-hidden">
 
         {/* SHIELD TAB */}
         {activeTab === "shield" && (
-          <div className="grid md:grid-cols-2 gap-10 items-stretch">
-            <div className="flex flex-col justify-between space-y-6">
-              <div className="space-y-5">
+          <div className="grid md:grid-cols-2 gap-8 items-stretch">
+            <div className="flex flex-col justify-between space-y-3">
+              <div className="space-y-3">
                 <div className="flex items-center justify-between">
                   <label className="text-sm font-bold text-[#6db5a0] uppercase tracking-widest flex items-center gap-2">
                     <Coins size={16} className="text-[#599F8A]" /> Deposit Amount
@@ -115,7 +115,7 @@ export default function SimulatedDashboard() {
                     <button
                       key={amt}
                       onClick={() => !isGenerating && setDepositAmount(amt)}
-                      className={`py-3.5 rounded-xl border text-sm font-mono font-bold transition-all duration-200 ${
+                      className={`py-2.5 rounded-xl border text-xs font-mono font-semibold transition-all duration-200 ${
                         depositAmount === amt && !isGenerating
                           ? "border-[#3d7a68] bg-[#599F8A]/20 text-[#8ecabb] shadow-[0_0_12px_rgba(89,159,138,0.2)]"
                           : "border-white/[0.08] text-[#6db5a0]/70 hover:border-white/[0.15] hover:text-[#8ecabb]"
@@ -126,7 +126,7 @@ export default function SimulatedDashboard() {
                   ))}
                 </div>
 
-                <div className="rounded-2xl border border-white/[0.07] p-5 space-y-4">
+                <div className="rounded-2xl border border-white/[0.07] p-4 space-y-3">
                   <div className="flex items-center justify-between text-sm">
                     <span className="text-[#6db5a0]/60">Asset</span>
                     <span className="font-mono text-[#8ecabb]">SOL (Solana)</span>
@@ -144,7 +144,7 @@ export default function SimulatedDashboard() {
                 </div>
               </div>
 
-              <div className="rounded-xl border border-white/[0.06] p-4 h-36 font-mono text-xs leading-relaxed text-[#6db5a0]/80 overflow-y-auto space-y-1.5 select-none">
+              <div className="rounded-xl border border-white/[0.06] p-3 h-24 font-mono text-xs leading-relaxed text-[#6db5a0]/80 overflow-hidden space-y-1 select-none">
                 <p className="text-[#599F8A]/90 font-semibold">{`// Cryptographic log console`}</p>
                 {step === 0 && <p className="text-[#6db5a0]/50">{`> Waiting for shield initialization...`}</p>}
                 {step >= 1 && <p className="text-[#6db5a0]">{`> [WASM] Generating Poseidon secret note: ${secret}`}</p>}
@@ -156,7 +156,7 @@ export default function SimulatedDashboard() {
               <button
                 onClick={triggerSimulateShield}
                 disabled={isGenerating || step === 4}
-                className={`w-full py-4 rounded-xl font-bold text-base tracking-wider uppercase transition-all duration-200 disabled:opacity-50 ${PRIMARY}`}
+                className={`w-full py-3 rounded-xl font-bold text-sm tracking-wider uppercase transition-all duration-200 disabled:opacity-50 ${PRIMARY}`}
               >
                 <span className="flex items-center justify-center gap-2">
                   {isGenerating ? (
@@ -171,9 +171,10 @@ export default function SimulatedDashboard() {
             </div>
 
             {/* ZK Visualizer */}
-            <div className="flex flex-col items-center justify-center rounded-2xl border border-white/[0.06] p-8 text-center space-y-5">
-              <div className="relative w-full aspect-video flex items-center justify-center">
-                <svg viewBox="0 0 200 120" className="w-full h-full max-w-[360px]">
+            <div className="flex flex-col rounded-2xl border border-white/[0.08] overflow-hidden">
+              {/* Tree area */}
+              <div className="relative flex-1 flex items-center justify-center p-6 pb-4">
+                <svg viewBox="0 0 200 120" className="w-full h-full max-w-[340px]">
                   <circle cx="100" cy="20" r="8" className={`fill-[#111111] stroke-2 ${step >= 3 ? "stroke-emerald-400" : "stroke-[#599F8A]"}`} />
                   <text x="100" y="23" textAnchor="middle" fontSize="6" fill="#fff" fontWeight="bold">R</text>
 
@@ -213,21 +214,39 @@ export default function SimulatedDashboard() {
                 )}
               </div>
 
-              <div>
-                <h4 className="text-sm font-bold text-[#d4ede9]">Merkle Tree Membership</h4>
-                <p className="text-xs text-[#6db5a0]/60 max-w-[280px] mx-auto mt-1.5 leading-relaxed">
-                  {step === 0 && "Your deposit is computed into a Poseidon commitment leaf in an on-chain depth-4 Merkle tree."}
-                  {step === 1 && "Generating local cryptographic secret parameters in WASM..."}
-                  {step === 2 && "Poseidon leaf hashes established. Computing parent paths..."}
-                  {step === 3 && "Broadcasting Merkle root update tree to Solana node..."}
-                  {step === 4 && "Leaf committed! You can now withdraw privately using a ZK-Proof."}
-                </p>
-              </div>
+              {/* Info footer */}
+              <div className="border-t border-white/[0.06] px-6 py-5 text-center space-y-3">
+                <div>
+                  <h4
+                    className="text-sm font-bold text-white tracking-tight"
+                    style={{ fontFamily: "var(--font-raleway)" }}
+                  >
+                    Merkle Tree Membership
+                  </h4>
+                  <p className="text-xs text-white/50 mt-1.5 leading-relaxed">
+                    {step === 0 && "Your deposit is hashed into a Poseidon commitment leaf in an on-chain depth-4 Merkle tree."}
+                    {step === 1 && "Generating local cryptographic secret parameters in WASM..."}
+                    {step === 2 && "Poseidon leaf hashes established. Computing parent paths..."}
+                    {step === 3 && "Broadcasting Merkle root update to Solana node..."}
+                    {step === 4 && "Leaf committed. You can now withdraw privately using a ZK-Proof."}
+                  </p>
+                </div>
 
-              <div className="flex gap-3 justify-center text-xs font-mono text-[#6db5a0]/40">
-                <span className="flex items-center gap-1.5"><span className="w-1.5 h-1.5 rounded-full bg-[#6db5a0]" /> BN254</span>
-                <span className="flex items-center gap-1.5"><span className="w-1.5 h-1.5 rounded-full bg-[#6db5a0]" /> Groth16</span>
-                <span className="flex items-center gap-1.5"><span className="w-1.5 h-1.5 rounded-full bg-emerald-400" /> Solana</span>
+                <div className="flex gap-2 justify-center">
+                  {[
+                    { label: "BN254",   dot: "bg-[#6db5a0]"   },
+                    { label: "Groth16", dot: "bg-[#6db5a0]"   },
+                    { label: "Solana",  dot: "bg-emerald-400" },
+                  ].map(({ label, dot }) => (
+                    <span
+                      key={label}
+                      className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full border border-white/[0.08] text-[10px] font-mono text-white/40"
+                    >
+                      <span className={`w-1.5 h-1.5 rounded-full ${dot}`} />
+                      {label}
+                    </span>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
@@ -235,36 +254,81 @@ export default function SimulatedDashboard() {
 
         {/* WITHDRAW TAB */}
         {activeTab === "withdraw" && (
-          <div className="max-w-lg mx-auto space-y-6">
-            <div className="space-y-5">
-              <div>
-                <label className="text-sm font-bold text-[#6db5a0] uppercase tracking-widest block mb-2.5">Secret Note</label>
-                <input
-                  type="text"
-                  placeholder="veil-amountsol-secretkey..."
-                  className="w-full px-5 py-3.5 rounded-xl border border-white/[0.08] text-sm font-mono text-[#a8d5cc] placeholder-[#6db5a0]/20 focus:outline-none focus:border-[#599F8A] bg-transparent"
-                />
+          <div className="grid md:grid-cols-2 gap-8 items-stretch">
+            {/* Left — form */}
+            <div className="flex flex-col justify-between space-y-3">
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <label className="text-sm font-bold text-[#6db5a0] uppercase tracking-widest flex items-center gap-2">
+                    <ShieldCheck size={16} className="text-[#599F8A]" /> Private Withdraw
+                  </label>
+                  <span className="text-xs font-mono text-[#599F8A]/80">Solana Devnet Pool</span>
+                </div>
+
+                <div>
+                  <label className="text-xs font-semibold text-[#6db5a0]/60 uppercase tracking-wider block mb-1.5">Secret Note</label>
+                  <input
+                    type="text"
+                    placeholder="veil-amountsol-secretkey..."
+                    className="w-full px-4 py-2.5 rounded-xl border border-white/[0.08] text-xs font-mono text-[#a8d5cc] placeholder-[#6db5a0]/20 focus:outline-none focus:border-[#599F8A] bg-transparent"
+                  />
+                </div>
+                <div>
+                  <label className="text-xs font-semibold text-[#6db5a0]/60 uppercase tracking-wider block mb-1.5">Recipient Address</label>
+                  <input
+                    type="text"
+                    placeholder="Solana wallet address (e.g. Fv4h...)"
+                    className="w-full px-4 py-2.5 rounded-xl border border-white/[0.08] text-xs font-mono text-[#a8d5cc] placeholder-[#6db5a0]/20 focus:outline-none focus:border-[#599F8A] bg-transparent"
+                  />
+                </div>
+
+                <div className="rounded-xl border border-white/[0.06] p-3 flex items-start gap-2.5">
+                  <Info size={13} className="text-[#599F8A] flex-shrink-0 mt-0.5" />
+                  <p className="text-xs text-[#6db5a0]/50 leading-relaxed">
+                    A fresh Groth16 ZK-Proof verifies leaf membership without disclosing which note is spent. A nullifier prevents double-spending.
+                  </p>
+                </div>
               </div>
-              <div>
-                <label className="text-sm font-bold text-[#6db5a0] uppercase tracking-widest block mb-2.5">Recipient Address</label>
-                <input
-                  type="text"
-                  placeholder="Solana wallet address (e.g. Fv4h...)"
-                  className="w-full px-5 py-3.5 rounded-xl border border-white/[0.08] text-sm font-mono text-[#a8d5cc] placeholder-[#6db5a0]/20 focus:outline-none focus:border-[#599F8A] bg-transparent"
-                />
-              </div>
+
+              <button className={`w-full py-3 rounded-xl font-bold text-sm tracking-wider uppercase transition-all duration-200 flex items-center justify-center gap-2.5 ${PRIMARY}`}>
+                <ShieldCheck size={16} /> Prove &amp; Withdraw SOL
+              </button>
             </div>
 
-            <div className="rounded-xl border border-white/[0.06] p-4 flex items-start gap-3">
-              <Info size={16} className="text-[#599F8A] flex-shrink-0 mt-0.5" />
-              <p className="text-xs text-[#6db5a0]/60 leading-relaxed">
-                Withdrawals generate a fresh Groth16 ZK-Proof that verifies leaf membership without disclosing which note is spent. A public nullifier prevents double-spending.
-              </p>
+            {/* Right — proof steps visual */}
+            <div className="flex flex-col rounded-2xl border border-white/[0.08] overflow-hidden">
+              <div className="flex-1 flex flex-col justify-center px-6 py-5 space-y-4">
+                <div>
+                  <p className="text-[10px] uppercase tracking-widest text-[#6db5a0]/50 mb-3">Proof generation steps</p>
+                  {[
+                    { n: "01", label: "Load secret note",        sub: "Decode key → secret + amount"    },
+                    { n: "02", label: "Build Merkle path",        sub: "Fetch sibling hashes from chain" },
+                    { n: "03", label: "Generate Groth16 proof",   sub: "WASM prover ~900 ms in-browser"  },
+                    { n: "04", label: "Submit & nullify",         sub: "On-chain verification + payout"  },
+                  ].map(({ n, label, sub }) => (
+                    <div key={n} className="flex items-start gap-3 py-2.5 border-b border-white/[0.05] last:border-0">
+                      <span className="text-[10px] font-mono font-bold text-[#599F8A]/60 mt-0.5 w-5 flex-shrink-0">{n}</span>
+                      <div>
+                        <p className="text-xs font-semibold text-white/70">{label}</p>
+                        <p className="text-[10px] text-[#6db5a0]/40 mt-0.5">{sub}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <div className="border-t border-white/[0.06] px-6 py-3 flex gap-2">
+                {[
+                  { label: "BN254",   dot: "bg-[#6db5a0]"   },
+                  { label: "Groth16", dot: "bg-[#6db5a0]"   },
+                  { label: "Solana",  dot: "bg-emerald-400" },
+                ].map(({ label, dot }) => (
+                  <span key={label} className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full border border-white/[0.08] text-[10px] font-mono text-white/40">
+                    <span className={`w-1.5 h-1.5 rounded-full ${dot}`} />
+                    {label}
+                  </span>
+                ))}
+              </div>
             </div>
-
-            <button className={`w-full py-4 rounded-xl font-bold text-base tracking-wider uppercase transition-all duration-200 flex items-center justify-center gap-2.5 ${PRIMARY}`}>
-              <ShieldCheck size={18} /> Prove & Withdraw SOL
-            </button>
           </div>
         )}
 
@@ -282,6 +346,7 @@ export default function SimulatedDashboard() {
                 { type: "Withdraw", tx: "0x4be5b9...e5f2", amount: "5.00 SOL",   time: "18 mins ago", status: "Confirmed" },
                 { type: "Shield",   tx: "0x69f2e3...f3a9", amount: "50.00 SOL",  time: "1 hour ago",  status: "Confirmed" },
                 { type: "Withdraw", tx: "0xf5e2d1...b3e8", amount: "100.00 SOL", time: "1 day ago",   status: "Confirmed" },
+                { type: "Shield",   tx: "0x3bc7a1...9d4f", amount: "25.00 SOL",  time: "3 days ago",  status: "Confirmed" },
               ].map((log, idx) => (
                 <div key={idx} className="flex items-center justify-between p-4 rounded-xl border border-white/[0.06] hover:border-white/[0.1] text-sm transition-colors">
                   <div className="flex items-center gap-3.5">
@@ -310,7 +375,7 @@ export default function SimulatedDashboard() {
 
         {/* ZK CIRCUIT LOGS */}
         {activeTab === "proofs" && (
-          <div className="rounded-2xl border border-white/[0.06] p-6 font-mono text-sm text-[#6db5a0]/80 overflow-x-auto h-[340px] leading-7 space-y-1 select-none">
+          <div className="rounded-2xl border border-white/[0.06] p-6 font-mono text-sm text-[#6db5a0]/80 overflow-hidden h-full leading-7 space-y-1 select-none">
             <p className="text-[#6db5a0]/90">{`[Groth16 WASM Engine initializing...]`}</p>
             <p className="text-[#599F8A]">{`> Loaded BN254 Elliptic Curve parameters`}</p>
             <p className="text-[#599F8A]">{`> Poseidon Hash instances: Depth 4`}</p>

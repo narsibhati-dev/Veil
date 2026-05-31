@@ -1,20 +1,9 @@
 "use client";
 
-import dynamic from "next/dynamic";
 import Link from "next/link";
 import { NETWORK_LABEL } from "@/lib/constants";
 import LogoIcon from "@/components/ui/LogoIcon";
-
-// ssr: false prevents server/client HTML mismatch — wallet state only exists on the client
-const WalletMultiButton = dynamic(
-  () => import("@solana/wallet-adapter-react-ui").then((m) => m.WalletMultiButton),
-  {
-    ssr: false,
-    loading: () => (
-      <div className="h-10 w-[130px] rounded-xl bg-[#f0f8f5] animate-pulse" />
-    ),
-  }
-);
+import WalletDropdown from "@/components/wallet/WalletDropdown";
 
 export default function TopBar() {
   return (
@@ -35,7 +24,7 @@ export default function TopBar() {
           </span>
         </Link>
 
-        <WalletMultiButton />
+        <WalletDropdown />
       </div>
     </header>
   );
